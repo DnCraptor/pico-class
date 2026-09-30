@@ -1,6 +1,6 @@
 COMSPEC=/mos2/mc
-CD=/MOS2
-BASE=/MOS2
-PATH=/MOS2:/mos2/bin
+CD=/mos2
+BASE=/mos2
+PATH=/mos2:/mos2/bin
 TEMP=tmp
 SWAP=/tmp/pagefile.sys 1M 2K 1K

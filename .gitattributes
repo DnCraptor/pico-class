@@ -5,3 +5,4 @@ hardware/*/sdcard/** -text
 hardware/*/sdcard/**/config.sys -text
 
 *.md text
+hardware/*/SHA256SUMS text eol=lf
