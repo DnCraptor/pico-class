@@ -1,5 +1,8 @@
 9cdb1263981fdb7df9e3e2a887afb73e24679a9f3e2ff30751399f50bf442c73  murmulator-os2/PCp2-murmulator-os-VGA-HDMI-HID-2.3.2-252MHz-8.uf2
 2cde325b9a32b3a6a569bdb28421338559cfb660445232f7f1031926741e0334  pico-launcher/PCp2-uf2-launcher-HDMI-HID.uf2
+43dd2c1a5a5334cd1affa2f880fb20065ef19b830334535e5c81b8c40de1e8c7  sdcard/emu/PCp2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+efb2ba0ca3927760370cc5e41a06d1aaf069cedbf9c42bf98b4af38407ebd318  sdcard/emu/PCp2-bk-VGA-HDMI-400MHz-PWM-1.4.9.uf2
+3557d29136b2d88de534c984149bd7978379f588d75189faced817f1dd398d74  sdcard/emu/PCp2-nes-VGA-HDMI-PWM-305.uf2
 5cfdce5c28d3e9b8466bdf52b12d00f120fafa7459a0684e8e64b01cecfab948  sdcard/mos2/basic
 dc81fd4e6d996639498bf706cfc7329e298d923323930bb3f0bc0f086d4f0ae5  sdcard/mos2/bin/cat
 7df735c9e46bd8915b816a8fbea880f1ce4b5ea089fbbbdaa315672604a22942  sdcard/mos2/bin/ln
