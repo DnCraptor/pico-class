@@ -42,7 +42,33 @@
 | `/fdconfig.sys`, `/FDAUTO.BAT` | конфигурация FreeDOS 1.4 | адаптированы под murm386: оболочка — Volkov Commander; концы строк CRLF |
 | `/freedos/VC.COM` | Volkov Commander 4.05 | файловый менеджер, запускается из `FDAUTO.BAT` |
 | `/freedos/SI.EXE` | Norton System Information | индекс производительности; полезен при проверке частоты murm386 |
+| `/NES/*.nes` | свободные homebrew-игры для pico-nes, см. раздел 2.1 | см. раздел 2.1 |
 
+
+### 2.1. Игры для pico-nes (`/NES`)
+
+pico-nes ищет игры в каталоге `/NES` на SD-карте (расширение `.nes`). В подборку входят только игры, которые авторы разрешили свободно распространять. Коммерческие образы картриджей NES в комплект не входят.
+
+| Файл | Игра | Жанр | Источник | Лицензия | Маппер, размер |
+|---|---|---|---|---|---|
+| `croom.nes` | Concentration Room | «Мемори», парные карточки | [pinobatch/croom-nes](https://github.com/pinobatch/croom-nes) `ed19c3c`, собрано из исходников | GPLv3; копии ROM разрешено распространять без исходников | 0, 24 КБ |
+| `thwaite.nes` | Thwaite | защита городов от ракет | [pinobatch/thwaite-nes](https://github.com/pinobatch/thwaite-nes) `00e3674`, собрано из исходников | GPLv3 | 0, 40 КБ |
+| `rfk.nes` | robotfindskitten | «дзен-симулятор», текст на английском | [pinobatch/rfk-nes](https://github.com/pinobatch/rfk-nes) `b9764ce`, собрано из исходников | zlib | 0, 32 КБ |
+| `nova.nes` | Nova the Squirrel | платформер-головоломка, диалоги на английском | [NovaSquirrel/NovaTheSquirrel](https://github.com/NovaSquirrel/NovaTheSquirrel) `e9e79ae`, собрано из исходников | код — GPLv3, графика и уровни — CC BY-NC-SA 4.0 | 1 (MMC1), 256 КБ |
+| `jetpaco.nes` | Jet Paco | платформер с реактивным ранцем | [mojontwins/MK1_NES](https://github.com/mojontwins/MK1_NES) `ec3fbcc`, `examples/` | игры из `examples` авторы разрешают свободно распространять | 0, 40 КБ |
+| `lala.nes` | Lala the Magical: Prologue | платформер | там же | там же | 0, 40 КБ |
+| `bootee.nes` | Bootèe | платформер | там же | там же | 0, 40 КБ |
+| `cheril_bosque.nes` | Cheril of the Bosque | приключенческий платформер | там же | там же | 0, 40 КБ |
+| `cheril_perils.nes` | Cheril Perils Classic | платформер | там же | там же | 0, 40 КБ |
+| `cheril_goddess.nes` | Cheril the Goddess | платформер | там же | там же | 3 (CNROM), 64 КБ |
+| `cheril_writer.nes` | Cheril the Writer | платформер | там же | там же | 3 (CNROM), 64 КБ |
+| `espitene.nes` | Espitene | платформер | там же | там же | 3 (CNROM), 64 КБ |
+| `cadaverion.nes` | Cadàveriön | головоломка в подземелье | там же | там же | 0, 40 КБ |
+| `dveelng.nes` | D'Veel'Ng | экшен с видом сверху | там же | там же | 0, 40 КБ |
+
+Все мапперы (0, 1, 3) поддерживаются pico-nes. Игры Damian Yerrick и Nova the Squirrel собраны из исходников указанных коммитов (cc65 2.19); игры Mojon Twins взяты готовыми из репозитория. Файлы переименованы в короткие имена без апострофов и диакритики.
+
+Из примеров MK1_NES не включены Che-Man (пародия с политическим персонажем) и Sgt. Helmet: Training Day (военный шутер). Решение о включении остальных игр руководитель принимает после просмотра с учётом возраста группы.
 ## 3. Проверка целостности
 
 Из каталога `hardware/olimex-pico-pc`:
