@@ -1,0 +1,3 @@
+Test file for workstation acceptance.
+Open it with F4, type a few letters and digits (also on NumPad),
+save with F2, then check the result with F3.

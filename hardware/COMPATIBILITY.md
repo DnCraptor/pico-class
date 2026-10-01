@@ -17,8 +17,8 @@
 
 | Прошивка | Версия | Плата | Видео | Клавиатура | Звук | Звук через HDMI | Нужна PSRAM | Статус | Примечание |
 |---|---|---|---|---|---|---|---|---|---|
-| murmulator-os2 | 2.3.2 build 8 | PCp2 | HDMI | USB HID | джек, PWM | нет | нет | ⬜ | файл в комплекте, см. `olimex-pico-pc/MANIFEST.md`; `blimp` выводит на GP26, на джеке может быть не слышен |
-| pico-launcher | 4 (`5d871d7`) | PCp2 | HDMI | USB HID | — | — | нет | ⬜ | файл в комплекте, см. `olimex-pico-pc/MANIFEST.md` |
+| pico-launcher | 4 (`5d871d7`) | PCp2 | HDMI | USB HID | — | — | нет | ✅ | основной менеджер; приёмка 2026-10-01 без замечаний; файл в комплекте, см. `olimex-pico-pc/MANIFEST.md` |
+| murmulator-os2 | 2.3.2 build 8 | PCp2 | HDMI | USB HID | джек, PWM | нет | нет | ⚠️ | приёмка 2026-10-01: `wav` зависает после окончания воспроизведения (без PSRAM; с PSRAM не проверялось); `blimp` выводит на GP26, к джеку не подключён; файл в комплекте, см. `olimex-pico-pc/MANIFEST.md` |
 | murmulator-os2 | 2.3.2 | m1p2 | | | | | | ⬜ | сборка есть в upstream, в классе не проверялась |
 | murmulator-os2 | 2.3.2 | m2p2 | | | | | | ⬜ | сборка есть в upstream, в классе не проверялась |
 | murmulator-os2 | 2.3.2 | z0p2 | | | | | | ⬜ | сборка есть в upstream, в классе не проверялась |

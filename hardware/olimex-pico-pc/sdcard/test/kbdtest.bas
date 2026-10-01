@@ -2,7 +2,7 @@
 20 REM Prints the code of every byte received from the keyboard.
 30 REM Printable characters are echoed after the code. Exit: Ctrl+C
 40 PRINT "KEYBOARD TEST. Press keys one by one. Exit: Ctrl+C"
-50 PRINT "Letters, digits, Enter, Esc, F1-F12, NumPad (NumLock on)"
+50 PRINT "Letters, digits, Enter, Esc, NumPad (NumLock on)"
 60 N=0
 70 GET A
 80 N=N+1
