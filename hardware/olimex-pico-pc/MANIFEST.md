@@ -13,11 +13,11 @@
 
 ### Эмуляторы (`sdcard/emu/`)
 
-Запускаются из pico-launcher или MOS2. Сами выставляют частоту и напряжение ядра при старте.
+Запускаются из pico-launcher или MOS2. Сами выставляют частоту и напряжение ядра при старте. У PICO-BK частота задаётся выбором видеорежима HDMI в меню (Home), у murm386 частота и напряжение меняются независимо в меню Win+F11.
 
 | Файл | Исходники | Версия / коммит | Частота / напряжение | SHA-256 |
 |---|---|---|---|---|
-| `sdcard/emu/PCp2-bk-VGA-HDMI-400MHz-PWM-1.4.9.uf2` | [DnCraptor/PICO-BK](https://github.com/DnCraptor/PICO-BK) | 1.4.9, `master` = `e1d08ab` (2026-10-01) | 400 МГц / 1.5 В | `efb2ba0ca3927760370cc5e41a06d1aaf069cedbf9c42bf98b4af38407ebd318` |
+| `sdcard/emu/PCp2-bk-VGA-HDMI-400MHz-PWM-1.4.9.uf2` | [DnCraptor/PICO-BK](https://github.com/DnCraptor/PICO-BK) | 1.4.9, `master` = `8c0e735` (2026-10-02) | по умолчанию 270 МГц / 1.3 В (HDMI 720×576); в меню — 400 МГц / 1.5 В (800×600) и 512 МГц / 1.6 В (1024×768) | `65b22b8344d73dcf088451392420a58d6e7c163a7355b5cac50092fe4f4d169d` |
 | `sdcard/emu/PCp2-nes-VGA-HDMI-PWM-305.uf2` | [DnCraptor/pico-nes](https://github.com/DnCraptor/pico-nes) | 305, `main` = `fa24bc7` (2026-10-01) | 378 МГц / 1.6 В | `3557d29136b2d88de534c984149bd7978379f588d75189faced817f1dd398d74` |
 | `sdcard/emu/PCp2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2` | [DnCraptor/murm386](https://github.com/DnCraptor/murm386) | v1.19, `main` = `6d87963` (2026-10-01) | 504 МГц / 1.6 В | `43dd2c1a5a5334cd1affa2f880fb20065ef19b830334535e5c81b8c40de1e8c7` |
 
@@ -38,6 +38,10 @@
 | `/test/snd_mono.wav` | этот репозиторий | 8000 Гц, моно, 16 бит: три сигнала 440/660/880 Гц, уровень −12 dBFS |
 | `/test/snd_lr.wav` | этот репозиторий | 8000 Гц, стерео, 16 бит: 440 Гц слева, 660 Гц справа, 880 Гц в обоих каналах, −12 dBFS |
 | `/emu/*.uf2` | см. раздел 1, «Эмуляторы» | побайтово совпадают с файлами сборки |
+| `/freedos/bin/*`, `/freedos/configs/*`, `/freedos/nls/*`, `/freedos/version.fdi` | дистрибутив FreeDOS 1.4 (2025-04-02), выборка файлов | для загрузки murm386 прямо с SD-карты |
+| `/fdconfig.sys`, `/FDAUTO.BAT` | конфигурация FreeDOS 1.4 | адаптированы под murm386: оболочка — Volkov Commander; концы строк CRLF |
+| `/freedos/VC.COM` | Volkov Commander 4.05 | файловый менеджер, запускается из `FDAUTO.BAT` |
+| `/freedos/SI.EXE` | Norton System Information | индекс производительности; полезен при проверке частоты murm386 |
 
 ## 3. Проверка целостности
 
