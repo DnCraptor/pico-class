@@ -24,6 +24,7 @@
 | `/fdconfig.sys`, `/FDAUTO.BAT` | конфигурация FreeDOS 7.1 | адаптированы под murm386: оболочка — Volkov Commander, в `PATH` добавлен `\FREEDOS\EDU\TP55`; концы строк CRLF |
 | `/freedos/VC.COM` | Volkov Commander 4.05 | файловый менеджер, запускается из `FDAUTO.BAT` |
 | `/freedos/SI.EXE` | Norton System Information | индекс производительности; полезен при проверке частоты murm386 |
+| `/freedos/LTEMM.EXE` | LTEMM r01 — драйвер EMS для платы Lo-tech 2MB EMS (A. Tsourikov, 1988; доработка Lo-tech), [lo-tech.co.uk](https://www.lo-tech.co.uk/wiki/LTEMM.EXE) | murm386 эмулирует эту плату (окно D000). В `/fdconfig.sys` строка подключения пока закомментирована (`REM`); чтобы включить EMS, убрать `REM` и перезагрузить. Исходный код — BSD 3-Clause, сборка Lo-tech — Standard Lo-tech License |
 | `/NES/*.nes` | свободные homebrew-игры для pico-nes, см. раздел 3 | см. раздел 3 |
 | `/ZX/*` | свободные игры для pico-speccy, см. раздел 5 | см. раздел 5 |
 | `/apple/*.DSK` | образы дисков для murmapple (Apple IIe), см. раздел 6 | см. раздел 6 |
@@ -120,7 +121,9 @@ murmapple ищет образы дисков в каталоге `/apple` (фо�
 | `TB6502.DSK` | Tom Bombem — аркадная «стрелялка» | игровой процесс, звук | там же | GPL v2 |
 | `TFV.DSK` | Talbot Fantasy 7 — шуточная ролевая игра в режиме LORES | игровой процесс, клавиатура | там же | GPL v2 |
 
-Образы взяты из репозиториев без изменений, переименованы в короткие имена. Из dos33fsprogs не включены игры, основанные на чужих сюжетах и персонажах (Myst, Riven, Commander Keen, Duke, Monkey Island, Peasant's Quest и др.), из Apple-II-Programs — диск `fun-stuff.dsk` с рисунком чужого логотипа. Образы не проверялись на рабочем месте.
+Образы взяты из репозиториев без изменений, переименованы в короткие имена. Из dos33fsprogs не включены игры, основанные на чужих сюжетах и персонажах (Myst, Riven, Commander Keen, Duke, Monkey Island, Peasant's Quest и др.), из Apple-II-Programs — диск `fun-stuff.dsk` с рисунком чужого логотипа. Проверка 2026-10-02 на PCp2: обе сборки murmapple загружают образы, но часть из них после загрузки выводит повторяющиеся текстовые символы и зависает (см. [`hardware/COMPATIBILITY.md`](hardware/COMPATIBILITY.md)).
+
+Как запустить диск: F11 — экранное меню дисков, выбрать образ, затем Boot. Если программа не стартовала сама, в Applesoft BASIC: `CATALOG` — список файлов на диске, `RUN имя` — запустить BASIC-программу (тип `A`), `BRUN имя` — машинный код (тип `B`); `PR#6` — перезагрузка с дисковода.
 
 ## 7. Проверка целостности
 
