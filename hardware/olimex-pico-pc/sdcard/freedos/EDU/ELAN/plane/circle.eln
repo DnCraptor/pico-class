@@ -1,0 +1,38 @@
+program:
+  INT CONST x0 :: graphics x limit DIV 2;
+  INT CONST y0 :: graphics y limit DIV 2;
+  REAL CONST radius :: real (min (x0, y0) DIV 2);
+  ask for starting point;
+  enter graphics mode;
+  heading;
+  drive point along a circle;
+  footing;
+  sleep (5);
+  enter text mode.
+
+  ask for starting point:
+    REAL VAR t;
+    REP
+      line;
+      put ("Real number between 0.0 and 1.0: ");
+      get (t)
+    UNTIL 0.0 < t AND t < 1.0
+    ENDREP.
+
+  heading:
+    put ("This program shows the cumulative effect of rounding errors.");
+    line;
+    put ("It multiplies a point on the unit circle repeatedly by itself").
+
+  drive point along a circle:
+    POINT VAR x :: point (t, sqrt (1.0 - t * t));
+    REP
+      picture point (x);
+      x := x * x
+    UNTIL abs (x) > 2.0 OR abs (x) < 0.5
+    ENDREP.
+
+  footing:
+    move (1, graphics y limit - line height);
+    put ("...until the point drops off the circle!").
+

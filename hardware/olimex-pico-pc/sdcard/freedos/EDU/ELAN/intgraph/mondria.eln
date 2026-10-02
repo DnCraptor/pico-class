@@ -1,0 +1,41 @@
+
+make a famous painting:
+   prepare the canvas;
+   stain it diligently;
+   painting is finished.
+
+
+prepare the canvas:
+   enter graphics mode;
+   INT CONST xmin :: graphics x limit DIV 10,
+             ymin :: graphics y limit DIV 10,
+             xmax :: graphics x limit - xmin,
+             ymax :: graphics y limit - ymin;
+   INT VAR k, l, x, y;
+   move (xmin, ymin);
+   draw (xmin, ymax);
+   draw (xmax, ymax);
+   draw (xmax, ymin);
+   draw (xmin, ymin).
+
+
+stain it diligently:
+   FOR k FROM 1 UPTO 150
+   REP
+     x := random (2 * xmin, xmax - xmin);
+     y := random (2 * ymin, ymax - ymin);
+     l := int (real (ymin) * (1.0 - sqrt (random)));
+     IF random > 0.5
+     THEN
+       move (x - l, y);
+       draw (x + l, y)
+     ELSE
+       move (x, y - l);
+       draw (x, y + l)
+     FI
+   ENDREP.
+
+
+painting is finished:
+   wait for confirmation (5, 5);
+   leave graphics mode.

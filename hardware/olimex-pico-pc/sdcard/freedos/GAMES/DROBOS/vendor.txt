@@ -1,0 +1,51 @@
+		DRoboWHOids 1.3 Distribution Policy
+		===================================
+
+This program may be distributed only as it is: no files may be removed
+and no files may be added without my prior permission. You may repack it
+with another archiver and add your comments into the archive header.
+
+This program can be freely distributed, but you may not sell it. However
+you may charge reasonable shipping, handling and distribution fees to
+cover your expenses. You know that if your charges are too high, there
+are dozens of others to provide same services with lower disk fees.
+
+This program may be included on CD-ROM shareware and freeware program
+collections as long as it is made clear that it is a collection of
+shareware and freeware programs and what those terms mean to user.
+
+This program may not be bundled with sound devices, books, commercial
+software or anything that is being sold as a commercial product without
+my prior approval. If such an approval is given, it can not be forwarded
+to third parties and will concern only this version of the program.
+
+This program may be bundled with harddisks, floppies, DATs, floptical or
+magneto-optical disks, CDs etc. storage devices that are being sold as
+storage devices providing that no extra fees are being charged for this
+or any other bundled software excluding pre-installed operating systems.
+
+This program may not be sold via rack-sales without prior agreement.
+
+I'd be most grateful, if shareware distributors, disk vendors, sysops
+and computer clubs (and magazines :) would notify me, if they take this
+into their libraries and send me a copy of the review they give to it,
+but since they usually don't have enough time, interest or means to
+contact authors, that is not required.
+
+The two that courteously contacted me about the M.I.N.E.S. (ex-Minerva)
+have already been notified about DRoboWHOids. I hope this would give
+them a little advantage on the markets:
+
+	Shareware Distribution NZ
+	Box 42000, Wellington Ph/Fax 04 564-530
+	1 Moores Valley Road, Wainuiomata
+	Wellington, New Zealand
+
+	NB-data
+	Danmarksgade 16
+	DK-4874 Gedser
+	Danmark
+
+--jouni
+
+Jouni Miettunen * jon@stekt.oulu.fi * Oulu * Finland * Europe * 1994

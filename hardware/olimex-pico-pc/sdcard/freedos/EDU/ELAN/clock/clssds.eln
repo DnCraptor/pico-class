@@ -1,0 +1,132 @@
+
+reset 4 digit display:
+  enter graphics mode;
+  page;
+  LET starting y pos = 250;
+  LET starting x pos = 250;
+
+  LET segment length = 75;
+  LET segment gap = 4;
+  
+  INT CONST segment size :: segment length + segment gap,
+            x step :: segment size + segment length DIV 5;
+
+  INT CONST dsabl :: 0,
+            seg a :: 01,
+            seg b :: 02,
+            seg c :: 04,
+            seg d :: 08,
+            seg e :: 16,
+            seg f :: 32,
+            seg g :: 64,
+            enabl :: 128;
+
+  LET pen = 1, rubber = 0.
+
+BOOL PROC bit set (INT CONST code, seg):
+  code DIV seg	MOD 2 = 1
+ENDPROC bit set;
+
+PROC to port (INT CONST addr, segs):
+  IF addr = 0
+  THEN
+    display separator
+  ELSE
+    decode address;
+    display digit
+  FI.
+
+  display separator:
+    IF bit set (segs, enabl)
+    THEN
+      draw colon
+    ELSE
+      erase colon
+    FI.
+
+  draw colon:
+    move (starting x pos + 3 * x step DIV 2,
+            starting y pos - segment length DIV 3);
+    draw (current x position,
+            current y position - segment length DIV 2);
+    move (starting x pos + 3 * x step DIV 2,
+            starting y pos - 4 * segment length DIV 3);
+    draw (current x position,
+            current y position - segment length DIV 2).
+
+    erase colon:
+      color(rubber);
+      draw colon;
+      color(pen).
+
+  decode address:
+    INT CONST y pos :: starting y pos;
+    INT CONST x pos ::
+        starting x pos + x step * (addr-1 + (addr-1) DIV 2).
+
+  display digit:
+    IF bit set (segs, enabl)
+    THEN turn on selected segments
+    ELSE turn off all segments
+    FI.
+
+  turn on selected segments:
+    IF bit set (segs, seg a) THEN draw seg a FI;
+    IF bit set (segs, seg b) THEN draw seg b FI;
+    IF bit set (segs, seg c) THEN draw seg c FI;
+    IF bit set (segs, seg d) THEN draw seg d FI;
+    IF bit set (segs, seg e) THEN draw seg e FI;
+    IF bit set (segs, seg f) THEN draw seg f FI;
+    IF bit set (segs, seg g) THEN draw seg g FI.
+
+  draw seg a:
+    move (x pos - segment gap, y pos - 2 * segment size);
+    draw horizontal bar.
+
+  draw seg b:
+    move (x pos, y pos - segment size - segment gap);
+    draw vertical bar.
+
+  draw seg c:
+    move (x pos, y pos - segment gap);
+    draw vertical bar.
+
+  draw seg d:
+    move (x pos - segment gap, y pos);
+    draw horizontal bar.
+
+  draw seg e:
+    move (x pos - segment size, y pos - segment gap);
+    draw vertical bar.
+
+  draw seg f:
+    move (x pos - segment size,
+          y pos - segment size - segment gap);
+    draw vertical bar.
+
+  draw seg g:
+    move (x pos - segment gap, y pos - segment size);
+    draw horizontal bar.
+
+  draw horizontal bar:
+    draw (current x position - segment length,
+          current y position).
+
+  draw vertical bar:
+    draw (current x position,
+          current y position - segment length).
+
+turn off all segments:
+	color (rubber);
+	draw seg a;
+	draw seg b;
+	draw seg c;
+	draw seg d;
+	draw seg e;
+	draw seg f;
+	draw seg g;
+	color (pen).
+
+ENDPROC to port;
+
+

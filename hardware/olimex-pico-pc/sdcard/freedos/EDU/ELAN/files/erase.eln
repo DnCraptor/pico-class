@@ -1,0 +1,8 @@
+
+program:
+  TEXT VAR x;
+  put ("File to be erased:");
+  get (x);
+  erase file (x).
+
+

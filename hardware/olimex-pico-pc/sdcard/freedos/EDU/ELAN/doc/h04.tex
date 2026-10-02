@@ -1,0 +1,1586 @@
+\chapter{AN OVERVIEW OF ELAN-1}
+
+Elan-1 is a sublanguage of standard Elan. It comprises full
+Elan apart from the packet-mechanism. It strives to be compatible
+as much as is possible with the EUMEL implementation of Elan,
+incorporating a number of minor language modifications that have
+been mutually agreed upon. The EUMEL concept of DATASPACE is
+not implemented.
+
+In this overview we follow the syntax of the language, introducing
+Elan terminology for the most important constituents of a program
+and making some remarks about the syntax of the various constructs.
+The more noticeable differences with standard Elan and EUMEL are
+indicated.
+
+This chapter is not an Elan course and certainly not a course
+in programming! It serves merely as a convenient overview of
+the language.
+In this chapter the names of syntactic constructs will be written
+in italic.
+
+\section{Programs}
+
+A program in the subset Elan-1 is an Elan {\em program} consisting
+of one {\em main-packet} only.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm program}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{060}{main-packet}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+We assume the reader to be familiar with the notation of syntax-diagrams.
+We use those diagrams not only for describing structure but also
+for introducing useful terminology. For didactic reasons, there
+will be a large number of relatively simple syntax-diagrams rather
+than a small number of complicated ones.
+
+The structure of the {\em main-packet} is somewhat simpler than it
+is defined by the standard.
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm main-packet}}
+  %
+  \put(000,020){\vector(1,0){030}\ntbox{070}{bottom-up-part}
+                \vector(1,0){030}\ntbox{040}{root}
+                \vector(1,0){030}\ntbox{070}{top-down-part}
+                \vector(1,0){030}}
+  %
+  \put(005,010){\oval(20,20)[rt]}
+  \put(025,010){\oval(20,20)[lb]}
+  \put(025,000){\line(1,0){080}}
+  \put(105,010){\oval(20,20)[rb]}
+  \put(125,010){\oval(20,20)[lt]}
+  %
+  \put(175,010){\oval(20,20)[rt]}
+  \put(195,010){\oval(20,20)[lb]}
+  \put(195,000){\line(1,0){080}}
+  \put(275,010){\oval(20,20)[rb]}
+  \put(295,010){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The {\em root} of the {\em packet} is either (as in standard Elan) a
+{\em paragraph} or (as in Elan-0) a {\em refinement}.
+The effect of the execution of
+an Elan-1 program is the effect of the execution of its {\em bottom-up-part}
+followed by the execution of its {\em root}, which may in its turn
+involve the execution of some {\em refinements} in the {\em top-down-part}.
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm root}}
+  %
+  \put(000,030){\vector(1,0){030}\ntbox{060}{refinement}
+                \vector(1,0){030}}
+  %
+  \put(005,020){\oval(20,20)[rt]}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\ntbox{060}{paragraph}
+                \line(1,0){005}}
+  \put(095,020){\oval(20,20)[rb]}
+  \put(115,020){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+If the {\em root} of the program is a {\em paragraph}, it is treated by the
+Elan Programming Environment as an unnamed {\em refinement}, which
+obtains the name {\tt program}.
+
+\pic(315,110){\small
+  \put(000,100){\underline{\rm bottom-up-part}}
+  %
+  \put(000,080){\vector(1,0){060}\ntbox{100}{procedure-declaration}
+                \vector(1,0){030}\tbox{010}{;}
+                \vector(1,0){030}}
+  %
+  \put(025,070){\oval(20,20)[lt]}
+  \put(015,070){\line(0,-1){60}}
+  \put(025,010){\oval(20,20)[lb]}
+  \put(025,000){\line(1,0){180}}
+  \put(205,010){\oval(20,20)[rb]}
+  \put(215,010){\line(0,1){60}}
+  \put(205,070){\oval(20,20)[rt]}
+  %
+  \put(035,070){\oval(20,20)[rt]}
+  \put(045,070){\line(0,-1){40}}
+  %
+  \put(185,070){\oval(20,20)[lt]}
+  \put(175,070){\line(0,-1){40}}
+  %
+  \put(055,070){\oval(20,20)[lb]}
+  \put(055,060){\vector(1,0){005}\ntbox{100}{operator-declaration}
+                \line(1,0){005}}
+  \put(165,070){\oval(20,20)[rb]}
+  %
+  \put(055,050){\oval(20,20)[lb]}
+  \put(055,040){\vector(1,0){005}\ntbox{100}{type-declaration}
+                \line(1,0){005}}
+  \put(165,050){\oval(20,20)[rb]}
+  %
+  \put(055,030){\oval(20,20)[lb]}
+  \put(055,020){\vector(1,0){005}\ntbox{100}{synonym-declaration}
+                \line(1,0){005}}
+  \put(165,030){\oval(20,20)[rb]}
+  %
+}
+
+\noindent
+The {\em bottom-up-part} comprises those {\em declarations} which precede
+the {\em root} and can be considered as a language fundament on which
+the rest of the program is to be built.
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm top-down-part}}
+  %
+  \put(000,020){\vector(1,0){030}\tbox{010}{.}
+                \vector(1,0){030}\ntbox{060}{refinement}
+                \vector(1,0){030}}
+  %
+  \put(025,010){\oval(20,20)[l]}
+  \put(025,000){\line(1,0){110}}
+  \put(135,010){\oval(20,20)[r]}
+  %
+}
+
+\noindent
+The {\em top-down-part} comprises the {\em refinements} that can be invoked
+from the {\em root}. The {\em refinements} in the {\em top-down-part} can not be
+invoked from a {\em declaration} in the {\em bottom-up-part}.
+
+The Elan Programming Environment accepts as input any sequence
+of {\em declarations}, other {\em units} and {\em refinements} and distributes
+those elements over the three components of the {\em main-packet} in
+their order of arrival. Therefore the layout and order of input
+to the Elan Programming Environment can be in a very relaxed
+syntactic style. In outputting the program the Elan Programming
+Environment imparts its own strict layout conventions and structure
+to the program.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm refinement}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{040}{name}
+                \vector(1,0){030}\tbox{010}{:}
+                \vector(1,0){030}\ntbox{060}{paragraph}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+A {\em refinement} gives a {\em name} to a {\em paragraph}.
+It is invoked by executing its {\em name}.
+It is not a {\em declaration} in the proper sense, since
+it may be invoked (e.g. from the {\em root}) before it has been executed.
+The meaning (effect and value) of a {\em refinement} invocation is
+the same as that of its {\em paragraph}.
+
+\pic(315,070){\small
+  \put(000,060){\underline{\rm paragraph}}
+  %
+  \put(000,040){\vector(1,0){060}\ntbox{040}{unit}
+                \vector(1,0){060}}
+  %
+  \put(105,030){\oval(20,20)[r]}
+  \put(105,020){\vector(-1,0){020}}
+  \put(055,020){\line(1,0){020}\tbox{010}{;}}
+  \put(055,030){\oval(20,20)[l]}
+  %
+  \put(005,030){\oval(20,20)[rt]}
+  \put(015,030){\line(0,-1){20}}
+  \put(025,010){\oval(20,20)[lb]}
+  \put(025,000){\line(1,0){110}}
+  \put(135,010){\oval(20,20)[rb]}
+  \put(145,010){\line(0,1){20}}
+  \put(155,030){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The effect of the execution of a {\em paragraph} is the effect of the
+sequential execution of its {\em units} in textual order. The value
+(if any) of a {\em paragraph} is the value of its last {\em unit}.
+Notice that a {\em paragraph} may be empty. In that case it has neither
+an effect nor a value.
+
+\section{Declarations}
+
+Declarations are constructs that, upon execution, bind a {\em name}
+to a value ({\em object-declaration}), to a declarer ({\em type-declaration})
+or to a routine ({\em procedure-declaration}, {\em operator-declaration}).
+
+Apart from this dynamic effect they have a static effect. The
+occurrence of a declaration makes the name, defined by it, visible
+in a specific part of the program, the {\em scope} of the declaration,
+together with the type and access attributes with which it is defined.
+
+\subsection{Bottom-Up declarations}
+
+We will now describe those declarations that occur in the {\em bottom-up-part}
+of a program.
+
+\subsubsection{Procedure-declarations}
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm procedure-declaration}}
+  %
+  \put(000,010){\vector(1,0){020}\ntbox{070}{procedure-head}
+                \vector(1,0){020}\ntbox{070}{procedure-body}
+                \vector(1,0){020}\ntbox{070}{procedure-tail}
+                \vector(1,0){020}}
+  %
+}
+
+\pic(315,110){\small
+  \put(000,100){\underline{\rm procedure-head}}
+  %
+  \put(000,080){\vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\tbox{040}{PROC}
+                \line(1,0){005}}
+  %
+  \put(005,070){\oval(20,20)[rt]}
+  \put(025,070){\oval(20,20)[lb]}
+  \put(025,060){\line(1,0){70}}
+  \put(095,070){\oval(20,20)[rb]}
+  \put(115,070){\oval(20,20)[lt]}
+  %
+  \put(165,070){\oval(20,20)[rt]}
+  \put(175,070){\line(0,-1){020}}
+  \put(165,050){\oval(20,20)[rb]}
+  \put(165,040){\line(-1,0){140}}
+  \put(025,030){\oval(20,20)[l]}
+  %
+  \put(025,020){\vector(1,0){005}\ntbox{070}{procedure-name}
+                \vector(1,0){030}\ntbox{100}{formal-parameters-pack}
+                \vector(1,0){030}\tbox{010}{:}
+                \vector(1,0){030}}
+  %
+  \put(105,010){\oval(20,20)[rt]}
+  \put(125,010){\oval(20,20)[lb]}
+  \put(125,000){\line(1,0){110}}
+  \put(235,010){\oval(20,20)[rb]}
+  \put(255,010){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The head gives the {\em procedure-name}, the types and access attributes of
+its parameters (if any) and the type of its result (if any).
+
+\pic(315,160){\small
+  \put(000,150){\underline{\rm formal-parameters-pack}}
+  %
+  \put(000,130){\vector(1,0){030}\tbox{010}{(}
+                \line(1,0){005}}
+  \put(045,120){\oval(20,20)[r]}
+  %
+  \put(235,100){\oval(20,20)[r]}
+  \put(235,110){\vector(-1,0){040}}
+  \put(025,110){\line(1,0){160}\tbox{010}{,}}
+  \put(145,100){\oval(20,20)[l]}
+  %
+  \put(025,100){\oval(20,20)[l]}
+  \put(025,090){\vector(1,0){005}\ntbox{060}{type-declarer}
+                \vector(1,0){060}\ntbox{080}{parameter-name}
+                \vector(1,0){030}\tbox{010}{)}
+                \vector(1,0){030}}
+  %
+  \put(015,100){\line(0,-1){080}}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\line(1,0){030}}
+  %
+  \put(095,080){\oval(20,20)[r]}
+  \put(095,070){\line(-1,0){040}}
+  \put(055,060){\oval(20,20)[l]}
+  \put(045,060){\line(0,-1){040}}
+  %
+  \put(125,080){\oval(20,20)[lt]}
+  \put(115,080){\line(0,-1){060}}
+  %
+  \put(055,060){\oval(20,20)[lb]}
+  \put(055,050){\vector(1,0){005}\tbox{040}{CONST}
+                \line(1,0){005}}
+  \put(105,060){\oval(20,20)[rb]}
+  %
+  \put(055,040){\oval(20,20)[lb]}
+  \put(055,030){\vector(1,0){005}\tbox{040}{VAR}
+                \line(1,0){005}}
+  \put(105,040){\oval(20,20)[rb]}
+  %
+  \put(055,020){\oval(20,20)[lb]}
+  \put(055,010){\vector(1,0){005}\tbox{040}{PROC}
+                \line(1,0){005}}
+  \put(105,020){\oval(20,20)[rb]}
+  %
+  \put(105,010){\vector(1,0){025}\ntbox{100}{virtual-parameters-pack}
+                \line(1,0){005}}
+  \put(235,020){\oval(20,20)[r]}
+  \put(235,030){\line(-1,0){110}}
+  \put(125,040){\oval(20,20)[lb]}
+  %
+}
+
+\noindent
+Parameters are either objects or procedures, as can be deduced
+from this rather unwieldy syntax diagram. In case a procedure
+is to be passed as a parameter, the types of its parameters are
+in their turn to be specified precisely by means of a
+{\em virtual-parameters-pack}.
+
+\pic(315,160){\small
+  \put(000,150){\underline{\rm virtual-parameters-pack}}
+  %
+  \put(000,130){\vector(1,0){030}\tbox{010}{(}
+                \line(1,0){005}}
+  \put(045,120){\oval(20,20)[r]}
+  %
+  \put(235,100){\oval(20,20)[r]}
+  \put(235,110){\vector(-1,0){040}}
+  \put(025,110){\line(1,0){160}\tbox{010}{,}}
+  %
+  \put(025,100){\oval(20,20)[l]}
+  \put(025,090){\vector(1,0){005}\ntbox{060}{type-declarer}
+                \vector(1,0){170}\tbox{010}{)}
+                \vector(1,0){030}}
+  %
+  \put(015,100){\line(0,-1){080}}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\line(1,0){030}}
+  %
+  \put(095,080){\oval(20,20)[r]}
+  \put(095,070){\line(-1,0){040}}
+  \put(055,060){\oval(20,20)[l]}
+  \put(045,060){\line(0,-1){040}}
+  %
+  \put(125,080){\oval(20,20)[lt]}
+  \put(115,080){\line(0,-1){060}}
+  %
+  \put(055,060){\oval(20,20)[lb]}
+  \put(055,050){\vector(1,0){005}\tbox{040}{CONST}
+                \line(1,0){005}}
+  \put(105,060){\oval(20,20)[rb]}
+  %
+  \put(055,040){\oval(20,20)[lb]}
+  \put(055,030){\vector(1,0){005}\tbox{040}{VAR}
+                \line(1,0){005}}
+  \put(105,040){\oval(20,20)[rb]}
+  %
+  \put(055,020){\oval(20,20)[lb]}
+  \put(055,010){\vector(1,0){005}\tbox{040}{PROC}
+                \line(1,0){005}}
+  \put(105,020){\oval(20,20)[rb]}
+  %
+  \put(105,010){\vector(1,0){025}\ntbox{100}{virtual-parameters-pack}
+                \line(1,0){005}}
+  \put(235,020){\oval(20,20)[r]}
+  \put(235,030){\line(-1,0){110}}
+  \put(125,040){\oval(20,20)[lb]}
+  %
+}
+
+\noindent
+A {\em procedure-body} has the same form as a {\em main-packet} without
+a {\em bottom-up-part}.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm procedure-body}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{040}{root}
+                \vector(1,0){030}\ntbox{080}{top-down-part}
+                \vector(1,0){030}}
+  %
+}
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm procedure-tail}}
+  %
+  \put(000,020){\vector(1,0){030}\tbox{040}{ENDPROC}
+                \vector(1,0){030}\ntbox{080}{procedure-name}
+                \vector(1,0){030}}
+  %
+  \put(075,010){\oval(20,20)[rt]}
+  \put(095,010){\oval(20,20)[lb]}
+  \put(095,000){\line(1,0){90}}
+  \put(185,010){\oval(20,20)[rb]}
+  \put(205,010){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The name of the procedure is repeated after the {\tt ENDPROC}
+symbol. In the Elan Programming Environment this name may be
+left out (in which case it is inserted automatically). 
+
+\subsubsection{Operator-declarations}
+
+An {\em operator-declaration} follows the pattern of a
+{\em procedure-declaration}.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm operator-declaration}}
+  %
+  \put(000,010){\vector(1,0){020}\ntbox{070}{operator-head}
+                \vector(1,0){020}\ntbox{070}{operator-body}
+                \vector(1,0){020}\ntbox{070}{operator-tail}
+                \vector(1,0){020}}
+  %
+}
+
+\noindent
+Only its head and tail are somewhat different.
+
+\pic(315,100){\small
+  \put(000,090){\underline{\rm operator-head}}
+  %
+  \put(000,070){\vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\tbox{040}{OP}
+                \line(1,0){005}}
+  %
+  \put(005,060){\oval(20,20)[rt]}
+  \put(025,060){\oval(20,20)[lb]}
+  \put(025,050){\line(1,0){70}}
+  \put(095,060){\oval(20,20)[rb]}
+  \put(115,060){\oval(20,20)[lt]}
+  %
+  \put(165,060){\oval(20,20)[rt]}
+  \put(175,060){\line(0,-1){020}}
+  \put(165,040){\oval(20,20)[rb]}
+  \put(165,030){\line(-1,0){140}}
+  \put(025,020){\oval(20,20)[l]}
+  %
+  \put(025,010){\vector(1,0){005}\ntbox{070}{operator-name}
+                \vector(1,0){030}\ntbox{100}{formal-parameters-pack}
+                \vector(1,0){030}\tbox{010}{:}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+An {\em operator-head} must contain either one (for {\em monadic-operators})
+or two (for {\em dyadic-operators}) parameters.
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm operator-tail}}
+  %
+  \put(000,020){\vector(1,0){030}\tbox{040}{ENDOP}
+                \vector(1,0){030}\ntbox{080}{operator-name}
+                \vector(1,0){030}}
+  %
+  \put(075,010){\oval(20,20)[rt]}
+  \put(095,010){\oval(20,20)[lb]}
+  \put(095,000){\line(1,0){90}}
+  \put(185,010){\oval(20,20)[rb]}
+  \put(205,010){\oval(20,20)[lt]}
+  %
+}
+
+\subsubsection{Synonym-declarations}
+
+{\em Synonym-declarations} bind either a {\em name} to a {\em denotation}
+(making that name synonymous with that {\em denotation}) or
+a {\em type-name} to
+a {\em type-declarer} (making that {\em type-name} synonymous to that
+{\em type-declarer}).
+
+\pic(315,100){\small
+  \put(000,090){\underline{\rm synonym-declaration}}
+  %
+  \put(000,070){\vector(1,0){030}\tbox{40}{LET}
+                \line(1,0){5}}
+  \put(075,060){\oval(20,20)[r]}
+  %
+  \put(295,040){\oval(20,20)[r]}
+  \put(295,050){\vector(-1,0){125}}
+  \put(025,050){\line(1,0){135}\tbox{10}{,}}
+  \put(025,040){\oval(20,20)[l]}
+  %
+  \put(025,030){\vector(1,0){005}\ntbox{100}{synonym-name}
+                \vector(1,0){030}\tbox{010}{=}
+                \vector(1,0){030}\ntbox{060}{denotation}
+                \vector(1,0){060}}
+  %
+  \put(015,040){\line(0,-1){20}}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(265,020){\oval(20,20)[rb]}
+  \put(285,020){\oval(20,20)[lt]}
+  %
+  \put(025,010){\vector(1,0){005}\ntbox{100}{synonym-type-name}
+                \vector(1,0){030}\tbox{010}{=}
+                \vector(1,0){030}\ntbox{060}{type-declarer}
+                \line(1,0){005}}
+  %
+}
+
+\noindent
+The synonym has all the properties of the {\em denotation} or
+{\em type-declarer} it is bound to - it may be used at all places
+where that would be valid, with the same meaning.
+
+\subsection{Top-Down declarations}
+
+Apart from the Bottom-Up declarations already described, Elan
+has Top-Down declarations for declaring objects. Every object
+in an Elan program has a {\em name}, a {\em type}, an {\em access attribute}
+({\tt VAR} or {\tt CONST}) and (during execution) a {\em value},
+which may be undefined. There are two forms of {\em object-declaration}:
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm object-declaration}}
+  %
+  \put(000,030){\vector(1,0){030}\ntbox{100}{variable-declaration}
+                \vector(1,0){030}}
+  %
+  \put(005,020){\oval(20,20)[rt]}
+  \put(025,020){\oval(20,20)[lb]}
+  %
+  \put(025,010){\vector(1,0){005}\ntbox{100}{constant-declaration}
+                \line(1,0){005}}
+  %
+  \put(135,020){\oval(20,20)[rb]}
+  \put(155,020){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+A {\em variable-declaration} declares one or more objects ({\em variables})
+with the access attribute {\tt VAR} of one same type.
+
+\pic(315,090){\small
+  \put(000,080){\underline{\rm variable-declaration}}
+  %
+  \put(000,060){\vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\tbox{040}{VAR}
+                \line(1,0){005}}
+  %
+  \put(165,050){\oval(20,20)[r]}
+  %
+  \put(275,030){\oval(20,20)[r]}
+  \put(275,040){\vector(-1,0){060}}
+  \put(025,040){\line(1,0){180}\tbox{10}{,}}
+  \put(025,030){\oval(20,20)[l]}
+  %
+  \put(025,020){\vector(1,0){005}\ntbox{080}{variable-name}
+                \vector(1,0){030}\tbox{10}{::}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \vector(1,0){060}}
+  %
+  \put(115,010){\oval(20,20)[rt]}
+  \put(135,010){\oval(20,20)[lb]}
+  \put(135,000){\line(1,0){110}}
+  \put(245,010){\oval(20,20)[rb]}
+  \put(265,010){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The {\em expression} preceded by the curious sign {\tt ::} is the
+{\em initialization} for the variable.
+Its value (or, if there is no initialization, an undefined value)
+is assigned to the {\em variable-name}.
+
+A {\em constant} is an object with the access attribute {\tt CONST}
+and always obtains a well defined value at its declaration.
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm constant-declaration}}
+  %
+  \put(000,050){\vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\tbox{040}{CONST}
+                \line(1,0){005}}
+  %
+  \put(165,040){\oval(20,20)[r]}
+  %
+  \put(275,020){\oval(20,20)[r]}
+  \put(275,030){\vector(-1,0){060}}
+  \put(025,030){\line(1,0){180}\tbox{10}{,}}
+  \put(025,020){\oval(20,20)[l]}
+  %
+  \put(025,010){\vector(1,0){005}\ntbox{080}{constant-name}
+                \vector(1,0){030}\tbox{10}{::}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \vector(1,0){060}}
+  %
+}
+
+\noindent
+A variable can obtain another value assignation, whereas a constant
+can not be assigned to. If so desired, the access attribute {\tt CONST}
+may be left out, but this is not advised since it leads
+to degradation of syntactic error-detection.
+An {\em object-declaration} may very well occur in a {\em repetition}. Each
+time the declaration is executed, its initialization is executed
+anew.
+
+\subsection{Declarers and the type-system}
+
+Elan has a constructive type system based on four concrete elementary
+types and two mechanisms for composing types, and gives to its
+users the opportunity to add further (abstract) types.
+
+\pic(315,160){\small
+  \put(000,150){\underline{\rm type-declarer}}
+  %
+  \put(005,120){\oval(20,20)[rt]}
+  \put(015,120){\line(0,-1){100}}
+  %
+  \put(000,130){\vector(1,0){110}\ntbox{060}{type-name}
+                \vector(1,0){110}}
+  %
+  \put(025,120){\oval(20,20)[lb]}
+  \put(025,110){\vector(1,0){095}\tbox{040}{INT}
+                \line(1,0){095}}
+  \put(255,120){\oval(20,20)[rb]}
+  %
+  \put(025,100){\oval(20,20)[lb]}
+  \put(025,090){\vector(1,0){095}\tbox{040}{REAL}
+                \line(1,0){095}}
+  \put(255,100){\oval(20,20)[rb]}
+  %
+  \put(025,080){\oval(20,20)[lb]}
+  \put(025,070){\vector(1,0){095}\tbox{040}{BOOL}
+                \line(1,0){095}}
+  \put(255,080){\oval(20,20)[rb]}
+  %
+  \put(025,060){\oval(20,20)[lb]}
+  \put(025,050){\vector(1,0){095}\tbox{040}{TEXT}
+                \line(1,0){095}}
+  \put(255,060){\oval(20,20)[rb]}
+  %
+  \put(025,040){\oval(20,20)[lb]}
+  \put(025,030){\vector(1,0){005}\tbox{040}{ROW}
+                \vector(1,0){030}\ntbox{060}{cardinality}
+                \vector(1,0){030}\ntbox{060}{type-declarer}
+                \line(1,0){005}}
+  \put(255,040){\oval(20,20)[rb]}
+  %
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){020}\tbox{040}{STRUCT}
+                \vector(1,0){030}\tbox{010}{(}
+                \vector(1,0){030}\ntbox{040}{fields}
+                \vector(1,0){030}\tbox{010}{)}
+                \line(1,0){020}}
+  \put(255,020){\oval(20,20)[rb]}
+  %
+  \put(265,020){\line(0,1){100}}
+  \put(275,120){\oval(20,20)[lt]}
+  %
+}
+
+\subsubsection{Rows}
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm cardinality}}
+  %
+  \put(000,030){\vector(1,0){030}\ntbox{070}{number}
+                \vector(1,0){030}}
+  %
+  \put(005,020){\oval(20,20)[rt]}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\ntbox{070}{synonym-name}
+                \line(1,0){005}}
+  \put(105,020){\oval(20,20)[rb]}
+  \put(125,020){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The elements of a row all have the same type, and are numbered
+from 1 up to the {\em cardinality} of the declarer, which must be either
+a {\em number} or a synonym for a {\em number}. This {\em cardinality}
+is therefore fixed, it can not be the result of an {\em expression}
+other than a {\em number}.
+
+\subsubsection{Structures}
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm fields}}
+  %
+  \put(000,030){\vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\ntbox{060}{field-name}
+                \vector(1,0){030}}
+  %
+  \put(185,020){\oval(20,20)[r]}
+  \put(185,010){\vector(-1,0){030}}
+  \put(025,010){\line(1,0){120}\tbox{10}{,}}
+  \put(115,020){\oval(20,20)[l]}
+  \put(025,020){\oval(20,20)[l]}
+  %
+}
+
+\noindent
+The {\em fields} of a structure may have different types, and each
+field is tagged by a (different) {\em field-name}.
+
+\subsection{Type-declarations}
+
+An abstract type can be introduced either by a {\em synonym-declaration},
+in which case the {\em type-name} merely stands for the {\em type-declarer}
+in its definition, or by a {\em type-declaration} (see following section),
+in which case it is to be distinguished from the {\em type-declarer}
+in its definition. In both cases it is represented by a (bold)
+{\em type-name}.
+
+A {\em type-declaration} gives a {\em type-name} to a {\em type-declarer},
+its {\em realization}. In the packet in which the abstract type is
+defined, the {\em concretizer} {\tt CONCR} may be used to convert an
+object of that type to the type of the realization. In that packet,
+{\em selection} and {\em subscription} also have access to the realization
+of a type. Outside its defining packet, an abstract type is elementary
+and there is no direct way to access its realization (but this
+may be achieved indirectly, by the use of algorithms defined
+in the same packet as the type).
+Because of these stringent restrictions on the visibility of
+the realization, {\em type-declarations} are much more suitable for
+Bottom-Up and modular programming than the {\em synonym-declarations},
+which are intended for Top-Down programming. 
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm type-declaration}}
+  %
+  \put(000,030){\vector(1,0){030}\tbox{030}{TYPE}
+                \vector(1,0){030}\ntbox{060}{type-name}
+                \vector(1,0){030}\tbox{010}{=}
+                \vector(1,0){030}\ntbox{060}{type-declarer}
+                \vector(1,0){030}}
+  %
+  \put(285,020){\oval(20,20)[r]}
+  \put(285,010){\vector(-1,0){030}}
+  \put(085,010){\line(1,0){160}\tbox{10}{,}}
+  \put(085,020){\oval(20,20)[l]}
+  %
+}
+
+\section{Expressions and their constituents}
+
+{\em Expressions} can be composed by various mechanisms ({\em calls},
+{\em operators} and {\em control-structures}) out
+of smaller constructs (the {\em primaries}).
+{\em Expressions} may either yield a value of some type, or they may
+be actions, which yield no value (and have a hypothetical type
+{\tt VOID}).
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm expression}}
+  %
+  \put(000,050){\vector(1,0){140}\ntbox{060}{primary}
+                \vector(1,0){030}}
+  %
+  \put(115,040){\oval(20,20)[r]}
+  \put(115,030){\vector(-1,0){005}}
+  \put(025,030){\line(1,0){005}\ntbox{080}{monadic-operator}}
+  \put(025,040){\oval(20,20)[l]}
+  %
+  \put(205,040){\oval(20,20)[rt]}
+  \put(215,040){\line(0,-1){20}}
+  \put(205,020){\oval(20,20)[rb]}
+  \put(205,010){\vector(-1,0){095}}
+  \put(025,010){\line(1,0){005}\ntbox{080}{dyadic-operator}}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(015,020){\line(0,1){20}}
+  %
+}
+
+\noindent
+The {\em dyadic-operators} have the following priorities:
+
+\begin{literal}
+        1       {\tt :=}, {\tt INCR}, {\tt DECR}, {\tt CAT}
+        2       all abstract dyadic operators
+        3       {\tt OR}, {\tt XOR}
+        4       {\tt AND}
+        5       {\tt =}, {\tt <>}
+        6       {\tt <=}, {\tt <}, {\tt >=}, {\tt >}
+        7       {\tt +}, {\tt -}
+        8       {\tt *}, {\tt /}, {\tt DIV}, {\tt MOD}
+        9       {\tt **}
+        10      all monadic operators
+\end{literal}
+
+\pic(315,220){\small
+  \put(000,210){\underline{\rm primary}}
+  %
+  \put(000,190){\vector(1,0){070}\ntbox{080}{denoter}
+                \vector(1,0){070}}
+  %
+  \put(025,180){\oval(20,20)[lb]}
+  \put(025,170){\vector(1,0){045}\ntbox{080}{object-name}
+                \line(1,0){045}}
+  \put(195,180){\oval(20,20)[rb]}
+  %
+  \put(025,160){\oval(20,20)[lb]}
+  \put(025,150){\vector(1,0){045}\ntbox{080}{procedure-call}
+                \line(1,0){045}}
+  \put(195,160){\oval(20,20)[rb]}
+  %
+  \put(025,140){\oval(20,20)[lb]}
+  \put(025,130){\vector(1,0){045}\ntbox{080}{subscription}
+                \line(1,0){045}}
+  \put(195,140){\oval(20,20)[rb]}
+  %
+  \put(025,120){\oval(20,20)[lb]}
+  \put(025,110){\vector(1,0){045}\ntbox{080}{selection}
+                \line(1,0){045}}
+  \put(195,120){\oval(20,20)[rb]}
+  %
+  \put(025,100){\oval(20,20)[lb]}
+  \put(025,090){\vector(1,0){045}\ntbox{080}{abstractor}
+                \line(1,0){045}}
+  \put(195,100){\oval(20,20)[rb]}
+  %
+  \put(025,080){\oval(20,20)[lb]}
+  \put(025,070){\vector(1,0){045}\ntbox{080}{concretizer}
+                \line(1,0){045}}
+  \put(195,080){\oval(20,20)[rb]}
+  %
+  \put(025,060){\oval(20,20)[lb]}
+  \put(025,050){\vector(1,0){045}\ntbox{080}{terminator}
+                \line(1,0){045}}
+  \put(195,060){\oval(20,20)[rb]}
+  %
+  \put(025,040){\oval(20,20)[lb]}
+  \put(025,030){\vector(1,0){045}\ntbox{080}{composed-unit}
+                \line(1,0){045}}
+  \put(195,040){\oval(20,20)[rb]}
+  %
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\tbox{010}{(}
+                \vector(1,0){030}\ntbox{080}{expression}
+                \vector(1,0){030}\tbox{010}{)}
+                \line(1,0){005}}
+  \put(195,020){\oval(20,20)[rb]}
+  %
+  \put(005,180){\oval(20,20)[rt]}
+  \put(015,180){\line(0,-1){160}}
+  %
+  \put(205,020){\line(0,1){160}}
+  \put(215,180){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+These constructs are explained in the following sections.
+
+\subsection{Denoters}
+
+{\em Denoters} serve to denote a value of a concrete type.
+
+\pic(315,100){\small
+  \put(000,090){\underline{\rm denoter}}
+  %
+  \put(000,070){\vector(1,0){030}\ntbox{100}{int-denotation}
+                \vector(1,0){030}}
+  %
+  \put(025,060){\oval(20,20)[lb]}
+  \put(025,050){\vector(1,0){005}\ntbox{100}{real-denotation}
+                \line(1,0){005}}
+  \put(135,060){\oval(20,20)[rb]}
+  %
+  \put(025,040){\oval(20,20)[lb]}
+  \put(025,030){\vector(1,0){005}\ntbox{100}{bool-denotation}
+                \line(1,0){005}}
+  \put(135,040){\oval(20,20)[rb]}
+  %
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\ntbox{100}{text-denotation}
+                \line(1,0){005}}
+  \put(135,020){\oval(20,20)[rb]}
+  %
+  \put(005,060){\oval(20,20)[rt]}
+  \put(015,060){\line(0,-1){040}}
+  %
+  \put(145,020){\line(0,1){040}}
+  \put(155,060){\oval(20,20)[lt]}
+  %
+}
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm int-denotation, number}}
+  %
+  \put(000,020){\vector(1,0){030}\ntbox{040}{digit}
+                \vector(1,0){030}}
+  %
+  \put(075,010){\oval(20,20)[r]}
+  \put(075,000){\line(-1,0){050}}
+  \put(025,010){\oval(20,20)[l]}
+  %
+}
+
+\noindent
+Notice that the {\em int-denotation} denotes an unsigned number, which
+must be preceded by a monadic minus to obtain a negative number.
+
+\pic(315,120){\small
+  \put(000,110){\underline{\rm real-denotation}}
+  %
+  \put(000,090){\vector(1,0){030}\ntbox{060}{number}
+                \vector(1,0){030}\tbox{010}{.}
+                \vector(1,0){030}\ntbox{060}{number}
+                \vector(1,0){060}}
+  %
+  \put(225,080){\oval(20,20)[r]}
+  \put(225,070){\line(-1,0){120}}
+  \put(105,060){\oval(20,20)[l]}
+  %
+  \put(105,050){\vector(1,0){005}\tbox{010}{e}
+                \vector(1,0){070}\ntbox{060}{number}
+                \line(1,0){005}}
+  %
+  \put(255,060){\oval(20,20)[rb]}
+  \put(265,060){\line(0,1){20}}
+  \put(275,080){\oval(20,20)[lt]}
+  %
+  \put(145,040){\oval(20,20)[lb]}
+  \put(145,030){\vector(1,0){005}\tbox{010}{+}
+                \line(1,0){005}}
+  \put(165,040){\oval(20,20)[rb]}
+  %
+  \put(145,020){\oval(20,20)[lb]}
+  \put(145,010){\vector(1,0){005}\tbox{010}{-}
+                \line(1,0){005}}
+  \put(165,020){\oval(20,20)[rb]}
+  %
+  \put(125,040){\oval(20,20)[rt]}
+  \put(135,040){\line(0,-1){20}}
+  %
+  \put(175,020){\line(0,1){20}}
+  \put(185,040){\oval(20,20)[lt]}
+}
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm text-denotation}}
+  %
+  \put(000,050){\vector(1,0){030}\tbox{010}{"}
+                \vector(1,0){180}\tbox{010}{"}
+                \vector(1,0){030}}
+  %
+  \put(195,040){\oval(20,20)[r]}
+  \put(195,030){\vector(-1,0){005}}
+  \put(065,030){\line(1,0){005}\ntbox{120}{any-character-except-quote}}
+  \put(065,040){\oval(20,20)[l]}
+  %
+  \put(205,040){\line(0,-1){20}}
+  \put(195,020){\oval(20,20)[rb]}
+  \put(195,010){\vector(-1,0){055}}
+  \put(065,010){\line(1,0){055}\tbox{020}{""}}
+  \put(065,020){\oval(20,20)[lb]}
+  \put(055,020){\line(0,1){20}}
+  %
+}
+
+\noindent
+A {\em text-denotation} denotes the sequence of characters, obtained
+by stripping off its outermost quotes. Most characters, including
+the space, stand for themselves, but the quote-character is used
+as an escape.
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm bool-denotation}}
+  %
+  \put(000,030){\vector(1,0){030}\tbox{040}{TRUE}
+                \vector(1,0){030}}
+  %
+  \put(005,020){\oval(20,20)[rt]}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\tbox{040}{FALSE}
+                \line(1,0){005}}
+  \put(075,020){\oval(20,20)[rb]}
+  \put(095,020){\oval(20,20)[lt]}
+  %
+}
+
+\subsection{Names}
+
+{\em Names} of objects and algorithms are written in small (lower
+case) {\em letters} possibly followed by some further small {\em letters}
+or {\em digits}.
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm name}}
+  %
+  \put(000,050){\vector(1,0){030}\ntbox{060}{letter}
+                \vector(1,0){120}}
+  %
+  \put(185,040){\oval(20,20)[r]}
+  \put(185,030){\vector(-1,0){005}}
+  \put(115,030){\line(1,0){005}\ntbox{060}{letter}}
+  \put(115,040){\oval(20,20)[l]}
+  %
+  \put(195,040){\line(0,-1){20}}
+  \put(185,020){\oval(20,20)[rb]}
+  \put(185,010){\vector(-1,0){005}}
+  \put(115,010){\line(1,0){005}\ntbox{060}{digit}}
+  \put(115,020){\oval(20,20)[lb]}
+  \put(105,020){\line(0,1){20}}
+  %
+}
+
+\noindent
+Within a {\em name}, spaces may be used freely to enhance readability.
+Whereas in Elan such spaces are redundant and do not form part
+of the {\em name}, in the Elan Programming Environment single embedded
+spaces are considered part of the {\em name}. All occurrences of one
+same {\em name} must have the same layout.
+
+Types and operators have {\em bold-names}, written in capital letters.
+
+\pic(315,050){\small
+  \put(000,040){\underline{\rm bold-name, type-name}}
+  %
+  \put(000,020){\vector(1,0){030}\ntbox{060}{bold-letter}
+                \vector(1,0){030}}
+  %
+  \put(095,010){\oval(20,20)[r]}
+  \put(095,000){\line(-1,0){070}}
+  \put(025,010){\oval(20,20)[l]}
+  %
+}
+
+\noindent
+Spaces are not allowed in a {\em bold-name}. A number of operators
+have special symbols as names, such as {\tt +} etc. These are listed
+in section 4.3.
+
+\subsection{Calls}
+
+The {\em call} of a procedure with parameters is written in the usual
+prefix style.
+
+\pic(315,070){\small
+  \put(000,060){\underline{\rm procedure-call}}
+  %
+  \put(000,040){\vector(1,0){030}\ntbox{060}{primary}
+                \vector(1,0){030}\tbox{010}{(}
+                \vector(1,0){030}\ntbox{080}{actual-parameter}
+                \vector(1,0){030}\tbox{010}{)}
+                \vector(1,0){030}}
+  %
+  \put(245,030){\oval(20,20)[r]}
+  \put(245,020){\vector(-1,0){040}}
+  \put(155,020){\line(1,0){040}\tbox{010}{,}}
+  \put(155,030){\oval(20,20)[l]}
+  %
+  \put(095,030){\oval(20,20)[rt]}
+  \put(105,030){\line(0,-1){20}}
+  \put(115,010){\oval(20,20)[lb]}
+  \put(115,000){\line(1,0){170}}
+  \put(285,010){\oval(20,20)[rb]}
+  \put(295,010){\line(0,1){20}}
+  \put(305,030){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The {\em primary} must yield a procedure. The {\em actual-parameters} must
+agree in number and type with the heading of one of the definitions
+of that procedure.
+Notice that a procedure without parameters is called by mentioning
+its name, without parameters or brackets. 
+
+\pic(315,130){\small
+  \put(000,120){\underline{\rm actual-parameter}}
+  %
+  \put(000,100){\vector(1,0){030}\ntbox{060}{expression}
+                \vector(1,0){180}}
+  %
+  \put(005,090){\oval(20,20)[rt]}
+  \put(015,090){\line(0,-1){020}}
+  %
+  \put(025,090){\oval(20,20)[lb]}
+  \put(025,080){\vector(1,0){005}\ntbox{060}{type-declarer}
+                \vector(1,0){030}\tbox{040}{PROC}
+                \line(1,0){005}}
+  %
+  \put(025,070){\oval(20,20)[lb]}
+  \put(025,060){\line(1,0){070}}
+  \put(095,070){\oval(20,20)[rb]}
+  \put(115,070){\oval(20,20)[lt]}
+  %
+  \put(165,070){\oval(20,20)[rt]}
+  \put(175,070){\line(0,-1){020}}
+  \put(165,050){\oval(20,20)[rb]}
+  \put(165,040){\line(-1,0){140}}
+  \put(025,030){\oval(20,20)[l]}
+  %
+  \put(025,020){\vector(1,0){005}\ntbox{100}{virtual-parameters-pack}
+                \vector(1,0){030}\ntbox{080}{procedure-name}
+                \line(1,0){005}}
+  %
+  \put(015,030){\line(0,-1){020}}
+  \put(025,010){\oval(20,20)[lb]}
+  \put(025,000){\line(1,0){110}}
+  \put(135,010){\oval(20,20)[rb]}
+  \put(155,010){\oval(20,20)[lt]}
+  %
+  \put(245,030){\oval(20,20)[rb]}
+  \put(255,030){\line(0,1){060}}
+  \put(265,090){\oval(20,20)[lt]}
+  %
+}
+
+\subsection{Subscriptions}
+
+Elan has only one-dimensional arrays (rows) of a size
+({\em cardinality}) fixed at compile time. A row can be subscripted
+to obtain one of its elements (which in its turn may be a row,
+a structure or a simple value). A multidimensional array can
+be realized as a row of rows.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm subscription}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{060}{primary}
+                \vector(1,0){030}\tbox{010}{[}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \vector(1,0){030}\tbox{010}{]}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+The {\em primary} must yield a row. The {\em expression} must yield an integer,
+whose value lies between 1 and the {\em cardinality} of that row.
+The type of a {\em subscription} is the type of the element yielded.
+The {\em subscription} inherits the access attribute of the {\em primary}.
+This implies that an assignation to a {\em subscription} is possible
+only if the {\em primary} is a variable.
+
+\subsection{Selections}
+
+A structure can be selected from, to obtain one of its {\em fields}
+(which in its turn may be a row, a structure or a simple value).
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm selection}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{060}{primary}
+                \vector(1,0){030}\tbox{010}{.}
+                \vector(1,0){030}\ntbox{060}{field-name}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+The {\em primary} must yield a structure, one of whose {\em fields} has the
+{\em field-name} as name. The type of the {\em selection} is the type of the
+field yielded.
+As is the case for the {\em subscription}, the {\em selection} inherits the
+access attribute of its {\em primary}.
+
+\subsection{Abstractors}
+
+The {\em abstractor} serves to denote values of an abstract type.
+It will often be used together with a {\em display}, to abstract from
+a composed realization to an abstract object.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm abstractor}}
+  %
+  \put(000,010){\vector(1,0){030}\ntbox{060}{type-name}
+                \vector(1,0){030}\tbox{010}{:}
+                \vector(1,0){030}\ntbox{100}{compact-primary}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+The part after the colon (a {\em compact-primary}) must have the type
+of the realization of the {\em type-name}.
+
+\pic(315,120){\small
+  \put(000,110){\underline{\rm compact-primary}}
+  %
+  \put(000,090){\vector(1,0){070}\ntbox{080}{denoter}
+                \vector(1,0){070}}
+  %
+  \put(025,080){\oval(20,20)[lb]}
+  \put(025,070){\vector(1,0){045}\ntbox{080}{object-name}
+                \line(1,0){045}}
+  \put(195,080){\oval(20,20)[rb]}
+  %
+  \put(025,060){\oval(20,20)[lb]}
+  \put(025,050){\vector(1,0){045}\ntbox{080}{choice}
+                \line(1,0){045}}
+  \put(195,060){\oval(20,20)[rb]}
+  %
+  \put(025,040){\oval(20,20)[lb]}
+  \put(025,030){\vector(1,0){045}\ntbox{080}{display}
+                \line(1,0){045}}
+  \put(195,040){\oval(20,20)[rb]}
+  %
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\tbox{010}{(}
+                \vector(1,0){030}\ntbox{080}{expression}
+                \vector(1,0){030}\tbox{010}{)}
+                \line(1,0){005}}
+  \put(195,020){\oval(20,20)[rb]}
+  %
+  \put(005,080){\oval(20,20)[rt]}
+  \put(015,080){\line(0,-1){060}}
+  %
+  \put(205,020){\line(0,1){060}}
+  \put(215,080){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The value of an {\em abstractor} is the value of its {\em compact-primary}.
+The type of an {\em abstractor} is the type of the {\em type-name}, rather
+than its realization. Since the realization of a type is visible
+only in its defining packet, an {\em abstractor} with a specific {\em type-name}
+can only be used in the packet defining that {\em type-name}.
+
+\subsection{Concretizers}
+
+A {\em concretizer} serves to break the abstraction of a value.
+
+\pic(315,040){\small
+  \put(000,030){\underline{\rm concretizer}}
+  %
+  \put(000,010){\vector(1,0){030}\tbox{040}{CONCR}
+                \vector(1,0){030}\ntbox{100}{compact-primary}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+The {\em compact-primary} must be of some abstract type; the {\em concretizer}
+is then of the type of its realization. It yields the value of
+its {\em compact-primary} and inherits the access attribute of its
+{\em compact-primary}.
+A {\em concretizer} can only be used in an environment where the realization
+of its abstract type is visible (see 4.2.4).
+
+\subsection{Terminators}
+
+A {\em terminator} serves to terminate a {\em refinement} or a procedure.
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm terminator}}
+  %
+  \put(000,050){\vector(1,0){030}\tbox{040}{LEAVE}
+                \vector(1,0){030}\ntbox{080}{algorithm-name}
+                \vector(1,0){050}}
+  %
+  \put(185,040){\oval(20,20)[r]}
+  \put(185,030){\line(-1,0){160}}
+  \put(025,020){\oval(20,20)[l]}
+  %
+  \put(025,010){\vector(1,0){005}\tbox{040}{WITH}
+                \vector(1,0){030}\ntbox{100}{compact-primary}
+                \line(1,0){005}}
+  %
+  \put(205,020){\oval(20,20)[rb]}
+  \put(215,020){\line(0,1){020}}
+  \put(225,040){\oval(20,20)[lt]}
+  %
+}
+
+\noindent
+The {\em algorithm-name} must either be the name of the directly surrounding
+procedure or of some visible {\em refinement}, of whose execution the
+{\em terminator} forms part. If a with-part is given, the algorithm
+named is left yielding the value of the {\em compact-primary}, otherwise
+it is left yielding no value, and has the (hypothetical) type
+{\tt VOID}.
+
+\section{Composed-units}
+
+The {\em control-structures} of Elan are the {\em choice}, {\em repetition}
+and {\em display}.
+
+\pic(315,080){\small
+  \put(000,070){\underline{\rm composed-unit, control-structure}}
+  %
+  \put(000,050){\vector(1,0){030}\ntbox{080}{choice}
+                \vector(1,0){030}}
+  %
+  \put(025,040){\oval(20,20)[lb]}
+  \put(025,030){\vector(1,0){005}\ntbox{080}{repetition}
+                \line(1,0){005}}
+  \put(115,040){\oval(20,20)[rb]}
+  %
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\ntbox{080}{display}
+                \line(1,0){005}}
+  \put(115,020){\oval(20,20)[rb]}
+  %
+  \put(005,040){\oval(20,20)[rt]}
+  \put(015,040){\line(0,-1){020}}
+  %
+  \put(125,020){\line(0,1){020}}
+  \put(135,040){\oval(20,20)[lt]}
+  %
+}
+
+\subsection{Choice}
+
+The {\em choice} is a construct for choosing between a number of alternative
+algorithms. There are two forms of {\em choice}.
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm choice}}
+  %
+  \put(000,030){\vector(1,0){030}\ntbox{100}{conditional-choice}
+                \vector(1,0){030}}
+  %
+  \put(005,020){\oval(20,20)[rt]}
+  \put(025,020){\oval(20,20)[lb]}
+  \put(025,010){\vector(1,0){005}\ntbox{100}{numerical-choice}
+                \line(1,0){005}}
+  \put(135,020){\oval(20,20)[rb]}
+  \put(155,020){\oval(20,20)[lt]}
+  %
+}
+
+\subsubsection{Conditional-choice}
+
+The {\em conditional-choice} chooses between two or more algorithms
+on the basis of one or more boolean {\em expressions} (conditions).
+
+\pic(315,160){\small
+  \put(000,150){\underline{\rm conditional-choice}}
+  %
+  \put(000,130){\vector(1,0){030}\tbox{040}{IF}
+                \line(1,0){025}}
+  \put(095,120){\oval(20,20)[r]}
+  %
+  \put(025,090){\vector(1,0){005}\tbox{040}{THEN}
+                \vector(1,0){030}\ntbox{060}{paragraph}
+                \vector(1,0){030}\tbox{040}{ELIF}
+                \line(1,0){005}}
+  %
+  \put(235,100){\oval(20,20)[r]}
+  \put(235,110){\vector(-1,0){145}}
+  \put(025,110){\line(1,0){005}\ntbox{060}{expression}}
+  \put(025,100){\oval(20,20)[l]}
+  %
+  \put(165,080){\oval(20,20)[r]}
+  \put(165,070){\line(-1,0){140}}
+  \put(025,060){\oval(20,20)[l]}
+  %
+  \put(025,050){\vector(1,0){005}\tbox{040}{ELSE}
+                \vector(1,0){030}\ntbox{060}{paragraph}
+                \line(1,0){005}}
+  %
+  \put(165,040){\oval(20,20)[r]}
+  \put(165,030){\line(-1,0){140}}
+  \put(025,020){\oval(20,20)[l]}
+  %
+  \put(015,060){\line(0,-1){040}}
+  %
+  \put(025,010){\vector(1,0){005}\tbox{040}{FI}
+                \vector(1,0){120}}
+  %
+}
+
+\noindent
+The type of the {\em conditional-choice} is the type of the {\em paragraph}
+executed. Therefore all {\em paragraphs} in the {\em conditional-choice}
+must have the same type.
+
+\subsubsection{Numerical-choice}
+
+The {\em numerical-choice} is a somewhat baroque construct for choosing
+between a number of cases on the basis of an integer.
+
+\pic(315,160){\small
+  \put(000,150){\underline{\rm numerical-choice}}
+  %
+  \put(000,130){\vector(1,0){030}\tbox{040}{SELECT}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \vector(1,0){030}\tbox{040}{OF}
+                \line(1,0){005}}
+  %
+  \put(235,120){\oval(20,20)[r]}
+  \put(235,110){\line(-1,0){210}}
+  \put(025,100){\oval(20,20)[l]}
+  %
+  \put(025,090){\vector(1,0){005}\tbox{040}{CASE}
+                \vector(1,0){060}\ntbox{070}{number}
+                \vector(1,0){060}\tbox{010}{:}
+                \line(1,0){005}}
+  %
+  \put(105,080){\oval(20,20)[rt]}
+  \put(125,080){\oval(20,20)[lb]}
+  %
+  \put(125,070){\vector(1,0){005}\ntbox{070}{synonym-name}
+                \line(1,0){005}}
+  %
+  \put(205,080){\oval(20,20)[rb]}
+  \put(225,080){\oval(20,20)[lt]}
+  %
+  \put(235,080){\oval(20,20)[rt]}
+  \put(245,080){\line(0,-1){020}}
+  \put(235,060){\oval(20,20)[rb]}
+  \put(235,050){\vector(-1,0){65}}
+  \put(095,050){\line(1,0){065}\tbox{010}{,}}
+  \put(095,060){\oval(20,20)[lb]}
+  \put(085,060){\line(0,1){020}}
+  \put(095,080){\oval(20,20)[lt]}
+  %
+  \put(275,080){\oval(20,20)[rt]}
+  \put(285,080){\line(0,-1){040}}
+  \put(275,040){\oval(20,20)[rb]}
+  \put(275,030){\vector(-1,0){005}}
+  \put(025,030){\line(1,0){185}\ntbox{060}{paragraph}}
+  \put(025,040){\oval(20,20)[lb]}
+  \put(015,040){\line(0,1){040}}
+  \put(025,080){\oval(20,20)[lt]}
+  %
+  \put(025,020){\oval(20,20)[l]}
+  \put(205,020){\oval(20,20)[l]}
+  \put(025,010){\vector(1,0){005}\tbox{060}{OTHERWISE}
+                \vector(1,0){030}\ntbox{060}{paragraph}
+                \vector(1,0){030}\tbox{060}{ENDSELECT}
+                \vector(1,0){030}}
+  %
+}
+
+\noindent
+The cases must be labeled either with a {\em number} or with a synonym
+for a {\em number}, and therefore have a value fixed at compile-time.
+The labels of the cases must all be different and need not be
+ordered.
+
+The {\em numerical-choice} is executed by first computing the value
+of the {\em expression}, which must yield an integer, and then executing
+the {\em paragraph} whose case label has that value, if any. If there
+is no {\em paragraph} labeled with this value, the otherwise-part (if
+any) is executed.
+The type of the {\em numerical-choice} is the type of the {\em paragraph}
+executed. Therefore all {\em paragraphs} in the {\em numerical-choice} must
+have the same type.
+
+\subsection{Repetition}
+
+There is one, at first glance rather huge construct, which serves
+to express {\em repetitions}. Its purpose is to repeat a {\em paragraph}
+under various circumstances.
+
+\pic(315,300){\small
+  \put(000,290){\underline{\rm repetition}}
+  %
+  \put(000,270){\vector(1,0){030}\tbox{040}{FOR}
+                \vector(1,0){030}\ntbox{060}{variable-name}
+                \line(1,0){005}}
+  %
+  \put(005,260){\oval(20,20)[rt]}
+  \put(015,260){\line(0,-1){160}}
+  %
+  \put(165,260){\oval(20,20)[r]}
+  \put(165,250){\line(-1,0){140}}
+  \put(025,240){\oval(20,20)[l]}
+  %
+  \put(025,230){\vector(1,0){005}\tbox{040}{FROM}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \line(1,0){005}}
+  %
+  \put(165,220){\oval(20,20)[r]}
+  \put(165,210){\line(-1,0){140}}
+  \put(025,200){\oval(20,20)[l]}
+  %
+  \put(025,190){\vector(1,0){005}\tbox{040}{UPTO}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \line(1,0){005}}
+  %
+  \put(165,180){\oval(20,20)[rt]}
+  \put(175,180){\line(0,-1){020}}
+  %
+  \put(025,180){\oval(20,20)[lb]}
+  %
+  \put(025,170){\vector(1,0){005}\tbox{040}{DOWNTO}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \line(1,0){005}}
+  %
+  \put(165,160){\oval(20,20)[r]}
+  \put(165,150){\line(-1,0){140}}
+  \put(025,140){\oval(20,20)[l]}
+  %
+  \put(025,130){\vector(1,0){005}\tbox{040}{WHILE}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \line(1,0){005}}
+  %
+  \put(165,120){\oval(20,20)[r]}
+  \put(165,110){\line(-1,0){140}}
+  \put(025,100){\oval(20,20)[l]}
+  %
+  \put(025,090){\vector(1,0){005}\tbox{040}{REP}
+                \vector(1,0){030}\ntbox{060}{paragraph}
+                \line(1,0){005}}
+  %
+  \put(165,080){\oval(20,20)[r]}
+  \put(165,070){\line(-1,0){140}}
+  \put(025,060){\oval(20,20)[l]}
+  %
+  \put(015,060){\line(0,-1){040}}
+  %
+  \put(025,050){\vector(1,0){005}\tbox{040}{UNTIL}
+                \vector(1,0){030}\ntbox{060}{expression}
+                \line(1,0){005}}
+  %
+  \put(165,040){\oval(20,20)[r]}
+  \put(165,030){\line(-1,0){140}}
+  \put(025,020){\oval(20,20)[l]}
+  %
+  \put(025,010){\vector(1,0){005}\tbox{040}{ENDREP}
+                \vector(1,0){120}}
+  %
+}
+
+Since many of its constituents are optional, it can be tuned
+to different applications.
+
+The {\em expressions} after {\tt WHILE} and {\tt UNTIL} are conditions,
+and therefore have to be boolean. The other {\em expressions}, as well
+as the variable after {\tt FOR} ({\em controlled variable}) have
+to be integer. The {\em repetition} does not yield a value as result
+(it is an action).
+
+The semantics of the {\em repetition} is quite conventional.
+The for-part can be omitted if the controlled variable does not
+occur in the body of the {\em repetition}.
+The constituents {\tt FROM 1}, {\tt UPTO maxint}, {\tt DOWNTO minint},
+{\tt WHILE true} and {\tt UNTIL false} can be omitted
+(i.e. are assumed if the corresponding constituents is omitted).
+
+\subsection{Display}
+
+The {\em display} is a construct serving to denote values for composed
+types (structures and rows) and, in conjunction with the {\em abstractor},
+for abstract types.
+
+\pic(315,060){\small
+  \put(000,050){\underline{\rm display}}
+  %
+  \put(000,030){\vector(1,0){030}\tbox{010}{[}
+                \vector(1,0){030}\ntbox{080}{expression}
+                \vector(1,0){030}\tbox{010}{]}
+                \vector(1,0){030}}
+  %
+  \put(155,020){\oval(20,20)[r]}
+  \put(155,010){\vector(-1,0){040}}
+  \put(065,010){\line(1,0){040}\tbox{010}{,}}
+  \put(065,020){\oval(20,20)[l]}
+  %
+}
+
+\noindent
+If the {\em display} is used to denote a row, the number of its constituent
+{\em expressions} has to be equal to the {\em cardinality} of the row, whereas
+each {\em expression} has to be of the type of the elements of the
+row.
+
+If the {\em display} is used to denote a structure, the number of its
+constituent {\em expressions} has to be the same as the number of {\em fields}
+of the structure, whereas each {\em expression} has to be of the type
+of the corresponding field of the structure.
+
+The {\em display} is executed by executing its constituent {\em expressions}
+collaterally, and composing a composed object from the values
+in their textual order.
+

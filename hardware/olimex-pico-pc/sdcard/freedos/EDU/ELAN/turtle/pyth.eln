@@ -1,0 +1,53 @@
+
+PROC pythagoras tree (REAL CONST size, INT CONST depth, angle):
+   draw (size);
+   IF resolution achieved
+   THEN
+     turn right;
+     draw (size);
+     turn right
+   ELSE
+     turn (angle);
+     pythagoras tree (size * cos (angle), depth - 1, angle);
+     turn left;
+     pythagoras tree (size * sin (angle), depth - 1, angle);
+     turn (90 - angle)
+   FI;
+   draw (size).
+
+  resolution achieved:
+    depth = 0 OR size < 0.1 * tree size.
+
+ENDPROC pythagoras tree;
+
+program:
+   enter turtle graphics;
+   move (graphics x limit DIV 2 - 60, line height);
+   put ("Pythagoras tree");
+   line;
+   ask parameters;
+   draw frame;
+   draw pythagoras tree;
+   wait for confirmation (1, graphics y limit - line height);
+   leave turtle graphics.
+
+draw frame:
+  move (0.0, 0.0);
+  draw (0.0, 100.0);
+  draw (100.0, 100.0);
+  draw (100.0, 0.0);
+  draw (0.0, 0.0).
+
+ask parameters:
+   INT CONST tree depth :: ask int ("Depth? ");
+   INT CONST tree angle :: ask int ("Angle? ");
+   REAL CONST tree size :: ask real ("Size ? ");
+   REAL CONST tree xpos :: ask real ("Xpos ? ");
+   REAL CONST tree ypos :: ask real ("Ypos ? ").
+
+draw pythagoras tree:
+   move (tree xpos, tree ypos);
+   pythagoras tree (tree size, tree depth, tree angle).
+
+
+

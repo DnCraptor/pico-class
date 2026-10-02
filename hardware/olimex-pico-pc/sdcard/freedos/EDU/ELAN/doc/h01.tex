@@ -1,0 +1,760 @@
+\chapter{AN EXAMPLE-SESSION}
+
+Upon receiving your wonderful new Elan Programming Environment
+your first inclination, no doubt, is to sit down in front of
+your computer and try it out. This desire is understandable,
+but will lead to severe disappointments unless you already know
+how to program and know the language Elan. This manual cannot
+teach you programming, for that we refer you to the textbooks
+mentioned in the introduction. In chapter 4 you find an overview
+of the Elan language. In chapter 5 you find a description of the
+Elan Programming Environment. {\em The best strategy is to
+read those two chapters first before embarking upon the present
+chapter}.
+
+The example session in the current chapter introduces you in
+a hands-on fashion to the use of the Elan Programming Environment.
+By following the session to the letter you obtain a quick tour
+of most of its facilities.
+
+In this chapter we will mark output from the Elan Programming Environment
+with a line in the left margin; the input of the user is given
+without such a mark. The cursor will be depicted as \cursor. In input
+from the user we will explicitly indicate the ``return'' or ``enter''
+key by {\tt <RET>} and the ``delete'' key by {\tt <DEL>}.
+
+\section{Starting...}
+
+After you have booted and started the Elan Programming Environment,
+the following identifying message appears on the screen:
+
+\begin{elan}
+|       Elan Programming Environment
+|       version 1.5
+|       Copyright KUN, Aug 1988
+\end{elan}
+
+\noindent
+Immediately underneath you will find the {\em focus}, i.e. the
+name of the refinement that is the current focus of interest.
+The default focus is
+
+\begin{elan}
+|       program ?\cursor
+\end{elan}
+
+\noindent
+The question mark means that {\tt program} is not the name of
+a known refinement, i.e. it has not yet obtained a meaning. At
+the bottom of the screen, on the status line, you find the message
+
+\begin{elan}
+|                               Command, please...
+\end{elan}
+
+\noindent
+indicating what is expected from you. By giving the help-command
+
+\begin{elan}
+        h
+\end{elan}
+
+\noindent
+you are shown for one second a list of the applicable commands.
+The commands are described in chapter 5 of this manual. The help-command
+serves only as a reminder.
+
+\section{... and stopping}
+
+Once having learned how to start you must learn how to stop,
+just like the apprentice sorcerer.
+You can stop the programming environment by giving the quit-command
+
+\begin{elan}
+        q
+\end{elan}
+
+\noindent
+where upon you are asked for a confirmation
+
+\begin{elan}
+|       QUIT ?\cursor
+\end{elan}
+
+\noindent
+The possible answers (as elicited by the help-command) are {\tt y} and {\tt n}. Upon answering
+
+\begin{elan}
+        n
+\end{elan}
+
+\noindent
+the quit-command does nothing and the confirmation message disappears
+from your screen. Upon answering
+
+\begin{elan}
+        y
+\end{elan}
+
+\noindent
+the programming environment halts and returns control to the
+system on which it is running.
+Upon quitting, the program that is then in memory is forgotten
+(but of course all programs that have been written to a file
+are retained).
+
+\section{Reading a program}
+
+As an example we will read, execute and modify the program called
+{\tt race} (see 3.1), stored in a file
+with the same name, which can be found on the floppy disc containing
+the Elan Programming Environment.
+We make sure the floppy disc is inserted and give the read-command
+
+\begin{elan}
+        r
+\end{elan}
+
+\noindent
+The programming environment reacts by asking
+
+\begin{elan}
+|       Name:\cursor
+\end{elan}
+
+\noindent
+We now have to indicate the name of the file. We type in
+
+\begin{elan}
+        race<RET>
+\end{elan}
+
+\noindent
+Notice that this time we have to give a {\tt <RET>} at the end in order
+to indicate that the name is completed. Since commands consist
+of one single letter they do not need such an indication.
+The status line now says
+
+\begin{elan}
+|                               Reading...
+\end{elan}
+
+\noindent
+while the text of the refinements of the program passes over
+the screen. Upon completion of the reading, the interpreter gives
+a view, a list of all known refinements and an indication
+of the remaining memory space.
+
+\begin{elan}
+|       Free space:  17935
+|
+|       program
+|       | start horses
+|       | | display title, put horse at start pos,
+|       | | mark start of track, mark end of track
+|       | choose horse, move horse, finished, display winner
+|
+|       program:\cursor
+\end{elan}
+
+\noindent
+The status line again says
+
+\begin{elan}
+|                               Command, please...
+\end{elan}
+
+\noindent
+This view you now have can also be obtained by giving the
+list-command
+
+\begin{elan}
+        l
+\end{elan}
+
+\section{Inspecting and executing a refinement}
+
+The refinement {\tt program} has, by the reading, obtained a
+value, which can be displayed on the screen by means of the show-command
+
+\begin{elan}
+        s
+
+|       program:
+|         start horses;
+|         REP
+|           choose horse;
+|           move horse
+|         UNTIL finished
+|         ENDREP;
+|         display winner.
+|
+|       program:\cursor
+\end{elan}
+
+\noindent
+The focus is still {\tt program}, but now its meaning is defined,
+as is shown by the fact that it is followed by a {\tt :} instead of a {\tt ?}.
+We can execute the program with this refinement as root
+by giving the execute-command
+
+\begin{elan}
+        x
+\end{elan}
+
+\noindent
+Just try it, and see what happens.
+
+\section{Shifting the focus}
+
+In order to inspect or execute another refinement, e.g.
+{\tt start horses}, we have to shift the focus by means of the focus-command
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+
+        start horses<RET>
+
+|       start horses:\cursor
+\end{elan}
+
+\noindent
+We can now inspect this refinement by means of the show-command.
+The focus-command ({\tt f}) can be used to focus on any name,
+be it already defined or unknown.
+For focussing on known names, a shorthand mechanism exists: we
+may replace the last part of the name by a {\tt *}, e.g.
+
+\begin{elan}
+        start h*<RET>
+\end{elan}
+
+\noindent
+Notice that if we had given a shorter part of the name {\tt start*<RET>}
+we would have obtained the object {\tt start pos} instead.
+
+\section{Modifying a refinement}
+
+We will now modify one of the refinements of the program. We
+are focussed on {\tt start horses} and give a show-command
+
+\begin{elan}
+        s
+
+|       start horses:
+|         LET no of horses = 6;
+|         LET start pos = 12;
+|         LET end pos = 50 ;
+|         ROW no of horses INT VAR horse;
+|         display title;
+|         INT VAR i;
+|         FOR i FROM 1 UPTO no of horses
+|         REP
+|           put horse at startpos;
+|           mark start of track;
+|           mark end of track;
+|         ENDREP.
+|
+|       start horses:\cursor
+\end{elan}
+
+\noindent
+We wish to change the {\tt 6} in the first line of the body of
+the refinement into {\tt 4}. To that end we give an edit-command
+
+\begin{elan}
+        e
+\end{elan}
+
+\noindent
+The same text appears, with on the status line
+
+\begin{elan}
+|                               Input, please...
+\end{elan}
+
+\noindent
+By means of the cursor keys (marked with arrows) we move the cursor
+to the right position, strike out the {\tt 6} by means of the
+{\tt <DEL>}-key and insert a {\tt 4} instead. We then strike the {\tt <RET>}-key
+to indicate that the modification is complete.
+
+We now want to see what effect this modification has on the execution
+of the program. We first have to focus again on the root
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+\end{elan}
+
+\noindent
+We make use of the shorthand mechanism
+
+\begin{elan}
+        prog*<RET>
+
+|       program:\cursor
+\end{elan}
+
+\noindent
+By giving the execute-command we can verify that now only four
+horses take part in the race.
+
+\section{Saving a program}
+
+We can now save the the program to a file by means of the write-command
+
+\begin{elan}
+        w
+
+|       Name:\cursor
+\end{elan}
+
+\noindent
+We have to choose a name for the file, e.g.
+
+\begin{elan}
+        race4<RET>
+\end{elan}
+
+\noindent
+On the status line the message
+
+\begin{elan}
+|                               Writing...
+\end{elan}
+
+\noindent
+appears and after some time we again obtain the prompt
+
+\begin{elan}
+|       program:\cursor
+\end{elan}
+
+\section{Clearing the memory}
+
+We can clear the whole memory by means of the clear-command
+
+\begin{elan}
+        c
+\end{elan}
+
+\noindent
+whereupon the interpreter asks for confirmation
+
+\begin{elan}
+|       CLEAR ?\cursor
+\end{elan}
+
+\noindent
+The two possible answers are
+
+\begin{elan}
+        n
+\end{elan}
+
+\noindent
+whereupon the command has no effect, and
+
+\begin{elan}
+        y
+\end{elan}
+
+\noindent
+which causes the interpreter to come back to its initial state
+with an empty memory.
+
+\section{Directory of files}
+
+The programs saved in this fashion can be read back from file
+into memory by means of the read-command. Since we may in time
+forget the names of our files, it is possible to get a directory,
+i.e. list of file names. We obtain this by a somewhat roundabout
+way, viz. by trying to read a file that is definitively not there,
+e.g.
+
+\begin{elan}
+        r
+
+|       Name:\cursor
+
+        rrrrr<RET>
+\end{elan}
+
+\noindent
+We can now inspect the directory to decide what is the name of
+the file we want to read.
+
+\section{Entering a new program}
+
+It is of course possible to input a program from scratch.
+It is not at all advisable to program whilst sitting in front
+of the computer screen, so we assume the reader to have written
+the following little program, that he now wishes to enter into
+the computer:
+
+\begin{elan}
+        my first program:
+          read two numbers;
+       	  print their sum.
+
+        read two numbers:
+          read first number;
+          read second number.
+
+        read first number:
+          INT VAR first;
+          put ("First number = ");
+          get (first);
+          line.
+
+        read second number:
+          INT VAR second;
+          put ("Second number = ");
+          get (second);
+          line.
+
+        print their sum:
+          line;
+          put ("Sum = ");
+          put (first + second).
+\end{elan}
+
+After starting the Elan Programming Environment, first focus
+on the name of the refinement which is to serve as the root
+of the program.
+Since it is rather hard to change the name of the root once
+it is chosen, we have to choose it with care.
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+
+        my first program<RET>
+\end{elan}
+
+\noindent
+The prompt tells us we have focussed successfully.
+
+\begin{elan}
+|       my first program ?\cursor
+\end{elan}
+
+\noindent
+We now supply a definition for the root by means of the editor.
+
+\begin{elan}
+        e
+
+|       my first program:
+|       \cursor
+\end{elan}
+
+\noindent
+We type:
+
+\begin{elan}
+        read two numbers;print their sum.<RET>
+
+|       my first program:\cursor
+\end{elan}
+
+\noindent
+The prompt now tells us that the root is a refinement.
+Notice that we need not take particular pains to make a
+nice layout, because the {\em pretty printing} function
+of the show-command will standardize the layout anyway.
+
+\begin{elan}
+        s
+
+|       my first program:
+|         read two numbers;
+|         print their sum.
+|
+|       my first program:\cursor
+\end{elan}
+
+\section{Automatic guidance of input}
+
+The prospect of entering the remaining refinements one by one,
+by first focussing on their name and then using the editor, is
+rather forbidding.
+Luckily there is a possibility to avoid all the effort of focussing
+and retyping names: we can be guided by the Elan Programming Environment,
+so that we have to input only the bodies of the refinements.
+
+We are focussed on the root and try to execute it.
+
+\begin{elan}
+|       my first program:\cursor
+
+        x
+\end{elan}
+
+\noindent
+Immediately we are warned of the fact that the first refinement is unknown.
+
+\begin{elan}
+|       read two numbers
+|                               read two numbers\cursor
+
+|       Can't identify          Backtrace command, please...
+\end{elan}
+
+\noindent
+We are now in backtrace-mood, and give the edit-command
+
+\begin{elan}
+        e
+\end{elan}
+
+\noindent
+The Elan Programming Environment responds by
+
+\begin{elan}
+|       read two numbers:
+|       \cursor
+\end{elan}
+
+\noindent
+After we enter the body, we return to the root of the program,
+which we try to execute again.
+
+In this way, we are made to enter one refinement at a time, until
+the program is complete.
+This guidance during input allows us to type most refinement names
+only once, thus alleviating one of the drawbacks of Top-Down programming
+and encouraging the use of meaningful identifiers.
+
+\section{Entering procedures and types}
+
+Once you reach the stage of Bottom-Up programming, you must learn how to
+input your own types, procedures and operators. You do this by first
+focussing on any name (for instance the name of the type or procedure you
+want to enter), give the edit-command and then enter its complete
+declaration followed by a semicolon.
+
+Some examples. Let us first enter a procedure {\tt new number}.
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+
+        new number<RET>
+
+|       new number ?\cursor
+\end{elan}
+
+\noindent
+The Elan Programming Environment takes this for a refinement name.
+
+\begin{elan}
+        e
+
+|       new number:
+|       \cursor
+\end{elan}
+
+\noindent
+We edit the text on the screen until we have obtained a complete
+procedure declaration, followed by a semicolon.
+
+\begin{elan}
+        INT PROC new number:<RET>
+          INT VAR n;<RET>
+          get(n);<RET>
+          n<RET>
+        ENDPROC new number;<RET>
+\end{elan}
+
+\noindent
+We can now see from the prompt that our focus is a procedure
+
+\begin{elan}
+        INT PROC new number\cursor
+\end{elan}
+
+As a second example, let us enter a type-declaration.
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+
+        COMPL<RET>
+
+|       COMPL ?\cursor
+\end{elan}
+
+\noindent
+We massage this text on the screen into the type-declaration we
+want to have.
+
+\begin{elan}
+        TYPE COMPL = STRUCT (REAL re, im);<RET>
+
+|       TYPE COMPL\cursor
+\end{elan}
+
+\noindent
+Do not forget the semicolon at the end.
+
+The order of refinements, type-declarations, procedure-declarations
+and operator-decla\-rations is free, but the first refinement which is
+entered becomes the root of the program.
+
+\section{Inspecting the standard library}
+
+By means of the focus- and show-command we can inspect not only
+the definitions which we have entered ourselves but also those of
+the standard library (see Appendix A). In chapter 5.2.4 the
+mechanics of this facility are explained. We will use it to look
+at the available additions.
+
+\begin{elan}
+        f
+
+|       Name:\cursor
+
+        +<RET>
+
+|       INT OP + (INT CONST a)\cursor
+|       REAL OP + (REAL CONST a)
+|       INT OP + (INT CONST a, b)
+|       REAL OP + (REAL CONST a, b)
+|       TEXT OP + (TEXT CONST a, b)
+\end{elan}
+
+We observe there are several definitions, of which the first one is
+presently the focus. By means of the (repeated) use of the next command
+
+\begin{elan}
+        n
+\end{elan}
+
+\noindent
+we can make any  of these definitions the focus.
+We can inspect it by giving a show-command
+
+\begin{elan}
+        s
+
+|       INT OP + (INT CONST a):
+|         CODE 30
+|       ENDOP +
+|
+|       INT OP + (INT CONST a)\cursor
+|       REAL OP + (REAL CONST a)
+|       INT OP + (INT CONST a, b)
+|       REAL OP + (REAL CONST a, b)
+|       TEXT OP + (TEXT CONST a, b)
+\end{elan}
+
+\noindent
+which does not really makes us much wiser.
+
+A name with more than one definition (such as {\tt +} or {\tt put})
+is called generic.
+Modifying definitions for generic names from the standard library
+is rather tricky.
+The easiest way is to focus on some harmless refinement name
+(like {\tt a}) and then massaging the resulting screen text into the
+desired definition.
+
+\section{Standard packets and standard programs}
+
+In a classroom situation it will not always be the case that
+a complete program is written from scratch. Rather the teacher
+will supply a packet of refinements, or even a complete program
+that the pupils have to use.
+For this reason, the Elan Programming Environment has a simple
+facility for reading standard packets and standard programs.
+
+A {\em standard program} is a complete Elan program, to be used
+without modifications or additions. Its first refinement must
+have the name {\tt program}.
+
+A {\em standard packet} is a collection of declarations that
+the pupils may use in a program of their own without the necessity
+to type them in. None of its refinements may have the name {\tt
+program}.
+
+For reading these, a variant of the read-command has been introduced,
+the packet-command ({\tt p}), which has the property that it
+keeps the contents of the packet practically invisible: the pupil
+can inspect but cannot modify or delete them.
+
+\section{Example of a standard program}
+
+As an example we can try to read any program as a standard program.
+We give the packet-command
+
+\begin{elan}
+        p
+
+|       Name:\cursor
+\end{elan}
+
+\noindent
+In typing the name (followed by {\tt <RET>}) it is not shown on the
+screen. Similarly, in reading the refinements of the program
+only their names (not their bodies) are shown. Immediately after
+the reading a list of all refinements of the program is displayed
+on the screen, but this is not reproducible by means of the list-command
+because the refinements become ``invisible''. We can execute etc.
+the program in the usual way but we can not modify it. At most
+we can add new refinements.
+
+\section{Example of a standard packet}
+
+The program {\tt karel} (see 3.7) is a standard packet but not
+a standard program. The difference is that the root of a standard
+program must be named {\tt program} whereas for a standard packet
+it must be different from {\tt program}. This gives us the opportunity
+to add our own refinement {\tt program} as root of the program,
+in which all the refinements of the packets can be used. The
+packet as it were extends the language with a number of concrete
+algorithms.
+
+In order to use this standard packet we first read it with a
+packet-command. Then we read the standard packet {\tt environ}
+in the same way. Finally we read the program {\tt newspaper}
+by means of a read-command and give the execute-command. Only
+the refinements of this last program can be modified or deleted.
+The refinements of the packets can not be modified or deleted
+and will not be saved by a write-command.
+
+\section{Conclusion}
+
+In this quick tour we have missed many important aspects of
+the programming environment, such as
+
+\begin{itemize}
+\item deleting a refinement by means of a delete-command ({\tt d});
+\item the incremental syntax check during input of new refinements;
+\item the backtrace facility for semantic errors;
+\item the edit-on-the fly upon detection of syntactic or semantic errors;
+\item the trace facility.
+\end{itemize}
+
+\noindent
+We have not discussed useful tricks, such as
+
+\begin{itemize}
+\item how to change the name of a refinement (take it into the
+editor, edit its name, delete the original);
+\item how to inspect the value of a variable or constant after
+execution of the program (focus on its name and show it);
+\item the use of the {\tt <BREAK>}-key to halt execution or input.
+\end{itemize}
+
+\noindent
+Since these are all consequences of things described in chapter
+5, it may be useful to read that chapter again.
+

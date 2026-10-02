@@ -1,0 +1,40 @@
+                        TYPEFAST
+                   TYPEING DRILL GAME
+
+Steve Spearman wrote TYPEFAST, one of the better touch-typing drills
+I've seen (and I've written one myself).  It's a GAME (not boring drills)
+that's a cross between a touch-typing program and "Space Invaders".
+Words appear in random places on the screen and slowly move down.
+You have to type them correctly to blow them up before they reach the "ground"
+(a line at the bottom of the screen).  There are several degrees of difficulty.
+
+
+I've enhanced it, so that:
+
+   -    It can run with your own word list, rather than the built-in words.
+        Just compile with WORDLIST defined, and it will look for a file
+        WORDLIST.H.
+
+   -    Longer words start higher on screen, to allow more time to type them.
+
+   -    It runs on MS-DOS PCs.  I used Turbo C and PCcurses, though I didn't
+        do anything that depends on those choices.  It's pretty generic C
+        and curses.
+
+   -    It uses the PC display character set to make prettier missiles and
+        explosions than an ordinary ASCII terminal can.  (To get these,
+        compile with MSDOS defined.)
+
+I post the enhanced game with Steve's permission.  He has included no
+copyright, nor have I, though we'd appreciate your leaving the leading
+comments in any further distribution that you do.  If you modify it
+further, please add to the "history" portion of those comments.
+
+Enjoy!
+
+Dave Tutelman
+16 Tilton Drive
+Wayside, NJ 07712
+
+(201) 922-9576
+

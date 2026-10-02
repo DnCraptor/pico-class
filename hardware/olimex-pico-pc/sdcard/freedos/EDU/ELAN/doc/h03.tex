@@ -1,0 +1,545 @@
+\chapter{EXAMPLES ELAN-0 SUBSET}
+
+The following examples are intended to give a flavour of the
+Elan-0 subset and of the style of programming that
+can be achieved with it. Further examples (and much more advanced
+examples) can be found on the distribution disc.
+
+\section{Horse race}
+
+The following program performs a race with 6 horses. It was
+developed by pupils from a school in Hungary, under supervision
+of Peter Hanak. It could be extended with a mechanism to accept
+bets. The program makes use of the {\tt cursor} function to organize
+the layout of the screen. It uses {\tt choose128} to produce
+(quasi-)random numbers.
+
+\begin{elan}
+program :
+  start horses ;
+  REP
+    choose horse ;
+    move horse
+  UNTIL
+    finished
+  ENDREP ;
+  display winner .
+
+start horses :
+  LET no of horses = 6 ;
+  LET start pos = 12 ;
+  LET end pos = 50 ;
+  ROW no of horses INT VAR horse ;
+  display title ;
+  INT VAR i ;
+  FOR i FROM 1 UPTO no of horses
+  REP
+    put horse at startpos ;
+    mark start of track ;
+    mark end of track
+  ENDREP .
+
+display title :
+  cursor ( endpos DIV 2 , 1 ) ;
+  put ( "H O R S E   R A C E" ) .
+
+put horse at startpos :
+  horse [ i ] := startpos .
+
+choose horse :
+  INT CONST ix :: ( choose128 MOD no of horses ) + 1 .
+
+mark start of track :
+  cursor ( 1 , 2 * i + 1 );
+  put ( i ) ;
+  put ( "*" ) .
+
+mark end of track :
+  cursor ( endpos , 2 * i + 1 ) ;
+  put ( "|" ) .
+
+move horse :
+  cursor ( horse [ ix ] , 2 * ix + 1 ) ;
+  put ( ".*" ) ;
+  horse [ ix ] INCR 1 .
+
+finished :
+  horse [ ix ] >= endpos .
+
+display winner :
+  cursor ( start pos - 1 , 2 * no of horses + 4 ) ;
+  put ( "The winner is horse number:" ) ;
+  put ( ix ) ;
+  line ( 2 ) .
+\end{elan}
+
+\section{Drawing a box}
+
+This example is a suitable demonstration for Top-Down programming.
+How does one draw a box on a conventional screen?
+
+\begin{elan}
+draw box :
+  ask size ;
+  draw lid ;
+  draw sides ;
+  draw bottom .
+
+ask size :
+  INT VAR size ;
+  line ;
+  put ( "size = " ) ;
+  get ( size ) ;
+  line ( 2 ) .
+
+draw lid :
+  put ( size * stripe ) ;
+  line .
+
+draw sides :
+  INT VAR i ;
+  FOR i FROM 1 UPTO size
+  REP draw slice
+  ENDREP .
+
+draw bottom : draw lid .
+
+stripe : "--" .
+
+draw slice :
+  put ( pip ) ;
+  put ( ( size - 2 ) * blank ) ;
+  put ( pip ) ;
+  line .
+
+pip : "!!" .
+
+blank : " " .
+\end{elan}
+
+\section{Circular shifting}
+
+The operations on texts {\tt HEAD} and {\tt TAIL} that are available
+in Elan-0 differ markedly from the standard operations in the
+language, being much more list-oriented.
+In standard Elan they can be programmed as
+
+\begin{elan}
+TEXT OP HEAD ( TEXT CONST a ) :
+  a SUB 1
+ENDOP HEAD ;
+
+TEXT OP TAIL ( TEXT CONST a ) :
+  subtext ( 2 , LENGTH a , a )
+ENDOP TAIL ;
+\end{elan}
+
+\noindent
+The following program repeatedly rotates its input text by one
+position until the original is obtained again.
+
+\begin{elan}
+rotate :
+  declare texts ;
+  REP
+    shift s circularly ;
+    display s
+  UNTIL
+    s = original
+  ENDREP .
+
+declare texts :
+  TEXT VAR original ;
+  put ( "Text, please?" ) ;
+  get (original ) ;
+  TEXT VAR s :: original .
+
+display s :
+  line ;
+  put ( s ) .
+
+shift s circularly :
+  s := ( TAIL s ) + ( HEAD s ) .
+\end{elan}
+
+\section{Converting numbers into texts}
+
+Designing a program for conversion between numbers and texts
+is a good way to get used to the respective properties of numbers
+and texts. The program illustrates the use of {\tt CAT} and {\tt SUB}.
+
+\begin{elan}
+outint :
+  put ( "This program converts a positive integer" ) ;
+  line ;
+  put ( "to a given radix in range 1 to 16." ) ;
+  line ;
+  ask for radix ;
+  WHILE
+    another number ;
+  REP
+    represent number according to radix ;
+    print representation
+  ENDREP.
+
+ask for radix :
+  INT VAR radix ;
+  put ( "Radix, please:" ) ;
+  get ( radix ) ;
+  line .
+
+another number :
+  ask for number ;
+  number > 0 .
+
+ask for number :
+  INT VAR number ;
+  put ( "number, please:" ) ;
+  get ( number ) ;
+  line .
+
+represent number according to radix :
+  TEXT VAR representation :: "" ;
+  REP
+    isolate a digit ;
+    add this digit to the representation
+  UNTIL
+    no more digits
+  ENDREP .
+
+isolate a digit :
+  INT CONST digit :: number MOD radix ;
+  number := number DIV radix .
+
+add this digit to the representation :
+  representation := representation of digit + representation .
+
+no more digits :
+  number = 0 .
+
+representation of digit :
+   IF digit > 15
+   THEN "?"
+   ELSE "0123456789ABCDEF" SUB ( digit + 1 )
+   FI .
+
+print representation :
+    put ( "Representation = " ) ;
+    put ( representation ) ;
+    line .
+\end{elan}
+
+\section{Guessing numbers}
+
+The following example is due to Leo Geurts (Centrum voor Wiskunde
+en Informatica, Amsterdam). By means of the halving algorithm
+it guesses a number chosen by the human opponent.
+
+\begin{elan}
+how to play :
+  tell the rules ;
+  all numbers 0 to 99 are possible ;
+  REP
+    make a guess ;
+    wait for reply ;
+    halve the range
+  UNTIL
+    good OR impossible
+  ENDREP ;
+  tell result .
+
+tell the rules :
+  put ( "Think of a number from 0 to 99." ) .
+
+wait for reply :
+  TEXT VAR reply ;
+  get ( reply ) ;
+  WHILE reply <> "y" AND reply <> "h" AND reply <> "l"
+  REP
+    line ;
+    put ( "Possible answers are y(es), h(igh), l(ow)" ) ;
+    get ( reply )
+  ENDREP .
+
+halve the range :
+  IF reply = "l"
+  THEN
+    min := guess + 1
+  ELIF reply = "h"
+  THEN
+    max := guess - 1
+  FI .
+
+good :
+  reply = "y" .
+
+impossible :
+  min > max .
+
+all numbers 0 to 99 are possible :
+  INT VAR min :: 0 ;
+  INT VAR max :: 99 .
+
+make a guess :
+  INT CONST guess :: ( min + max ) DIV 2 ;
+  line ;
+  put ( "Is it" ) ;
+  put ( guess ) ;
+  put ( "?" ) .
+
+ tell result :
+  line ;
+  IF good
+  THEN
+    put ( "Good!" )
+  ELSE
+    put ( "Cheat!" )
+  FI .
+\end{elan}
+
+\section{Guess my age}
+
+This example is also due to Leo Geurts. This time the player
+has to guess a randomly chosen ``age'' It is a good opportunity
+to learn, by experiment, the value of the halving algorithm.
+
+\begin{elan}
+how to guess :
+  choose a number ;
+  look for a customer ;
+  let him guess ;
+  WHILE not guessed
+  REP
+    give a hint ;
+    another guess
+  ENDREP ;
+  applause .
+
+choose a number :
+  INT VAR number :: choose128 .
+
+look for a customer :
+  put ( "Guess my age " ) .
+
+let him guess :
+  INT VAR guess ;
+  get ( guess ) .
+
+not guessed :
+  guess <> number .
+
+give a hint :
+  line ;
+  IF guess > number
+  THEN
+    put ( "Too high, try again " )
+  ELSE
+    put ( "Too low, try again  " )
+  FI .
+
+another guess :
+  get ( guess ) .
+
+applause :
+  line ;
+  put ( "Correct!" ) ;
+  line ( 3 ) .
+\end{elan}
+
+\section{Karel the Robot}
+
+In an introductory programming course, it is good practice to
+make use of a restricted and protected programming environment
+within which the pupils can develop their first programs. We
+will describe here Karel the Robot, a didactic aid based on
+
+\begin{literal} 
+  R.E. Pattis,
+  Karel the Robot,
+  a gentle introduction to the art of programming,
+  John Wiley and sons, 1981.
+\end{literal} 
+
+\noindent
+Its purpose is to confront a pupil with the essential ingredients
+of programming languages: actions, tests, control structures
+and refinements, without having to introduce such complicated
+concepts as variables, objects, values and types.
+
+With the Elan Programming Environment, a {\em standard packet}
+for Karel the Robot is included.
+
+\subsection{The world of Karel}
+
+Karel spends his life on the corners of streets and avenues
+that run vertically and horizontally over the screen. The street corners
+form a rectangular grid, whose size is chosen such that it just
+fits on the screen.
+
+On some of the corners stand walls so that Karel cannot pass.
+On others may lie beepers that Karel can pick up. He can also
+mark a corner by dropping a beeper. Karel may walk over his world,
+but of course he should not leave the screen.
+
+\subsection{Karel's actions}
+
+After reading the standard packet {\tt karel} by means of the
+packet-command ({\tt p}) he can perform the following actions:
+
+\begin{itemize}
+\item {\tt start karel}\\
+	Sets up the world, with Karel in the lower left corner 
+	with his nose pointing to the north;
+\item {\tt turn right}\\
+	Karel makes a right turn;
+\item {\tt turn left}\\
+	Karel makes a left turn;
+\item {\tt move}\\
+	Karel moves one corner forward in the direction of his nose;
+\item {\tt take beeper}\\
+	Karel takes the beeper (if any) from the present
+	corner and puts it into his pocket;
+\item {\tt drop beeper}\\
+	Karel takes a beeper from the limitless supply
+	in his pocket and leaves it at the present corner;
+\item {\tt stop}\\
+	Makes an end to Karel and his world, lifting him from
+	the screen.
+\end{itemize}
+
+\subsection{Karel's conditions}
+
+Karel knows the following conditions:
+
+\begin{itemize}
+\item {\tt facing north}\\
+	True only if Karel's nose presently points to the north;
+\item {\tt facing south}\\
+	Similarly;
+\item {\tt facing east}\\
+	Similarly;
+\item {\tt facing west}\\
+	Similarly;
+\item {\tt facing wall}\\
+	True only if the next corner contains a wall;
+\item {\tt beeper}\\
+	True only if there is a beeper lying at the present corner.
+\end{itemize}
+
+\subsection{The basic Karel-packet}
+
+The standard packet {\tt karel}, written in Elan-0,
+realizes the actions and tests just described.
+As a first example we show a program that makes Karel trundle
+around a square of 16 * 16. It should be entered after
+the packet {\tt karel} has been read ({\tt p}).
+
+\begin{elan}
+draw square :
+  start karel ;
+  UPTO 4
+  REP draw side
+  ENDREP ;
+  stop .
+
+draw side :
+  UPTO 16
+  REP drop beeper ;
+      move
+  ENDREP ;
+  turn right .
+\end{elan}
+
+\subsection{Karel's environment}
+
+The packet {\tt env}ironment can be used to decorate
+Karel's world with a house, a stair or a labyrinth. The program
+will for that purpose have to call one of the actions
+
+\begin{itemize}
+\item	{\tt make labyrinth};
+\item	{\tt make stair};
+\item	{\tt make house}.
+\end{itemize}
+
+\noindent
+The program which follows simulates Karel fetching his morning paper.
+It makes use of both the packet {\tt karel} and the preceding {\tt env}ironment
+packet. It is used as an introductory example in the textbook (see [2]).
+
+\begin{elan}
+program :
+  start karel ;
+  make house ;
+  walk to garden ;
+  take newspaper ;
+  walk back to bed .
+ 
+walk to garden :
+  walk along wall ;
+  walk through entrance ;
+  walk to newspaper .
+ 
+take newspaper :
+  take beeper .
+ 
+walk back to bed :
+  walk back to entrance ;
+  walk back through entrance ;
+  walk back along wall .
+
+walk along wall :
+  turn right ;
+  move ;
+  move ;
+  move ;
+  move ;
+  move .
+
+walk to newspaper :
+  turn left ;
+  move ;
+  move ;
+  turn left ;
+  move ;
+  move ;
+  turn right ;
+  move .
+ 
+walk back to entrance :
+  turn about ;
+  move ;
+  turn left ;
+  move ;
+  move ;
+  turn right ;
+  move ;
+  move .
+ 
+walk back through entrance :
+  turn right ;
+  move ;
+  move ;
+  move ;
+  move .
+ 
+walk back along wall :
+  turn right ;
+  move ;
+  move ;
+  move ;
+  move ;
+  move .
+ 
+turn about :
+  turn right ;
+  turn right .
+ 
+walk through entrance :
+  turn left ;
+  move ;
+  move ;
+  move ;
+  move .
+\end{elan}
+

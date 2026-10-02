@@ -1,0 +1,156 @@
+
+
+reset display:
+  LET max column = 7;
+  LET max row = 7;
+  LET starting x pos = 10;
+  LET starting y pos = 5;
+  INT VAR x pos;
+  INT VAR y pos.
+
+PROC put 2 digits (INT CONST n):
+  put character(n DIV 10);
+  put character(n MOD 10)
+ENDPROC put 2 digits;
+
+PROC put character (INT CONST n):
+  ROW 11 TEXT CONST characters ::
+         [d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, colon];
+
+  INT VAR i;
+  FOR i FROM 1 UPTO max row
+  REP
+    put next row;
+    go to next line
+  ENDREP;
+  go to next position.
+
+  put next row:
+    put (subtext (characters[n+1],
+                  (i-1) * max column + 1, i * max column)).
+
+  go to next line:
+    y pos INCR 1;
+    cursor (x pos, y pos).
+
+d0:             
+  " 00000 " +   
+  "0     0" +    
+  "0     0" +    
+  "0     0" +   
+  "0     0" +    
+  "0     0" +    
+  " 00000 ".
+d1:        
+  "     11" +   
+  "    1 1" +   
+  "   1  1" +    
+  "  1   1" +   
+  "      1" +   
+  "      1" +    
+  "      1".
+d2:
+  " 22222 " +
+  "2     2" +
+  "     2 " +
+  "    2  " +
+  "   2   " +
+  "  2    " +
+  " 222222".
+
+d3:              
+  " 33333 " +     
+  "3     3" +     
+  "     3 " +   
+  "    3  " +     
+  "     3 " +    
+  "3     3" +     
+  " 33333 ".
+d4:           
+  "  4    " +  
+  " 4     " +  
+  "4     4" +    
+  "4444444" +  
+  "      4" +   
+  "      4" +    
+  "      4".
+d5:
+  "5555555" +
+  "5      " +
+  "55555  " +
+  "     5 " +
+  "      5" +
+  "      5" +
+  "555555 ".
+
+d6:           
+  " 66666 " +     
+  "6      " +  
+  "6      " +  
+  "666666 " + 
+  "6     6" +    
+  "6     6" +   
+  " 66666 ".
+d7:         
+  "7777777" +   
+  "     7 " +   
+  "    7  " +   
+  "   7   " +  
+  "  7    " + 
+  " 7     " +  
+  "7      ".
+d8:
+  " 88888 " +
+  "8     8" +
+  "8     8" +
+  " 88888 " +
+  "8     8" +
+  "8     8" +
+  " 88888 ".
+
+d9:          
+  " 99999 " +    
+  "9     9" +      
+  "9     9" +   
+  " 999999" +   
+  "      9" +   
+  "      9" +   
+  " 99999 ".
+
+colon:
+  "       " +
+  "  :::  " +
+  "  :::  " +
+  "       " +
+  "  :::  " +
+  "  :::  " +
+  "       ".
+
+ENDPROC put character;
+
+PROC put separator (TEXT CONST sep):
+  IF sep = ":"
+  THEN
+    put character (10)
+  ELSE
+    # sep = " " #
+    go to next position
+  FI
+ENDPROC put separator;
+
+PROC move to display position:
+  page;
+  x pos := starting x pos;
+  y pos := starting y pos;
+  cursor (x pos, y pos)
+ENDPROC move to display position;
+
+PROC go to next position:
+  flush buffer;
+  x pos INCR max column + 3;
+  y pos := starting y pos;
+  cursor (x pos, y pos).
+    flush buffer:
+      line.
+ENDPROC go to next position;
+

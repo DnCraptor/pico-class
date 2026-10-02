@@ -1,0 +1,58 @@
+
+PROC mark (INT CONST x, REAL CONST y):
+  move (margin + sx * x, round ((y + 0.1) * sy));
+  plot pixel
+ENDPROC mark;
+
+program:
+  LET number of invisible steps = 40,
+	  number of visible steps = 40,
+	  number of points = 50;
+  # On a faster computer choose larger values for better approximation #
+  enter graphics mode;
+  LET margin = 20;
+  INT CONST sx :: (graphics x limit - margin) DIV number of points;
+  REAL CONST sy :: real (graphics y limit) / 2.0;
+  choose interval;
+  UPTO number of points
+  REP
+    next point;
+    some invisible steps;
+    some visible steps
+  ENDREP;
+  wait for confirmation (1, graphics y limit - line height);
+  leave graphics mode.
+
+  choose interval:
+    put ("Verhulst dynamics of rapidly growing population");
+    line;
+    put ("For background read The Beauty of Fractals");
+    line;
+    put ("by Peitgen and Richter, Springer Verlag 1986");
+    LET limit = 3.0;
+    REAL VAR x :: 1.9;
+	INT VAR xpos :: 0;
+    REAL CONST dx :: (limit - x) / real (number of points).
+  
+  next point:
+	xpos INCR 1;
+    x INCR dx.
+  
+  some invisible steps:
+    REAL VAR y :: 0.1;
+    UPTO number of invisible steps
+    REP step
+    ENDREP.
+  
+    step:
+      y INCR x * (1.0 - y) * y.
+    
+  some visible steps:
+    UPTO number of visible steps
+    REP
+      mark (xpos, y);
+      step
+    ENDREP.
+  
+
+

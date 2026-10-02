@@ -1,0 +1,151 @@
+
+PROC graphics (REAL CONST xmin, xmax, INT CONST steps,
+               REAL PROC (REAL CONST) f):
+   REAL VAR x, delta x :: (xmax - xmin) / real (steps - 1);
+   move (graphics x limit DIV 3, graphics y limit DIV 2);
+   put ("Computing...");
+   determine minimal and maximal function values;
+   page;
+   fix viewport and world;
+   draw the axis x with annotation;
+   draw the axis y with annotation;
+   draw the graphics.
+
+determine minimal and maximal function values:
+   x := xmin;
+   REAL VAR ymin :: f (x), ymax :: f (x);
+   WHILE x <= xmax
+   REP
+     x INCR delta x;
+     IF ymax < f (x) THEN ymax := f (x)
+     ELIF ymin > f (x) THEN ymin := f (x)
+     FI
+   ENDREP.
+
+fix viewport and world:
+   INT CONST xvmin :: 10 * character width,
+             xvmax :: graphics x limit - 10 * character width,
+             yvmin :: graphics y limit - 2 * line height,
+             yvmax :: 2 * line height;
+   REAL VAR sx :: real (xvmax - xvmin) / (xmax - xmin),
+            sy :: real (yvmax - yvmin) / (ymax - ymin),
+            cx :: real (xvmin) - sx * xmin,
+            cy :: real (yvmin) - sy * ymin.
+
+draw the axis x with annotation:
+   INT CONST y0 :: round (cy),
+             xvmid :: xvmin + (xvmax - xvmin) DIV 2;
+   move (xvmin - 8 * character width, y0 - line height DIV 3);
+   plot text (text (xmin, 7, 2));
+   move (xvmid - 3 * character width DIV 2, y0 + line height DIV 3);
+   plot text (text (xmin + (xmax - xmin) / 2.0, 7, 2));
+   move (xvmax - 3 * character width DIV 2, y0 - line height DIV 3);
+   plot text (text (xmax, 7, 2));
+   move (xvmax, y0 - line height);
+   draw (xvmax, y0 + line height);
+   move (xvmid, y0 - line height);
+   draw (xvmid, y0 + line height);
+   move (xvmin, y0);
+   draw (xvmax, y0).
+
+draw the axis y with annotation:
+   INT CONST x0 :: round (cx);
+   move (x0 - 5 * character width, yvmin + line height DIV 3);
+   plot text (text (ymin, 7, 2));
+   move (x0 - 5 * character width, yvmax - 4 * line height DIV 3);
+   plot text (text (ymax, 7, 2));
+   move (x0, yvmin);
+   draw (x0, yvmax).
+
+draw the graphics:
+   x := xmin;
+   move (round (x * sx + cx), round (f (x) * sy + cy));
+   WHILE x <= xmax
+   REP
+     x INCR delta x;
+     draw (round (x * sx + cx), round (f (x) * sy + cy))
+   ENDREP.
+ENDPROC graphics;
+
+REAL PROC square (REAL CONST x):
+  IF abs (x MOD (2.0 * pi)) <= pi
+  THEN 0.99
+  ELSE - 0.99
+  FI
+ENDPROC square;
+
+REAL PROC saw (REAL CONST x):
+  REAL CONST xx :: abs (x MOD (2.0 * pi));
+  IF xx < 0.00000001
+  THEN - 0.99
+  ELSE - 0.99 + xx / pi
+  FI
+ENDPROC saw;
+
+REAL PROC trapezoid (REAL CONST x):
+  REAL CONST xx :: abs (x MOD (2.0 * pi));
+  IF xx <= pi / 4.0
+  THEN xx * 4.0 / pi
+  ELIF xx <= 3.0 * pi / 4.0
+  THEN 0.99
+  ELIF xx <= 5.0 * pi / 4.0
+  THEN 0.99 - (xx - 3.0 * pi / 4.0) * 4.0 / pi
+  ELIF xx <= 7.0 * pi / 4.0
+  THEN - 0.99
+  ELSE - 0.99 + (xx - 7.0 * pi / 4.0) * 4.0 / pi
+  FI
+ENDPROC trapezoid;
+
+REAL PROC zigzag (REAL CONST x):
+  (2.5 * sin (6.0 * x) - tan (x)) * (cos (3.0 * x) * trapezoid (4.0 * x))
+ENDPROC zigzag;
+
+program:
+  REP
+    page;
+    put ("         W A V E S");
+    line;
+    put ("square - 1, saw - 2, trapezoid - 3, zigzag - 4, sine - 5");
+    line;
+    INT CONST select :: ask int ("Select one, please, or 0 to exit: ");
+    SELECT select OF
+    CASE 1: square wave
+    CASE 2: saw wave
+    CASE 3: trapezoid wave
+    CASE 4: zigzag wave
+    CASE 5: sine wave
+    OTHERWISE LEAVE program
+    ENDSELECT
+  ENDREP.
+
+square wave:
+  enter graphics mode;
+  graphics (0.0, 4.0 * pi, 200, REAL PROC (REAL CONST) square);
+  wait for confirmation (2 * graphics x limit DIV 3, 1);
+  leave graphics mode.
+
+saw wave:
+  enter graphics mode;
+  graphics (0.0, 4.0 * pi, 200, REAL PROC (REAL CONST) saw);
+  wait for confirmation (2 * graphics x limit DIV 3, 1);
+  leave graphics mode.
+
+trapezoid wave:
+  enter graphics mode;
+  graphics (0.0, 4.0 * pi, 200, REAL PROC (REAL CONST) trapezoid);
+  wait for confirmation (2 * graphics x limit DIV 3, 1);
+  leave graphics mode.
+
+zigzag wave:
+  enter graphics mode;
+  graphics (0.0, 4.0 * pi, 200, REAL PROC (REAL CONST) zigzag);
+  wait for confirmation (2 * graphics x limit DIV 3, 1);
+  leave graphics mode.
+
+sine wave:
+  enter graphics mode;
+  graphics (0.0, 4.0 * pi, 200, REAL PROC (REAL CONST) sin);
+  wait for confirmation (2 * graphics x limit DIV 3, 1);
+  leave graphics mode.
+
+

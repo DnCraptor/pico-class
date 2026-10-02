@@ -1,0 +1,20 @@
+
+                  Dr. Mind, Copyright (C) 2019 Mateusz Viste
+                        http://drmind.sourceforge.net
+
+Dr. Mind is a PC adaptation of the Mastermind (TM) board game. The computer
+generates a secret color code, then the player has to figure out the exact
+pattern through deduction.
+
+Keyboard controls: arrows, return and escape.
+
+Requirements: PC-compatible (8086+), DOS 3+, 100K of avail. RAM, VGA or MCGA.
+
+The game comes in two versions: the normal release and a "LITE" variant. The
+LITE version is the same thing, but with pictures removed - may be handy for
+computers that have extremely limited storage. Dr. Mind LITE requires only 24K
+of disk space, while the full version needs 1.4M (fits on a diskette).
+
+This game is published under the CC BY-ND 4.0 license, which is roughly
+equivalent to "freeware with source code". See license.txt for details.
+Source code can be obtained on the game's web homepage.

@@ -1,0 +1,54 @@
+
+PACKET utils
+  DEFINES sin, cos, wait for confirmation,
+          leave graphics mode, PLEASE,
+          ask int, ask real, ask text:
+
+REAL PROC sin (INT CONST a):
+  sin (pi * real (a) / 180.0)
+ENDPROC sin;
+
+REAL PROC cos (INT CONST a):
+  cos (pi * real (a) / 180.0)
+ENDPROC cos;
+
+PROC wait for confirmation (INT CONST x, y):
+  move (x, y);
+  put ("Hit space!");
+  TEXT CONST t :: inchar
+ENDPROC wait for confirmation;
+
+PROC leave graphics mode:
+  page;
+  enter text mode
+ENDPROC leave graphics mode;
+
+OP PLEASE (INT VAR x, TEXT CONST message):
+   line; put (message); get (x)
+ENDOP PLEASE;
+
+OP PLEASE (REAL VAR x, TEXT CONST message):
+   line; put (message); get (x)
+ENDOP PLEASE;
+
+OP PLEASE (TEXT VAR x, TEXT CONST message):
+   line; put (message); get (x)
+ENDOP PLEASE;
+
+INT PROC ask int (TEXT CONST message):
+   INT VAR x; put (message); get (x); x
+ENDPROC ask int;
+
+REAL PROC ask real (TEXT CONST message):
+   REAL VAR x; put (message); get (x); x
+ENDPROC ask real;
+
+TEXT PROC ask text (TEXT CONST message):
+   TEXT VAR t; put (message); get (t); t
+ENDPROC ask text;
+
+ENDPACKET utils;
+
+
+
+

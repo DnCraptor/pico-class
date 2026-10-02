@@ -1,0 +1,51 @@
+
+reset display:
+  INT VAR port addr;
+  reset 4 digit display.
+
+PROC put 2 digits (INT CONST n):
+  put character (n DIV 10);
+  put character (n MOD 10)
+ENDPROC put 2 digits;
+
+PROC put character (INT CONST n):
+  go to next position;
+  INT CONST segs :: SELECT n OF
+    CASE 0: enabl + seg a + seg b + seg c
+                                  + seg d + seg e + seg f
+    CASE 1: enabl + seg b + seg c
+    CASE 2: enabl + seg a + seg b + seg g + seg e + seg d
+    CASE 3: enabl + seg a + seg b + seg g + seg c + seg d
+    CASE 4: enabl + seg f + seg g + seg b + seg c
+    CASE 5: enabl + seg a + seg f + seg g + seg c + seg d
+    CASE 6: enabl + seg a + seg f + seg e
+                                  + seg d + seg c + seg g
+    CASE 7: enabl + seg a + seg b + seg c
+    CASE 8: enabl + seg a + seg b + seg c
+                          + seg d + seg e + seg f + seg g
+    CASE 9: enabl + seg g + seg f + seg a
+                                  + seg b + seg c + seg d
+    OTHERWISE dsabl
+  ENDSELECT;
+  to port (port addr, segs)
+ENDPROC put character;
+
+PROC put separator (TEXT CONST sep):
+  IF sep = ":"
+  THEN to port (0, enabl)
+  ELSE
+    # sep = " " #
+    to port (0, dsabl)
+  FI
+ENDPROC put separator;
+
+PROC go to next position:
+  port addr := port addr MOD 4 + 1;
+  to port (port addr, dsabl)
+ENDPROC go to next position;
+
+PROC move to display position:
+  port addr := 4
+ENDPROC move to display position;
+
+

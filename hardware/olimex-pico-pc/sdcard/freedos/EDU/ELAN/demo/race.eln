@@ -1,0 +1,58 @@
+
+program:
+  start horses;
+  REP
+    choose horse;
+    move horse
+  UNTIL finished
+  ENDREP;
+  display winner.
+
+  start horses:
+    LET no of horses = 6;
+    LET start pos = 12;
+    LET end pos = 50;
+    ROW no of horses INT VAR horse;
+    display title;
+    INT VAR i;
+    FOR i FROM 1 UPTO no of horses
+    REP
+      put horse at start pos;
+      mark start of track;
+      mark end of track
+    ENDREP.
+  
+    display title:
+      cursor (end pos DIV 2, 1);
+      put ("H O R S E   R A C E").
+    
+    put horse at start pos:
+      horse [i] := start pos.
+    
+    mark start of track:
+      cursor (1, 2 * i + 1);
+      put (i);
+      put ("*").
+    
+    mark end of track:
+      cursor (end pos, 2 * i + 1);
+      put ("|").
+    
+  choose horse:
+    INT CONST ix :: random (1, no of horses).
+  
+  move horse:
+    cursor (horse [ix], 2 * ix + 1);
+    put (".*");
+    horse [ix] INCR 1.
+  
+  finished:
+    horse [ix] >= end pos.
+  
+  display winner:
+    cursor (start pos - 1, 2 * no of horses + 4);
+    put ("The winner is horse number:");
+    put (ix);
+    line (2).
+  
+

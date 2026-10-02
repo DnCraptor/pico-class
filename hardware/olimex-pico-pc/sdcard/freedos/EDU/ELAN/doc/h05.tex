@@ -1,0 +1,731 @@
+\chapter{THE ELAN PROGRAMMING ENVIRONMENT}
+
+The user interface of the Elan Programming Environment is by
+itself rather simple, but its description gets rather complicated
+because of the many ways of interaction with the user. For concise
+description, we will denote the ``return'' or ``enter'' key by
+{\tt <RET>} and the ``delete'' or ``rubout'' key by {\tt <DEL>},
+the ``backspace'' key by {\tt <DEL LEFT>}.
+The {\tt <BREAK>} is a special key to
+notify the Elan Programming Environment to stop whatever it is
+doing. Its realization may well be different for the various
+implementations (CNTL-C, BREAK-key, special buttons, etc.; read
+the documentation which is distributed on the floppy disc with the
+software). In screen output, the cursor is depicted as \cursor.
+
+\section{Components of the Elan Programming Environment}
+ 
+The Elan Programming Environment conceptually consists of six
+functional modules, communicating by way of a common data structure
+(the {\em memory}) and (in some cases recursively) invoking each
+other's services.
+
+\subsection{Modules of the Elan Programming Environment}
+
+The modules of the Elan Programming Environment are:
+
+\begin{itemize}
+\item	The {\em monitor}, acting as a command interpreter, provides
+	most of the user interface and invokes all other modules.
+\item	The {\em translator} accepts input of definitions, translates
+	them to internal form and stores them into memory.
+\item	The {\em lister} provides a structured overview of the
+	defined names and their definitions.
+\item	The {\em editor} takes care of all text input, for example
+	when entering or editing a definition.
+\item	The {\em checker} performs the checking of some static
+	properties of the program prior to its execution.
+\item	The {\em executor} executes checked programs.
+\end{itemize}
+
+The relationship between these modules is displayed in the following figure:
+
+\pic(315,180){\small
+  \put(000,170){\underline{\rm modules}}
+  %
+  \put(155,150){\oval(70,20)}
+  \put(120,150){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut monitor}}}
+  \put(140,140){\vector(-2,-1){20}}
+  \put(150,140){\vector(-1,-1){20}}
+  \put(160,140){\vector(1,-1){20}}
+  \put(170,140){\vector(2,-1){20}}
+  %
+  \put(035,100){\oval(70,20)}
+  \put(000,100){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut editor}}}
+  \put(055,090){\vector(0,-1){20}}
+  %
+  \put(115,100){\oval(70,20)}
+  \put(080,100){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut lister}}}
+  \put(080,100){\vector(-1,0){10}}
+  %
+  \put(195,100){\oval(70,20)}
+  \put(160,100){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut checker}}}
+  \put(215,090){\vector(0,-1){20}}
+  %
+  \put(075,060){\oval(70,20)}
+  \put(040,060){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut translator}}}
+  \put(110,060){\vector(1,0){10}}
+  %
+  \put(235,060){\oval(70,20)}
+  \put(200,060){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut executor}}}
+  \put(255,050){\vector(0,-1){20}}
+  %
+  \put(155,060){\oval(70,20)[t]}
+  \put(120,060){\line(0,-1){50}}
+  \put(190,060){\line(0,-1){50}}
+  \put(155,010){\oval(70,20)[b]}
+  \put(120,060){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut memory}}}
+  \put(135,070){\vector(0,1){20}}
+  \put(175,070){\vector(0,1){20}}
+  \put(145,045){\thicklines\line(1,-1){030}}
+  \put(155,035){\thicklines\line(-1,-1){020}}
+  \put(145,025){\thicklines\line(1,-1){010}}
+  %
+  \put(020,025){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut program}}}
+  \put(055,030){\vector(0,1){20}}
+  %
+  \put(220,025){\raisebox
+                {-005\unitlength}
+                {\makebox(070,010){\tt\strut results}}}
+  %
+}
+
+\subsection{The memory}
+
+The {\em memory} holds the following information:
+
+\begin{itemize}
+\item	a table of all names with their attributes (the {\em name list}),
+\item	the {\em stack}, the {\em heap} and
+\item	the definitions forming the program, in some internal form.
+\end{itemize}
+
+\noindent
+Unfortunately, present-day computers do not retain the contents
+of their memory upon being switched off, so that the memory must
+be explicitly written to a file in order to be able to read it
+back later.
+
+During execution the executor tries to recycle all space in the
+heap taken up by objects that are no longer needed. It may however
+happen that a program needs more space than is available. Thus
+the memory can get exhausted; the only way out is to save the
+program in a file (by means of a write-command) and to start
+again.
+
+\subsection{File store}
+
+The Elan Programming Environment was designed to run under
+any operating system on a variety of compilers. It uses the file
+system of the host computer for storing files, adhering to the
+conventions of that system.
+
+\section{The user interface}
+
+\subsection{Moods}
+
+From the standpoint of the user, the Elan Programming Environment
+can be in a number of {\em moods} (states), each with its own
+behaviour. In each of those moods, the Elan Programming Environment
+accepts a number of single-letter {\em commands}. These moods,
+with their associated commands are:
+
+\begin{itemize}
+\item command-mood\\    {\tt c d e f l p q r s t v w x } (see 5.3)
+\item edit-mood\\       {\tt <RET> <BREAK> } (see 5.4)
+\item execute-mood\\    {\tt <BREAK> } (see 5.5)
+\item backtrace-mood\\  {\tt e n q s } (see 5.5.2)
+\item trace-mood\\      {\tt b c e n p q s x <BREAK> } (see 5.5.3)
+\item verify-mood\\     {\tt b c e n p q s x <BREAK>   } (see 5.5.4)
+\end{itemize}
+
+\noindent
+The current mood is indicated by a message in the right-hand
+corner of the bottom line of the screen, the {\em status line}.
+The left-hand corner of the status line is used for error messages.
+
+Each mood has its own set of possible commands, some of which
+will cause the Elan Programming Environment to switch into another
+mood.
+
+\subsection{Commands}
+
+Commands consist of single letters. On some computers they may
+be realized as special function keys or as choices from a menu.
+Commands are not echoed on the screen, and are obeyed immediately,
+without waiting for a {\tt <RET>} key to be pressed. This contributes
+to the interactive feeling of the Elan Programming Environment.
+
+To an unknown or unacceptable command the Elan Programming Environment
+reacts by showing for about one second a menu of all acceptable
+commands (we use the {\em negative menu} technique: a menu is
+displayed only when an unacceptable command is given). In all
+moods except edit-mood and execute-mood the letter {\tt h }(help-command)
+can be used to provoke such a menu.
+
+\subsection{Names}
+
+The Elan Programming Environment knows at any time a collection
+of names, each of which may be {\em undefined}, or have one or more
+definitions. Under the guidance and control of the Elan Programming
+Environment names can be manipulated and definitions supplied
+to form a program. All names which are known to the Elan Programming
+Environment are stored in the {\em name list}.
+
+A name with which one or more definitions associated have been
+we will call a {\em defined} name. Depending on the way in which
+their definitions are brought into the Elan Programming Environment
+these are either {\em visible} or {\em hidden}. Definitions from
+packets (for example the standard Elan Library) are hidden, the
+others are visible. In an overview of known names the Elan Programming
+Environment will show only those names which have associated
+a visible definition.
+
+Names which do not have any associated definition are called
+{\em undefined}. Once a name is mentioned to the Elan Programming
+Environment it will remain in the name list even when it is undefined.
+It is important to know this when using abbreviated names (see
+later). 
+
+Some names, as, for example, the keywords of Elan. Look like
+valid names, but no definition can be associated with them. These
+are called {\em undefinable} .
+
+\subsection{Focus and prompt}
+
+There is always one name, called the focus, which is the current
+center of interest. After the completion of each command, the
+Elan Programming Environment prompts with the focus, indicating
+its readiness to accept further commands. The focus is extended
+by a type indication, indicating whether there exists a definition
+associated with the name, and if so, what kind of definition
+(refinement, {\tt PROC}edure, {\tt OP}erator, {\tt LET} or {\tt TYPE}).
+
+Undefined names are recognized by a question mark:
+
+\begin{elan}
+        program ?\cursor
+\end{elan}
+
+\noindent
+or
+
+\begin{elan}
+        RESL ?\cursor
+\end{elan}
+
+\noindent
+Refinement names have a colon mark:
+
+\begin{elan}
+        take next:\cursor
+\end{elan}
+
+\noindent
+The names of procedures and operators are {\em generic}, i.e.
+can have more than one definition. The headings of all definitions
+of the name are shown. Procedures and operators are indicated
+like: 
+
+\begin{elan}
+        PROC put (INT a):\cursor
+        PROC put (REAL a):
+        PROC put (TEXT a):
+\end{elan}
+
+\noindent
+or
+
+\begin{elan}
+        TEXT OP CAT (TEXT CONST a):\cursor
+\end{elan}
+
+{\tt LET} definitions for values and types have a let mark:
+
+\begin{elan}
+        LET n\cursor
+\end{elan}
+
+\noindent
+or
+
+\begin{elan}
+        LET VECTOR\cursor
+\end{elan}
+
+{\tt TYPE} definitions are displayed like:
+
+\begin{elan}
+        TYPE T\cursor
+\end{elan}
+
+Initially, the focus is the name {\tt program}, being as yet
+undefined. Thus, the initial prompt looks like:
+
+\begin{elan}
+        program ?\cursor 
+\end{elan}
+
+\noindent
+Another name can be chosen as focus by the focus-command (see 5.3).
+
+Upon focussing on a generic name the cursor appears at the heading
+of the first definition.
+By (repeatedly) giving a next-command ({\tt n}), it is possible to
+navigate over the various definitions of a generic algorithms, e.g.
+(after one {\tt n}):
+
+\begin{elan}
+        PROC put (INT a):
+        PROC put (REAL a):\cursor
+        PROC put (TEXT a):
+\end{elan}
+
+\noindent
+It is now the second definition which is the focus for e.g. an
+edit- or show-command.
+
+\subsection{Program and root}
+
+To the Elan Programming Environment, a program does not consist
+of one sequential text but rather of a number of independent
+definitions, whose order plays no role. In order to construct
+a program, its definitions have to be input one by one. Some
+commands (the check-command and the execute-command) require
+the focus to be a refinement, taken as a description of the composition
+of the program. This refinement is called the {\em root }of the
+program. By default the Elan Programming Environment assumes
+the first refinement entered or read from a file to be the name
+of the root of the program.
+
+\subsection{Initial state}
+
+In the initial state the Elan Programming Environment is in
+command-mood and its memory contains only the definitions of
+the standard Elan Library. On the screen can be seen an identification
+of the Elan Programming Environment. The initial prompt indicates
+that the focus is {\tt program}, as yet undefined, which serves
+as a suitable root for many programs.
+
+\section{The command-mood}
+ 
+The command-mood can be recognized by the message {\tt Command, please...}
+on the right-hand side of the status line. In command-mood, the
+commands listed below are accepted. Most of them have the focus
+as an implicit parameter. After the execution of each command
+the Elan Programming Environment prompts with the current focus
+and returns to the command-mood.
+
+\begin{itemize}
+\item{\tt f } focus-command
+
+The focus-command shows {\tt Focussing...} on the status line, and
+asks for the name which should become the focus of interest.
+So the focus-command can be used to focus on a new name, thus
+allowing navigation over program parts. 
+
+The focus-command allows a defined name to be abbreviated by
+replacing its last characters by a star (e.g. {\tt prog*}). The Elan
+Programming Environment then searches the name list for a match,
+and complains {\tt Known name ?} if no match is possible.
+\item{\tt e } edit-command
+	
+The edit-command serves to assign a new definition to the focus,
+or to modify the definition of the focus. 
+
+The name and (if present) the body of the definition whose name
+is the focus are shown on the screen and an opportunity is given
+for local editing. On the status line {\tt Input, please...} is displayed
+(see 5.4 for a description of the edit-mood).
+\item{\tt s } show-command
+
+The definition of the focus is shown on the screen. In case
+the focus is generic, the definition indicated by the cursor
+is shown (the cursor can be moved to another definition of focus
+by the next-command {\tt n}). Immediately after the execution
+of a program it is also possible to focus on an object created
+during the execution; in that case its type, access attribute,
+name and value can be inspected by the show-command.
+\item{\tt n } next-command
+
+The next-command serves to move the cursor over the various
+definitions of a generic name. It has no effect for non-generic
+names.
+\item{\tt x } execute-command
+
+The execute-command serves to execute the program whose root
+is the focus. It shows {\tt Executing...} on the status line. After
+execution of a program, its objects (variables and constants)
+can be inspected by means of the show-command. At the start of
+an execution, all objects are made undefined. See section 5.5
+for a description of the execute-mood.
+\item{\tt t } trace-command
+
+Same as the execute-command, but the execution takes place in
+trace-mood. This mood is recognized by the request
+{\tt Trace command, please...} on the status line.
+See section 5.5 for a further description of the trace-mood.
+\item{\tt v } verify-command
+
+Special form of tracing execute-command, in which the types
+of the syntactical constructs are shown rather than their values.
+This mode is recognized by the request {\tt Verify command, please...}
+on the status line. See section 5.5 for a further description
+of the verify-mood.
+\item{\tt l } list-command
+
+The list-command serves to give a overview of all names having
+a visible definition. This overview begins with a bottom-up
+part (a list of all names with type {\tt LET}, {\tt PROC}, {\tt OP}
+or {\tt TYPE}).
+
+After this a structured overview of the refinements of the program
+is given. If the focus is a refinement, the names of all refinements
+which appear in its body are displayed with a suitable indentation
+on the next line(s). The process is invoked recursively if a
+refinement is expressed in terms of other refinements, with
+the exception that no name appears more than once in this overview.
+As a consequence the overview gives an indication about the structure
+of the focus, considered as root of a program.
+
+After this overview a list is given of all refinements which
+remain, and so are no part of the program having the focus as
+root. Some of them might be candidates for deletion.
+
+Names from the built-in library (see appendix A) and
+from a packet are not listed.
+It is however possible to focus on a library name and show its
+definition.
+\item{\tt d } delete-command
+
+The delete-command deletes the definitions of the current focus.
+
+The Elan Programming Environment asks for confirmation (to be
+answered with {\tt y} or {\tt n}) before doing anything so drastic.
+It gives a warning before deleting definitions from the standard
+library.
+\item{\tt r } read-command
+
+The read-command serves to read a program, which was previously
+written to a file, back into memory. It reports {\tt Reading...} on
+the status line. It adds the definitions of that program to
+the current contents of the memory, overwriting refinements with
+the same name. It may be necessary to first save the current
+program by writing it to a file ({\tt w}), or to first clear
+the memory ({\tt c}). The read-command asks for the name of a
+file. If a file with that name is present, the program it contains
+is read. After reading, {\tt program }will be the new focus.
+During the reading of the program, the names of the definitions
+are listed on the display. Finally a structured overview is
+given of all definitions. 
+
+If a file with the desired name was not present the Elan Programming
+Environment produces an overview of all program files that are
+present (again a negative menu). 
+ 
+The conventions for file names are those of the operating system
+running the Elan Programming Environment.
+\item{\tt p } packet-command
+
+The packet-command also serves to read a program into memory.
+It reports {\tt Reading...} on the status line. It is a variant
+of the read-command, with the following differences:
+
+\begin{itemize}
+\item 	Definitions read by the packet-command are hidden: they
+	are not mentioned by the list-command. They can be inspected
+	by the show-command. However, they can not be modified by an
+	edit-command, with the exception of (generic) procedures and operators.
+\item	In writing a program consisting wholly or partly of hidden
+	definitions, only the visible definitions are written.
+\end{itemize}
+\item{\tt w } write-command
+
+The write-command serves to write all visible definitions from
+memory with the root as the first refinement onto a file. It
+reports {\tt Writing...} on the status line. It asks the user for a
+file name. Any existing file of that name is overwritten. Hidden
+definitions (see the packet-command) are not written.
+
+The conventions for file names are those of the operating system
+running the Elan Programming Environment.
+\item{\tt c } clear-command
+
+The clear-command, upon confirmation, clears the memory, bringing
+the Elan Programming Environment back into its initial state.
+It reports  {\tt Clearing...} on the status line.
+\item{\tt q } quit-command
+
+The quit-command, upon confirmation, halts the Elan Programming
+Environment and returns control to the operating system of the
+computer.
+\end{itemize}
+
+\section{Reading and editing of programs}
+
+While reading or editing a program, the Elan Programming Environment
+accepts text from a file or from the keyboard, one definition
+at a time, and translates it to internal form, performing a running
+Context-Free syntax check as the lines come in.
+
+Upon finding a syntactic error, the translator attempts to arrive
+at a syntactically correct program in interaction with the user,
+offering the incorrect definition for local editing as often
+as necessary. By hitting {\tt <BREAK>} the user may end this attempt.
+
+The editing of existing parts of a program is based on replay:
+some definition is displayed on the screen, and can be modified
+at will by the user, after which the translator reads the text
+on the screen as input. The new definition may overwrite the
+old one.
+
+\subsection{Local editing}
+
+Local editing is performed in edit-mood, which is recognized
+by {\tt Input, please...} on the status line.
+Local editing allows the user to enter and modify a text field
+(which may well be longer than a line on the screen). Local editing
+is ended by hitting {\tt <RET>} (or aborted by hitting {\tt <BREAK>}). Up
+to this event, the text field can be modified by modifying its
+image on the screen.
+
+During local editing, the cursor can be moved freely over the
+screen within specific boundaries. Assume zero or more lines
+have been entered and the cursor is somewhere within this field.
+
+\begin{itemize}
+\item	By means of {\tt <RET>} the user indicates that this line of
+	input is completed; the translator now starts processing it.
+	After processing a complete definition the translator returns
+	to command-mood, otherwise it recursively asks the editor for
+	a next line of input.
+\item	With the {\tt <BREAK>} key the text modification or entering
+	can be aborted in such a way that it has no effect.
+\item	The {\tt <DEL>} key deletes the character under the cursor, if any.
+\item	The {\tt <DEL LEFT>} key deletes the character to the left of
+	the cursor, if any.
+\item	The arrow keys allow the movement of the cursor over the
+	text field (but not outside it).
+\item	Any key which is not a control key inserts the corresponding
+	character at the position of the cursor, and moves the cursor right.
+\end{itemize}
+
+\subsection{Incremental correction}
+
+If the translator is of the opinion that a specific symbol was
+omitted or if it expects a specific syntactic construction (identifier;
+attribute {\tt VAR }or {\tt CONST}; unit or declaration ...)
+it gives an error message to that effect in the lower left corner
+of the screen and offers the directly surrounding definition
+for local editing. The cursor is positioned at the place of the
+supposed error.
+As an example, suppose the user types as a unit
+
+\begin{elan}
+        ROW INT VOR a
+\end{elan}
+
+\noindent
+The translator complains {\tt Number of elements ?} and offers
+
+\begin{elan}
+        ROW \cursor INT VOR a
+\end{elan}
+
+\noindent
+The user dutifully inserts {\tt 10} and hits the return key.
+The translator now complains {\tt VAR/CONST ?} and offers
+
+\begin{elan}
+        ROW 10 INT \cursor VOR a
+\end{elan}
+
+\noindent
+The user changes {\tt VOR }into {\tt VAR} and hits the return
+key {\tt <RET>}, whereupon the translator accepts the rest of the line
+in silence and waits for the next line.
+This same incremental correction facility is available for correcting
+input during reading from a file.
+
+As the Elan Programming Environments does not impose restrictions
+on the order of the definitions and the user might introduce
+all kinds of weird operators, like {\tt THAN}, situations can
+occur in which the error signalling is not so helpful. For example,
+if the user types
+
+\begin{elan}
+        IF a>=0 THAN a ELSE -a FI
+\end{elan}
+
+\noindent
+the Elan Programming Environment will now complain {\tt THEN ?} and
+offer
+
+\begin{elan}
+        IF a>=0 THAN a \cursor ELSE -a FI
+\end{elan}
+
+\noindent
+apparently considering {\tt THAN }to be meant as an operator
+and so interpreting this construction as
+
+\begin{elan}
+        IF a >= (0 THAN a) ELSE -a FI
+\end{elan}
+
+The error reported on the bottom line of the screen should be
+seen as just a suggestion! It is the best the programming environment
+can do, but it is up to the user to decide what it was he wanted
+to express and how to repair the error.
+
+\subsection{Break}
+
+If the user hits {\tt <BREAK>} during input, the edit-mood is aborted
+and the Elan Programming Environment reverts to command-mood.
+This facility is helpful in order to recover from a total tangle
+of errors during input from a file (read-command).
+
+\section{The execute- and related moods}
+ 
+The executor first calls the checker and, if no errors were
+found, starts executing the program. If an error occurs, a back-trace
+is given (see 5.5.2).
+ 
+Execution can be terminated by giving a {\tt <BREAK>}, upon which the
+Elan Programming Environment reverts to trace-mood.
+
+\subsection{The checker}
+
+The checker is invoked automatically before execution. It takes
+at most a few seconds, showing {\tt Checking...} on the status line.
+It checks, amongst others, the following:
+
+\begin{itemize}
+\item	is every applied name defined exactly once?
+\item 	do types match in
+	\begin{itemize}
+	\item	source and destination of an assignation?
+	\item	all parts of a conditional?
+	\item	a numerical choice?
+	\end{itemize}
+\item	are all operations defined for the type of operands given?
+\item	are all conditions of type {\tt BOOL}?
+\item	are all indices and bounds of type {\tt INT}?
+\item	are all identifiers, used as bounds, synonym identifiers?
+\item	are only rows subscripted?
+\item	are only fields selected from?
+\end{itemize}
+
+\noindent
+Furthermore, it performs the identification of generic algorithms,
+reporting errors by giving a backtrace.
+
+\subsection{The backtrace-mood}
+
+Once the Elan Programming Environment has found a semantic
+error, it enters backtrace-mood, displaying {\tt Backtrace command, please...}
+on the right of the status line, with an error description on the left
+of the status line. The backtrace-mood offers to the user the
+opportunity of unfolding the static nesting of the present unit
+and listing it. After each unit listed, the Elan Programming
+Environment waits for the next wish of the user, which can be
+one of the following:
+
+\begin{itemize} 
+\item{\tt e}        edit-command
+
+modify the definition containing this unit and return to the
+command-mood. 
+\item{\tt n}        next-command
+
+continue backtracing; return to command-mood if current unit
+is root of program, otherwise display unit immediately surrounding
+current unit. 
+\item{\tt s}        show-command
+ 
+show the definition and the value of a given name.
+\item{\tt q}        quit-command
+
+stop backtracing, return to command-mood.
+\end{itemize}
+
+\noindent
+This mechanism serves to pinpoint semantic errors in the program.
+
+\subsection{The trace-mood}
+ 
+The trace-mood can be entered by the user by means of a trace-command
+({\tt t}). It can also be entered from a program by a call of {\tt assert}
+(see appendix A.10). In the trace-mood, which is indicated by
+{\tt Trace command, please...} on the status line, the executor lists every unit
+before executing it, and asks for a command as follows:
+
+\begin{itemize}
+\item	If the unit is simple (i.e. not a invocation of a procedure,
+	refinement or operator and not a control structure), it is
+	executed. If this unit yields a result, this is displayed.
+\item	If the unit is such an invocation or a control structure, it is
+	listed and the executor waits for one of the following commands:
+
+	\begin{itemize}
+	\item{\tt b } backtrace-command
+
+	The Elan Programming Environment switches to the backtrace-mood.
+	\item{\tt c } continue-command
+
+	The remainder of the program is executed without trace.
+	\item{\tt e } edit-command
+
+	Execution is terminated, and the definition that contains
+	the current unit is offered for local editing.
+	\item{\tt n } next-command
+
+	The body of the current unit is executed in trace mode.
+	\item{\tt p } previous-command
+
+	All the remaining units (entered by the last next-command)
+	are executed (without trace), if the body yields a result
+	this is displayed and the trace-mood is re-entered.
+	\item{\tt q } quit-command
+
+	Return to the command mode.
+	\item{\tt s } show-command
+
+	A known name (may be abbreviated) is asked and the definition
+	and the definition of that name is displayed.
+	\item{\tt x } execute-command
+
+	The body is executed (without trace), its result (if any)
+	is displayed and trace-mood is re-entered.
+	\end{itemize}
+\end{itemize}
+
+\noindent
+At the end of each body the executor waits again for a valid
+trace-command.
+
+\subsection{The verify-mood}
+
+In some cases deeper insight in the cause of a semantic error may be
+acquired from stepwise inspection of types of program constructs. This
+can be accomplished by the verify-command, which causes the checker to
+run in trace-mood. Its behaviour is analogous to the trace-mood, with
+the exception that the types of the program constructs are displayed
+rather than their value.
+

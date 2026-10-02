@@ -1,0 +1,92 @@
+
+TYPE POINT = STRUCT (REAL x, y);
+
+PROC show point (POINT CONST p):
+  move (p.x, p.y);
+  plot pixel
+ENDPROC show point;
+
+POINT PROC mid (POINT CONST a, b):
+  POINT: [a.x + (b.x - a.x) / 2.0, a.y + (b.y - a.y) / 2.0]
+ENDPROC mid;
+
+PROC line parameters (POINT CONST a1, a2, REAL VAR m, c):
+  m := (a1.y - a2.y) / (a1.x - a2.x);
+  c := a1.y - m * a1.x
+ENDPROC line parameters;
+
+BOOL PROC inside triangle (POINT CONST a, b, c, x):
+  crosspoint on the side (x, a, b, c) AND crosspoint on the side (x, b, c, a) AND crosspoint on the side (x, c, a, b)
+ENDPROC inside triangle;
+
+BOOL PROC crosspoint on the side (POINT CONST p, pc, oc1, oc2):
+  POINT VAR cross;
+  IF crossing (p, pc, oc1, oc2, cross)
+  THEN between (cross.x, oc1.x, oc2.x) AND between (cross.y, oc1.y, oc2.y)
+  ELSE FALSE
+  FI
+ENDPROC crosspoint on the side;
+
+BOOL PROC crossing (POINT CONST a1, a2, b1, b2, POINT VAR crp):
+  REAL VAR ma, ca, mb, cb;
+  line parameters (a1, a2, ma, ca);
+  line parameters (b1, b2, mb, cb);
+  IF ma = mb
+  THEN FALSE
+  ELSE
+    crp.x := (ca - cb) / (mb - ma);
+    crp.y := mb * crp.x + cb;
+    TRUE
+  FI
+ENDPROC crossing;
+
+BOOL PROC between (REAL CONST x, a, b):
+  IF a <= b
+  THEN a <= x AND x <= b
+  ELSE b <= x AND x <= a
+  FI
+ENDPROC between;
+
+program:
+  POINT VAR a, b, c, x;
+  INT VAR i;
+  LET iterations = 2000;
+  enter turtle graphics;
+  print title;
+  make triangle;
+  choose point;
+  FOR i UPTO iterations
+  REP
+    x := mid (choose random corner, x);
+    IF i > 30
+    THEN show point (x)
+    FI
+  ENDREP;
+  wait for confirmation (1, graphics y limit - line height);
+  leave turtle graphics.
+
+  print title:
+    move (1, 1);
+    put ("Sierpienski triangle");
+    line;
+    put ("made by a random process").
+  
+  make triangle:
+    a := POINT: [0.0, 0.0];
+    b := POINT: [100.0, 0.0];
+    c := POINT: [80.0, 100.0].
+  
+  choose point:
+    REP x := POINT: [100.0 * random, 100.0 * random]
+    UNTIL inside triangle (a, b, c, x)
+    ENDREP.
+  
+  choose random corner:
+    SELECT random (1, 3) OF
+      CASE 1: a
+      CASE 2: b
+      OTHERWISE c
+    ENDSELECT.
+  
+
+

@@ -1,0 +1,436 @@
+
+cola interpreter:
+  # Robi in Blocksworld #
+  initialize interpreter;
+  program;
+  shutup interpreter.
+
+PROC program:
+  clear command;
+  command part;
+  end command
+ENDPROC program;
+
+PROC clear command:
+  must be both (clear symbol, newline symbol);
+  evaluate command (clear symbol)
+ENDPROC clear command;
+
+PROC end command:
+  must be both (end symbol, newline symbol);
+  evaluate command (end symbol)
+ENDPROC end command;
+
+PROC command part:
+  WHILE NOT ahead (end symbol)
+  REP command
+  ENDREP
+ENDPROC command part;
+
+PROC command:
+  IF is (place symbol)
+  THEN should be place command
+  ELIF is (put symbol)
+  THEN should be put command
+  ELIF is (take symbol)
+  THEN should be take command
+  ELIF is (print symbol)
+  THEN should be print command
+  ELIF is (skip symbol)
+  THEN should be skip command
+  ELSE syntax error ("invalid command.")
+  FI
+ENDPROC command;
+
+PROC should be print command:
+  IF found (newline symbol)
+  THEN
+    evaluate command (print symbol)
+  FI
+ENDPROC should be print command;
+
+PROC should be skip command:
+  IF found (newline symbol)
+  THEN
+    read next line
+  FI
+ENDPROC should be skip command;
+
+PROC should be place command:
+  TEXT CONST box :: HEAD current symbol;
+  IF found (square symbol, triangle symbol, circle symbol)
+  THEN
+    IF found (newline symbol)
+    THEN
+      evaluate command (place symbol, box)
+    FI
+  FI
+ENDPROC should be place command;
+
+PROC should be put command:
+  TEXT CONST box1 :: HEAD current symbol;
+  IF found (square symbol, triangle symbol, circle symbol)
+  THEN
+    IF found (on symbol)
+    THEN
+      TEXT CONST box2 :: HEAD current symbol;
+      IF found (square symbol,
+                triangle symbol, circle symbol)
+      THEN
+        IF found (newline symbol)
+        THEN
+          evaluate command (put symbol, box1, box2)
+        FI
+      FI
+    FI
+  FI
+ENDPROC should be put command;
+
+PROC should be take command:
+  TEXT CONST box1 :: HEAD current symbol;
+  IF found (square symbol, triangle symbol, circle symbol)
+  THEN
+    IF is (off symbol)
+    THEN
+      IF found (newline symbol)
+      THEN
+        evaluate command (take symbol, box1)
+      FI
+    ELIF found (from symbol)
+    THEN
+      TEXT CONST box2 :: HEAD current symbol;
+      IF found (square symbol,
+                triangle symbol, circle symbol)
+      THEN
+        IF found (newline symbol)
+        THEN
+          evaluate command (take symbol, box1, box2)
+        FI
+      FI
+    FI
+  FI
+ENDPROC should be take command;
+
+initialize interpreter:
+  define symbols;
+  reserve space for representation;
+  initialize file operations;
+  read first line.
+
+define symbols:
+  LET circle symbol = "CIRCLE";
+  LET clear symbol = "CLEAR";
+  LET end symbol = "END";
+  LET from symbol = "FROM";
+  LET newline symbol = "";
+  LET on symbol = "ON";
+  LET off symbol = "OFF";
+  LET place symbol = "PLACE";
+  LET print symbol = "PRINT";
+  LET put symbol = "PUT";
+  LET skip symbol = "";
+  LET square symbol = "SQUARE";
+  LET take symbol = "TAKE";
+  LET triangle symbol = "TRIANGLE".
+
+reserve space for representation:
+  LET shelfsize = 8, maxheight = 6;
+  ROW shelfsize ROW maxheight TEXT VAR shelf;
+  ROW shelfsize INT VAR towerheight;
+  INT VAR i.
+
+PROC evaluate command (TEXT CONST cmd, box):
+  IF cmd = place symbol
+  THEN evaluate place command
+  ELIF cmd = take symbol
+  THEN evaluate takeoff command
+  FI.
+
+evaluate place command:
+  FOR i FROM 1 UPTO shelfsize
+  REP
+    IF towerheight [i] = 0
+    THEN
+      towerheight [i] INCR 1;
+      shelf [i] [towerheight [i]] := box;
+      read next line;
+      LEAVE evaluate place command
+    FI
+  ENDREP;
+  semantic error ("shelf full.").
+
+evaluate takeoff command:
+  FOR i FROM 1 UPTO shelfsize
+  REP
+    IF towerheight [i] = 1
+    THEN
+      IF shelf [i] [1] = box
+      THEN
+        towerheight [i] := 0;
+        read next line;
+        LEAVE evaluate takeoff command
+      FI
+    FI
+  ENDREP;
+  semantic error ("no such box on the shelf.").
+
+ENDPROC evaluate command;
+
+PROC evaluate command (TEXT CONST cmd, box1, box2):
+  IF cmd = put symbol
+  THEN evaluate puton command
+  ELIF cmd = take symbol
+  THEN evaluate takefrom command
+  FI.
+
+evaluate puton command:
+  IF box2 <> HEAD square symbol
+  THEN
+    semantic error ("base box is not a square.")
+  ELIF box1 = HEAD circle symbol
+  THEN
+    semantic error ("circle cannot be put on other box.")
+  ELIF proper box found
+  THEN
+    towerheight [i] INCR 1;
+    shelf [i] [towerheight [i]] := box1;
+    read next line
+  ELSE semantic error ("no such box.")
+  FI.
+
+proper box found:
+  FOR i FROM 1 UPTO shelfsize
+  REP
+    IF towerheight [i] > 0 AND towerheight [i] < maxheight
+    THEN
+      IF shelf [i] [towerheight [i]] = box2
+      THEN
+        LEAVE proper box found WITH true
+      FI
+    FI
+  ENDREP;
+  false.
+
+evaluate takefrom command:
+  IF box2 <> HEAD square symbol
+  THEN
+    semantic error ("base box is not a square.")
+  ELIF proper box pair found
+  THEN
+    towerheight [i] DECR 1;
+    read next line
+  ELSE
+    semantic error ("no such box.")
+  FI.
+
+proper box pair found:
+  FOR i FROM 1 UPTO shelfsize
+  REP
+    IF towerheight [i] > 1
+    THEN
+      IF shelf [i] [towerheight [i]] = box1 AND
+         shelf [i] [towerheight [i] - 1] = box2
+      THEN
+        LEAVE proper box pair found WITH true
+      FI
+    FI
+  ENDREP;
+  false.
+
+ENDPROC evaluate command;
+
+PROC evaluate command (TEXT CONST cmd):
+  IF cmd = clear symbol
+  THEN evaluate clear command
+  ELIF cmd = print symbol
+  THEN evaluate print command
+  ELIF cmd = end symbol
+  THEN evaluate end command
+  FI.
+
+evaluate clear command:
+  FOR i FROM 1 UPTO shelfsize
+  REP towerheight [i] := 0
+  ENDREP;
+  read next line.
+
+evaluate print command:
+  print world;
+  read next line.
+
+print world:
+  line;
+  INT VAR j;
+  FOR j FROM maxheight DOWNTO 1
+  REP
+    FOR i FROM 1 UPTO shelfsize
+    REP
+      IF towerheight [i] < j
+      THEN
+        put (2 * " ")
+      ELSE
+        put (shelf [i] [j] + " ")
+      FI
+    ENDREP;
+    line
+  ENDREP;
+  put ((2 * shelfsize - 1) * "-").
+
+evaluate end command:
+  .
+
+ENDPROC evaluate command;
+
+initialize file operations:
+  TEXT VAR infile name :: "robi.cla",
+           outfile name :: "robi.cla";
+  BOOL VAR infile opened :: false,
+           outfile opened :: false;
+  put ("Input from file: ");
+  edit (infile name, 1);
+  IF infile name <> ""
+  THEN
+    old file (infile name);
+    infile opened := true
+  FI;
+  line;
+  put ("Output to file: ");
+  edit (outfile name, 1);
+  IF outfile name <> "" AND outfile name <> infile name
+  THEN
+    new file (outfile name);
+    outfile opened := true
+  FI.
+
+read first line:
+  TEXT VAR current line :: "";
+  INT VAR topos :: 0, charpos;
+  TEXT VAR current symbol;
+  read next line.
+
+PROC read next line:
+  write line (current line);
+  read a line;
+  topos := 0;
+  read next symbol.
+
+read a line:
+  IF infile opened
+  THEN read a line from file
+  ELSE read a line from keyboard
+  FI.
+
+read a line from file:
+  WHILE NOT file ended
+  REP
+    read (current line);
+    current line := compress (current line)
+  UNTIL current line <> ""
+  ENDREP;
+  line;
+  put (current line).
+
+read a line from keyboard:
+  line;
+  put ("Next cmd, please: ");
+  REP
+    edit (current line, 1);
+    current line := compress (current line)
+  UNTIL current line <> ""
+  ENDREP.
+
+ENDPROC read next line;
+
+PROC write line (TEXT CONST t):
+  IF outfile opened
+  THEN
+    write (t);
+    write line
+  FI
+ENDPROC write line;
+
+PROC read next symbol:
+  charpos := topos + 1;
+  skip leading spaces;
+  topos := pos (current line, " ", charpos + 1);
+  IF topos <= charpos
+  THEN topos := LENGTH current line + 1
+  FI;
+  current symbol :=
+          subtext (current line, charpos, topos - 1).
+
+  skip leading spaces:
+    WHILE (current line SUB charpos) = " "
+    REP charpos INCR 1
+    ENDREP.
+
+ENDPROC read next symbol;
+
+shutup interpreter:
+  write line (current line);
+  close file.
+
+PROC syntax error (TEXT CONST message):
+  offer line for editing (charpos, "Syntax: " + message)
+ENDPROC syntax error;
+
+PROC semantic error (TEXT CONST message):
+  offer line for editing (charpos, "Semantics: " + message)
+ENDPROC semantic error;
+
+PROC offer line for editing (INT CONST errpos,
+                             TEXT CONST message):
+  line;
+  put (message);
+  line;
+  put ("   Edit, please: ");
+  charpos := 1;
+  topos := charpos - 1;
+  edit (current line, errpos, charpos, ""13"");
+  current line := compress (current line);
+  read next symbol
+ENDPROC offer line for editing;
+
+BOOL PROC ahead (TEXT CONST sym):
+  current symbol = sym
+ENDPROC ahead;
+
+BOOL PROC is (TEXT CONST sym):
+  IF ahead (sym)
+  THEN
+    read next symbol;
+    true
+  ELSE
+    false
+  FI
+ENDPROC is;
+
+PROC must be both (TEXT CONST sym1, sym2):
+  WHILE NOT (is (sym1) AND is (sym2))
+  REP
+    syntax error (sym1 + " " + sym2 + " ?");
+  ENDREP
+ENDPROC must be both;
+
+BOOL PROC found (TEXT CONST sym1, sym2, sym3):
+  IF ahead (sym1) OR ahead (sym2) OR ahead (sym3)
+  THEN
+    read next symbol;
+    true
+  ELSE
+    syntax error (sym1 + " " + sym2 + " " + sym3 + " ?");
+    false
+  FI
+ENDPROC found;
+
+BOOL PROC found (TEXT CONST sym):
+  IF ahead (sym)
+  THEN
+    read next symbol;
+    true
+  ELSE
+    syntax error (sym + " ?");
+    false
+  FI
+ENDPROC found;
+

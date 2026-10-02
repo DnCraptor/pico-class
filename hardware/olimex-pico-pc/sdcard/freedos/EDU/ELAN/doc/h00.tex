@@ -1,0 +1,263 @@
+\chapter*{INTRODUCTION}
+\addcontentsline{toc}{chapter}{INTRODUCTION}
+
+\section*{About this  manual}
+\addcontentsline{toc}{section}{About this manual}
+
+This is the user manual for version 1.5 of the Elan Programming
+Environment developed at the university of Nijmegen in the Netherlands,
+which is currently available on various UNIX machines, MS-DOS machines,
+Apple Macintosh, Atari and Amiga.
+It is distributed without warranty, for use in teaching.
+It offers a nearly complete version of the educational language Elan
+in the form of the Elan Programming Environment.
+
+This manual gives a short description for the user of the Elan Programming
+Environment. It assumes the reader to have a good knowledge of programming
+in algorithmic languages.
+
+This manual can not teach you how to program.
+For an English textbook on systematic programming with Elan we suggest:
+
+\begin{literal}
+C.H.A. Koster, TOP-DOWN PROGRAMMING with Elan,
+Ellis Horwood Series in Computers and their Applications,
+1987, ISBN 0-7458-0187-0 (\pounds 19.50 / \$ 37.45).
+\end{literal}
+
+\noindent
+which is marketed in the USA by Wiley, and can be ordered in the UK from
+
+\begin{literal}
+John Wiley and Sons ltd, FREEPOST, Baffinslane,
+CHICHESTER, West Sussex, PO19 1YP, England.
+\end{literal}
+
+\noindent
+The present manual starts with an example session, introducing
+the reader in a hands-on fashion to the use of the Elan Programming
+Environment. Then follows a brief introduction to Elan-0, the
+subset of Elan which is intended for introductory programming,
+followed by some examples. The second part of this manual starts
+with an overview of the full Elan language, in the form of annotated
+syntax diagrams. Then follows a description of the the user interface
+of the programming environment and some more ambitious examples.
+In an appendix an overview of the available library is given.
+
+\section*{About the language}
+\addcontentsline{toc}{section}{About the language}
+
+Elan was developed in 1974 by a group at the Technical University
+of Berlin (see [1]) as an alternative to BASIC in teaching,
+and approved for use in secondary schools in Germany by the
+``Arbeitskreis Schulsprache''.
+It is presently in use in a number of schools in Western Germany,
+Belgium, The Netherlands and Hungary for informatics teaching in secondary
+education, and used at the university of Nijmegen in the Netherlands
+for teaching systematic programming to students from various disciplines
+and in teacher courses.
+
+Elan was especially designed for one specific application area:
+the teaching of systematic programming. The language is not
+oriented towards general usage or towards other application areas.
+It can be seen as a didactic framework embodying a number of ideas
+about systematic programming and supporting, through specific
+language mechanisms, the learning of the two complementary programming
+styles
+
+\begin{itemize}
+\item Top-Down programming, using suitable control structures
+and data structures, refinements, and shorthand declarations; and
+\item Bottom-Up programming, using procedure-, operator- and
+type-declarations in conjunction with encapsulation and interfaces;
+\end{itemize}
+
+\noindent
+as well as a number of related programming styles (recursive
+programming, modular programming, syntax-directed programming).
+
+Elan is a typical algorithmic language in the ALGOL family,
+more related to ALGOL68 than to PASCAL.
+The language is not an experiment in language design; both 
+syntactically and semantically it is quite conventional.
+Its control structures are the conventional Dijkstra structures,
+in conjunction with a leave-statement. Its data structures are limited
+to the (fixed size) row and structure - not as rich as ALGOL 68
+but much simpler due to the absence of the reference concept.
+
+In order to support the learning of systematic programming, it stresses
+instead the use of abstraction mechanisms.
+Its striking features are:
+
+\begin{itemize}
+\item 	The {\em refinement} as a syntactic construct for the
+	support of Top-Down programming;
+\item 	Declarations for {\em procedures}, {\em types} and {\em operators}
+        for the
+	support of Bottom-Up programming; and
+\item 	{\em Packets with explicit interfaces}
+	for the support of modular programming (not realized in version 1.5).
+\end{itemize}
+
+\section*{About this implementation}
+\addcontentsline{toc}{section}{About this implementation}
+
+From the start, Elan was conceived by its designers as a family
+of (upward compatible) languages:
+
+\begin{itemize}
+\item Elan-0	A subset sufficient for learning well-structured
+		Top-Down programming, intended as a viable alternative
+		to BASIC for school use;
+\item Elan-1	A large subset, suitable for learning both Top-Down
+		and Bottom-Up programming;
+\item Elan-2	The full standard language. Suitable for use in
+		a classroom community because of its packet- and
+		precompilation mechanism;
+\item Elan-3	Extensions to the standard language for specialized
+		teaching in data structures in a university environment;
+\item Elan-4	A language for teaching the concepts of systems
+		implementation.
+\end{itemize}
+
+\noindent
+Of these 5 language levels, the first two have been implemented
+at the university of Nijmegen, with support from the Ministry
+of Education (NIVO project). Levels 3 and 4 are still the subject
+of experimentation. A compiler for Elan-3 is in development.
+
+This manual concerns the Elan-1 Programming Environment.
+Elan-1 differs from the the full language chiefly in the fact that
+it does not have the packet mechanism (and consequently no
+precompilation). It is, however, completely adequate for teaching
+systematic programming in secondary schools, and in courses for
+teachers and university students. The simplest industry standard PC,
+with at least one floppy drive and 256 Kb of memory, is sufficient
+for its use.
+For people having even smaller computers (like Apple II, Commodore 64
+and Philips 2000), implementations of the smaller Elan-0 Programming
+Environment are available from
+
+\begin{literal}
+Katholieke Universiteit Nijmegen,
+Informatica/Elan project,
+Toernooiveld 1,
+6525 ED Nijmegen, The Netherlands.
+Email:elan@cs.kun.nl
+\end{literal}
+
+\noindent
+The Elan Programming Environment is a portable environment. On
+any machine, it will behave as described here, apart from some
+frills and idiosyncrasies typical for the machine used (such
+as self-explanatory pull-down menus, etc.). Therefore it allows
+a high degree of machine independence in producing courseware.
+
+It should be realized that the present version 1.5 is an intermediate
+product. It is relatively slow, with severe limitations on the
+available memory. A more complete implementation of Elan is in
+preparation, including a packet library facility with pre-compilation
+and a compiler back-end. In the mean time the present version
+should be sufficient for most teaching purposes - and it will
+only get better.
+
+Any problems or requests about the Elan Programming Environment
+can be send to the same address. Note however, that the
+University of Nijmegen gives no warranty, and does not promise
+to correct errors reported in this version.
+
+\section*{About other implementations}
+\addcontentsline{toc}{section}{About other implementations}
+
+Two implementations of the full language (Elan-2) are available
+from other sources, the TUB and the EUMEL implementation.
+
+The TUB implementation follows the standard faithfully.
+It is available as a compiler on various machines
+(IBM 370, Nixdorff, large PC's) from
+
+\begin{literal}
+W. Koch,
+Forschungsgruppe Softwaretechnik,
+Technische Universit\"{a}t Berlin, FR 5-6,
+Franklinstrasse 28-29,
+D - 1000 Berlin 10.
+\end{literal}
+
+\noindent
+The EUMEL implementation offers an extented version of the full language,
+embedded in a complete multiuser environment and
+enriched with a large number of application packets.
+It is available as a programming environment
+on various machines (PC/AT with hard disc, Z8000 and MC68000 based
+systems with hard disc) from
+
+\begin{literal}
+ERGOS Gmbh,
+Bergstr. 7,
+D - 5200 Siegburg.
+\end{literal}
+\newpage
+
+\section*{Bibliography}
+\addcontentsline{toc}{section}{Bibliography}
+
+\noindent
+The Elan standard is described in:
+
+\begin{literal}
+\hspace{-\parindent}[1] %
+G. Hommel, J. J\"{a}ckel, S. J\"{a}hnichen, K. Kleine, W. Koch, C.H.A. Koster,
+ELAN-sprachbeschreibung,
+Akademische Verlagsgesellschaft, Wiesbaden 1979, ISBN 3-400-00384-0.
+\end{literal}
+
+\noindent
+Some Elan textbooks in various languages are:
+ 
+\begin{literal}
+\hspace{-\parindent}[2] %
+C.H.A. Koster, Top-Down Programming with Elan.
+Ellis Horwood, 1987, ISBN 0-7458-0187-0.
+
+\hspace{-\parindent}[3] %
+C.H.A. Koster, systematisch leren programmeren,
+deel 1: Top-Down programmering,
+Academic Service, 1988, ISBN 906233-371-0.
+
+\hspace{-\parindent}[4] %
+C.H.A. Koster, programoz\'{a}s fel\"{u}ln\'{e}zetben,
+M\"{u}szaki K\"{o}nyvkiad\'{o}, Budapest 1988, ISBN 963-10-7579-6.
+
+\hspace{-\parindent}[5] %
+L.H. Klingen, J. Liedtke, Programmieren mit ELAN.
+Teubner Verlag, Stuttgart 1983, ISBN 3-519-02507-8.
+\end{literal}
+
+\noindent
+Some textbooks using Elan:
+
+\begin{literal}
+\hspace{-\parindent}[6] %
+Baeten et.al., Initiatie in de informatica,
+handleiding voor de bijscholing leraren secundair onderwijs,
+2 delen, Acco Leuven/Amersfoort, 1985.
+
+\hspace{-\parindent}[7] %
+R. Danckwerts, D. Vogel, K. Bovermann,
+Elementare Methoden der Kombinatorik, mit Programmbeispielen in Elan,
+Teubner Verlag, Stuttgart 1985, ISBN 3-519-02529-9.
+
+\hspace{-\parindent}[8] %
+L.H. Klingen, J. Liedtke, Elan in 100 Beispielen,
+Teubner Verlag, Stuttgart 1985, ISBN 3-519-02521-3.
+
+\hspace{-\parindent}[9] %
+A. Otto, Analysis mit dem Computer,
+Teubner Verlag, Stuttgart 1985, ISBN 3-519-02528-0.
+\end{literal}
+
+\noindent
+A toolkit for an advanced data structure course can be obtained (in the
+form of a floppy disc) from the project group in Nijmegen.
+

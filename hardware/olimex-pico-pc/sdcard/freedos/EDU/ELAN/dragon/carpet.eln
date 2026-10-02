@@ -1,0 +1,21 @@
+
+program:
+  setup dragon;
+  start drawing;
+  draw dragon (days, start cell);
+  finish drawing.
+
+  setup dragon:
+    LET dragon name = "Sierpienski's Carpet";
+    LET directions = 4;
+    LET variants = 8;
+    LET children = 9;
+    ROW variants ROW children INT CONST offsprings :: [[0, 1, 0, 3, 6, 3, 0, 1, 0], [1, 2, 1, 0, 7, 0, 1, 2, 1], [2, 3, 2, 1, 4, 1, 2, 3, 2], [3, 0, 3, 2, 5, 2, 3, 0, 3], [4, 4, 4, - 1, - 1, - 1, - 1, - 1, - 1], [5, 5, 5, - 1, - 1, - 1, - 1, - 1, - 1], [6, 6, 6, - 1, - 1, - 1, - 1, - 1, - 1], [7, 7, 7, - 1, - 1, - 1, - 1, - 1, - 1]];
+    ROW variants INT CONST behavior :: [0, 1, 2, 3, 4, 5, 6, 7];
+    INT CONST days :: 4;
+    INT CONST start cell :: 0;
+    INT CONST size of cell :: 3;
+    INT CONST start x :: graphics x limit DIV 4;
+    INT CONST start y :: 3 * graphics y limit DIV 5.
+  
+

@@ -1,0 +1,58 @@
+
+PROC connect:
+   draw (side)
+ENDPROC connect;
+
+PROC peano right (INT CONST n):
+   IF n <> 0
+   THEN
+     turn left;
+     peano left (n - 1);
+     connect;
+     turn right;
+     peano right (n - 1);
+     connect;
+     peano right (n - 1);
+     turn right;
+     connect;
+     peano left (n - 1);
+     turn left
+   FI
+ENDPROC peano right;
+
+PROC peano left (INT CONST n):
+   IF n <> 0
+   THEN
+     turn right;
+     peano right (n - 1);
+     connect;
+     turn left;
+     peano left (n - 1);
+     connect;
+     peano left (n - 1);
+     turn left;
+     connect;
+     peano right (n - 1);
+     turn right
+   FI
+ENDPROC peano left;
+
+program:
+   ask order;
+   draw curve;
+   end program.
+
+ask order:
+   enter turtle graphics;
+   move (1, 1);
+   INT VAR order :: ask int ("Peano curve of order? ").
+
+draw curve:
+   REAL CONST limit :: min (turtle x limit, turtle y limit);
+   REAL CONST side :: limit * 2.0 ** - order;
+   turn right;
+   peano right (order).
+
+end program:
+   wait for confirmation (graphics x limit DIV 2, 1);
+   leave turtle graphics.
