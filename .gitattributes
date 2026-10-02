@@ -1,8 +1,11 @@
 # Бинарники прошивок и содержимое эталонной SD-карты: никаких преобразований EOL
 *.uf2 binary
+sdcard/** -text
 hardware/*/sdcard/** -text
 # Текстовые файлы на SD-карте, которые читает прошивка, храним байт-в-байт
+sdcard/**/config.sys -text
 hardware/*/sdcard/**/config.sys -text
 
 *.md text
+SHA256SUMS text eol=lf
 hardware/*/SHA256SUMS text eol=lf
