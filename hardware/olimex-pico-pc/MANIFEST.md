@@ -22,7 +22,7 @@
 | `sdcard/emu/PCp2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2` | [DnCraptor/murm386](https://github.com/DnCraptor/murm386) | v1.19, `main` = `a73cfd3` (2026-10-02) | 504 МГц / 1.6 В | `fe5e41767e916a4596c3b0a4590404aeb73f23190be29e261c6704e45690903c` |
 | `sdcard/emu/PCp2-speccy-VGA-HDMI-HSTX-1.0.8.uf2` | [drewpo28/pico-speccy](https://github.com/drewpo28/pico-speccy) | релиз [v1.0.8](https://github.com/drewpo28/pico-speccy/releases/tag/v1.0.8), тег `v1.0.8` = `119f372` (2026-09-29) | 378 МГц / 1.5 В (по умолчанию; 252–504 МГц и 1.15–1.80 В — в меню) | `9f577078666fc52e566ffde7736a0eb3132ce7676303c0f6cbce0a8e88f06155` |
 | `sdcard/emu/PCp2-frank_apple-HDMI-378MHz-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `b95b7c7` (2026-10-02), сборка без PSRAM | 378 МГц / 1.6 В | `088957d8cbb4b1b82de98bbef82766eb0a4e593dd7c198842a0521ef2ac32a0f` |
-| `sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2` | там же | 1.05, `b95b7c7` (2026-10-02), сборка с PSRAM 84 МГц | 378 МГц / 1.6 В | `843f27b6a76e26b46544499c3a6e3ade9792a4c0ed403ee6099daa7cccf33c7a` |
+| `sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2` | там же | 1.05, `9ca41fc` (2026-10-03), сборка с PSRAM 84 МГц | 378 МГц / 1.6 В | `4bfdf99cd9a92afa8ccaacc501819c923a7493232b2d319a4da1b7a50e2746b4` |
 
 Частота и напряжение взяты из имени файла и исходников сборки (`boards/olimex-pico-pc.h` у pico-nes, таблица видеорежимов у PICO-BK). Образ pico-nes не содержит дополнительного блока UF2 для errata RP2350-E10; на запуск из launcher и MOS2 это не влияет.
 

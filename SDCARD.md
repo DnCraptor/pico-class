@@ -114,14 +114,11 @@ murmapple ищет образы дисков в каталоге `/apple` (фо�
 | Файл | Что это | Что проверяет | Автор, источник | Лицензия |
 |---|---|---|---|---|
 | `SHORTPRG.DSK` | Short Programs — сборник коротких программ на Applesoft BASIC в одну-две строки: графика, анимация, звук | графика HGR/LORES, BASIC; хороший материал для модуля программирования — программы короткие и их можно разбирать | Lee Fastenau, [thelbane/Apple-II-Programs](https://github.com/thelbane/Apple-II-Programs) `3bc2568` | MIT |
-| `FIREWRKS.DSK` | Fireworks — демо «фейерверк»; любая клавиша включает/выключает звук | смешанные режимы HGR и LORES, звук через динамик | Vince Weaver, [deater/dos33fsprogs](https://github.com/deater/dos33fsprogs) `3a02734` | GPL v2 |
-| `XMAS2018.DSK` | Xmas 2018 — новогоднее демо с музыкой | графика HGR, музыка | там же | GPL v2 |
-| `XMAS2019.DSK` | Xmas 2019 — демо с музыкой для звуковой карты Mockingboard | эмуляция Mockingboard | там же | GPL v2 |
-| `FIRE.DSK` | Fire — небольшие эффекты «огня» | графика LORES | там же | GPL v2 |
+| `FIRE.DSK` | Fire — небольшие эффекты «огня» | графика LORES | Vince Weaver, [deater/dos33fsprogs](https://github.com/deater/dos33fsprogs) `3a02734` | GPL v2 |
 | `TB6502.DSK` | Tom Bombem — аркадная «стрелялка» | игровой процесс, звук | там же | GPL v2 |
 | `TFV.DSK` | Talbot Fantasy 7 — шуточная ролевая игра в режиме LORES | игровой процесс, клавиатура | там же | GPL v2 |
 
-Образы взяты из репозиториев без изменений, переименованы в короткие имена. Из dos33fsprogs не включены игры, основанные на чужих сюжетах и персонажах (Myst, Riven, Commander Keen, Duke, Monkey Island, Peasant's Quest и др.), из Apple-II-Programs — диск `fun-stuff.dsk` с рисунком чужого логотипа. Проверка 2026-10-02 на PCp2: обе сборки murmapple загружают образы, но часть из них после загрузки выводит повторяющиеся текстовые символы и зависает (см. [`hardware/COMPATIBILITY.md`](hardware/COMPATIBILITY.md)).
+Образы взяты из репозиториев без изменений, переименованы в короткие имена. Из dos33fsprogs не включены игры, основанные на чужих сюжетах и персонажах (Myst, Riven, Commander Keen, Duke, Monkey Island, Peasant's Quest и др.), из Apple-II-Programs — диск `fun-stuff.dsk` с рисунком чужого логотипа. Проверка 2026-10-02 на PCp2: образы подборки работают в обеих сборках murmapple. Демо Fireworks, Xmas 2018 и Xmas 2019 из того же репозитория после загрузки выводили повторяющиеся текстовые символы и зависали, поэтому из подборки исключены; проверки Mockingboard в комплекте пока нет.
 
 Как запустить диск: F11 — экранное меню дисков, выбрать образ, затем Boot. Если программа не стартовала сама, в Applesoft BASIC: `CATALOG` — список файлов на диске, `RUN имя` — запустить BASIC-программу (тип `A`), `BRUN имя` — машинный код (тип `B`); `PR#6` — перезагрузка с дисковода.
 
