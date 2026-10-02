@@ -1,0 +1,89 @@
+
+PROC evaluate command (TEXT CONST cmd):
+  IF cmd = clear symbol
+  THEN evaluate clear command
+  ELIF cmd = print symbol
+  THEN evaluate print command
+  ELIF cmd = end symbol
+  THEN evaluate end command
+  FI.
+
+evaluate clear command:
+  FOR i FROM 1 UPTO shelfsize
+  REP towerheight [i] := 0
+  ENDREP;
+  read next line.
+
+evaluate print command:
+  print world;
+  read next line.
+
+print world:
+  line;
+  INT VAR j;
+  FOR j FROM maxheight DOWNTO 1
+  REP
+    FOR i FROM 1 UPTO shelfsize
+    REP
+      IF towerheight [i] < j
+      THEN
+        put (2 * " ")
+      ELSE
+        put (shelf [i] [j] + " ")
+      FI
+    ENDREP;
+    line
+  ENDREP;
+  put ((2 * shelfsize - 1) * "-").
+
+evaluate end command:
+  print world.
+
+ENDPROC evaluate command;
+
+PROC read next line:
+  write line (current line);
+  read a line;
+  topos := 0;
+  read next symbol.
+
+read a line:
+  IF infile opened
+  THEN read a line from file
+  ELSE read a line from keyboard
+  FI.
+
+read a line from file:
+  WHILE NOT file ended
+  REP
+    read (current line);
+    current line := compress (current line)
+  UNTIL current line <> ""
+  ENDREP;
+  insert end command if missing;
+  line;
+  put (current line).
+
+read a line from keyboard:
+  line;
+  put ("Next cmd, please: ");
+  REP
+    edit (current line, 1);
+    current line := compress (current line)
+  UNTIL current line <> ""
+  ENDREP.
+
+insert end command if missing:
+  IF file ended
+  THEN
+    infile opened := false;
+    IF subtext (current line, 1, 3) <> end symbol
+    THEN
+      line;
+      put ("End command inserted. ");
+      current line := end symbol
+    FI
+  FI.
+
+ENDPROC read next line;
+

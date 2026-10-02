@@ -1,0 +1,356 @@
+\chapter{ELAN 1V5 STANDARD LIBRARY}
+
+A library of concrete algorithms, objects and types is available in Elan.
+Conceptually, they are declared in the "standard packets" which are
+presupposed for every execution.
+Version 1.5 of the Elan Programming Environment includes practically all
+standard packets (see [1]) apart from matrices and
+vectors, as well as a small number of extensions from the Elan-0 and EUMEL
+libraries. In this chapter the headings of all definitions in the library
+are listed. No attempt is made to explain their meaning, since this can
+be found in the Elan textbooks.
+
+\section{Integer}
+
+\begin{elan}
+TYPE INT
+
+PROC get (INT VAR i)
+PROC put (INT CONST i)
+
+BOOL OP = (INT CONST i1, i2)
+BOOL OP <> (INT CONST i1, i2)
+BOOL OP < (INT CONST i1, i2)
+BOOL OP <= (INT CONST i1, i2)
+BOOL OP > (INT CONST i1, i2)
+BOOL OP >= (INT CONST i1, i2)
+
+INT OP + (INT CONST i1, i2)
+INT OP - (INT CONST i1, i2)
+INT OP * (INT CONST i1, i2)
+INT OP DIV (INT CONST i1, i2)
+INT OP MOD (INT CONST i1, i2)
+INT OP ** (INT CONST i1, i2)
+
+INT OP + (INT CONST i)
+INT OP - (INT CONST i)
+
+OP INCR (INT VAR i1, INT CONST i2)
+OP DECR (INT VAR i1, INT CONST i2)
+
+INT OP SIGN (INT CONST i)
+INT OP ABS (INT CONST i)
+INT PROC sign (INT CONST i)
+INT PROC abs (INT CONST i)
+BOOL PROC even (INT CONST i)
+BOOL PROC odd (INT CONST i)
+INT PROC max (INT CONST i1, i2)
+INT PROC min (INT CONST i1, i2)
+
+INT PROC trunc (REAL CONST r)
+INT PROC round (REAL CONST r)
+INT PROC int (TEXT CONST t)
+INT PROC ascii (TEXT CONST t)
+INT PROC code (TEXT CONST t)
+INT PROC digit (TEXT CONST t)
+
+INT PROC maxint
+INT PROC minint
+\end{elan}
+
+\section{Real}
+
+\begin{elan}
+TYPE REAL
+
+PROC get (REAL VAR r)
+PROC put (REAL CONST r)
+
+BOOL OP = (REAL CONST r1, r2):
+BOOL OP <> (REAL CONST r1, r2):
+BOOL OP < (REAL CONST r1, r2):
+BOOL OP <= (REAL CONST r1, r2):
+BOOL OP > (REAL CONST r1, r2):
+BOOL OP >= (REAL CONST r1, r2):
+
+REAL OP + (REAL CONST r1, r2):
+REAL OP - (REAL CONST r1, r2):
+REAL OP * (REAL CONST r1, r2):
+REAL OP / (REAL CONST r1, r2):
+REAL OP / (INT CONST i1, i2):
+REAL OP MOD (REAL CONST r1, r2):
+REAL OP ** (REAL CONST r, INT CONST i):
+REAL OP ** (REAL CONST r1, r2):
+
+REAL OP + (REAL CONST r):
+REAL OP - (REAL CONST r):
+
+OP INCR (REAL VAR r1, REAL CONST r2):
+OP DECR (REAL VAR r1, REAL CONST r2):
+
+INT OP SIGN (REAL CONST r):
+REAL OP ABS (REAL CONST r):
+INT PROC sign (REAL CONST r)
+REAL PROC abs (REAL CONST r)
+REAL PROC max (REAL CONST r1, r2)
+REAL PROC min (REAL CONST r1, r2)
+
+REAL PROC real (INT CONST i)
+REAL PROC real (TEXT CONST t)
+
+REAL PROC maxreal
+REAL PROC smallreal
+
+LET pi = 3.141592653589793
+REAL PROC sin (REAL CONST r)
+REAL PROC cos (REAL CONST r)
+REAL PROC tan (REAL CONST r)
+REAL PROC arcsin (REAL CONST r)
+REAL PROC arccos (REAL CONST r)
+REAL PROC arctan (REAL CONST r)
+
+LET e = 2.71828182845904
+REAL PROC sqrt (REAL CONST r)
+REAL PROC exp (REAL CONST r)
+REAL PROC ln (REAL CONST r)
+REAL PROC log10 (REAL CONST r)
+REAL PROC log2 (REAL CONST r)
+\end{elan}
+
+\section{Text}
+
+\begin{elan}
+TYPE TEXT
+
+PROC get (TEXT VAR t)
+PROC get (TEXT VAR t, INT CONST maxlen)
+PROC get (TEXT VAR t, TEXT CONST delimiter)
+PROC put (TEXT CONST t)
+
+BOOL OP = (TEXT CONST t1, t2)
+BOOL OP <> (TEXT CONST t1, t2)
+BOOL OP < (TEXT CONST t1, t2)
+BOOL OP <= (TEXT CONST t1, t2)
+BOOL OP > (TEXT CONST t1, t2)
+BOOL OP >= (TEXT CONST t1, t2)
+
+INT OP LENGTH (TEXT CONST t)
+INT PROC length (TEXT CONST t)
+
+TEXT OP + (TEXT CONST t1, t2)
+OP CAT (TEXT VAR t1, TEXT CONST t2)
+TEXT OP * (INT CONST i, TEXT CONST t)
+TEXT PROC compress (TEXT CONST t)
+TEXT PROC text (TEXT CONST t, INT CONST length)
+TEXT PROC text (TEXT CONST t, INT CONST length, from)
+TEXT PROC subtext (TEXT CONST t, INT CONST from)
+TEXT PROC subtext (TEXT CONST t, INT CONST from, to)
+TEXT OP SUB (TEXT CONST t,INT CONST i)
+PROC replace (TEXT VAR t, INT CONST from, TEXT CONST new)
+PROC change (TEXT VAR t, TEXT CONST old, new)
+PROC change all (TEXT VAR t, TEXT CONST old, new)
+INT PROC pos TEXT CONST t, pat)
+
+TEXT OP HEAD (TEXT CONST t)
+TEXT OP TAIL (TEXT CONST t)
+
+TEXT PROC ascii (INT CONST i)
+TEXT PROC code (INT CONST i)
+TEXT PROC digit (INT CONST i)
+
+TEXT PROC text (INT CONST i)
+TEXT PROC text (INT CONST i, width)
+TEXT PROC text (REAL CONST r)
+TEXT PROC text (REAL CONST r, INT CONST width)
+TEXT PROC text (REAL CONST r, INT CONST width, after period)
+
+LET niltext = ""
+LET blank = " "
+LET quote = """"
+\end{elan}
+
+\section{Boolean}
+
+\begin{elan}
+TYPE BOOL
+
+LET true = TRUE
+LET false = FALSE
+
+BOOL OP NOT (BOOL CONST b)
+BOOL OP AND (BOOL CONST b1, b2)
+BOOL OP OR (BOOL CONST b1, b2)
+BOOL OP = (BOOL CONST b1, b2)
+BOOL OP <> (BOOL CONST b1, b2)
+\end{elan}
+
+\section{File}
+
+\begin{elan}
+TYPE FILE
+TYPE TRANSPUTDIRECTION
+
+FILE PROC sequential file (TRANSPUTDIRECTION CONST d,
+                           TEXT CONST t)
+
+TRANSPUTDIRECTION PROC input
+TRANSPUTDIRECTION PROC output
+
+PROC close (FILE CONST f)
+PROC erase (FILE CONST f)
+
+PROC line (FILE CONST f)
+PROC line (FILE CONST f, INT CONST i)
+
+PROC putline (FILE CONST f, TEXT CONST t)
+PROC put (FILE CONST f, INT CONST i)
+PROC put (FILE CONST f, REAL CONST r)
+PROC put (FILE CONST f, TEXT CONST t)
+
+PROC getline (FILE CONST f, TEXT VAR t)
+PROC get (FILE CONST f, INT VAR i)
+PROC get (FILE CONST f, REAL VAR r)
+PROC get (FILE CONST f, TEXT VAR t)
+PROC get (FILE CONST f, TEXT VAR t, INT CONST maxlen)
+PROC get (FILE CONST f, TEXT VAR t, TEXT CONST delimiter)
+
+INT PROC max line length (FILE CONST f)
+TEXT PROC name (FILE CONST f)
+BOOL PROC opened (FILE CONST f)
+BOOL PROC new (FILE CONST f)
+BOOL PROC eof (FILE CONST f)
+
+PROC new file (TEXT CONST name)
+PROC old file (TEXT CONST name)
+PROC close file
+PROC erase file (TEXT CONST name)
+
+PROC write (INT CONST i)
+PROC write (REAL CONST r)
+PROC write (TEXT CONST t)
+PROC write line
+
+PROC read (INT VAR i)
+PROC read (REAL VAR r)
+PROC read (TEXT VAR t)
+
+BOOL PROC file ended
+\end{elan}
+
+\section{Screen handling}
+
+\begin{elan}
+PROC line
+PROC line (INT CONST i)
+PROC page
+PROC beep
+
+INT PROC xsize
+INT PROC ysize
+PROC cursor (INT CONST i1, i2)
+PROC get cursor (INT VAR i1, i2)
+
+PROC edit (TEXT VAR t, INT CONST start pos)
+PROC edit (TEXT VAR t, INT CONST start pos, left margin,
+           TEXT CONST end)
+PROC edit (TEXT VAR t,
+           INT CONST start pos, left margin, right margin,
+           TEXT CONST end, TEXT VAR c)
+
+PROC inchar (TEXT VAR t)
+TEXT PROC inchar
+TEXT PROC incharety
+\end{elan}
+
+\section{Graphics}
+
+\begin{elan}
+INT PROC graphics x limit
+INT PROC graphics y limit
+REAL PROC aspect
+
+PROC enter graphics mode
+PROC enter text mode
+BOOL PROC in text mode
+
+PROC color (INT CONST i)
+PROC clear graphics screen
+
+INT PROC current x position
+INT PROC current y position
+PROC move (INT CONST x, y)
+PROC draw (INT CONST x, y)
+PROC plot pixel
+
+PROC plot text (TEXT CONST t)
+INT PROC character width
+INT PROC line height
+\end{elan}
+
+\noindent
+The console input-output routines are applicable also in graphics
+mode (example: {\tt put}, {\tt get}, {\tt line}, {\tt page},
+{\tt inchar}, {\tt cursor}, {\tt get cursor},{\tt xsize},
+{\tt ysize}, etc.).
+
+\section{Turtle-graphics}
+
+Turtle-graphics is not a part of the standard library, but
+a packet, which can be read into the Elan Programming Environment
+by means of the packet-command ({\tt p}).
+
+\begin{elan}
+     enter turtle graphics
+     leave turtle graphics
+PROC turtle window (INT CONST xmin, xmax, ymin, ymax,
+                    REAL CONST x range, y range)
+
+PROC move (REAL CONST x, y)
+PROC move (REAL CONST length)
+PROC draw (REAL CONST length)
+
+PROC turn (REAL CONST radian)
+PROC turn (INT CONST angle)
+PROC turn left
+PROC turn right
+\end{elan}
+
+\section{Random numbers}
+
+\begin{elan}
+PROC initialize random (INT CONST i)
+PROC initialize random (REAL CONST r)
+
+INT PROC random (INT CONST i1, i2)
+PROC random (INT CONST i)
+REAL PROC random
+INT PROC choose128
+\end{elan}
+
+\section{Miscellaneous}
+
+\begin{elan}
+BOOL OP ISNIL (NILTYPE CONST x)
+BOOL PROC isnil (NILTYPE CONST x)
+
+BOOL PROC last conversion ok
+
+BOOL PROC yes (TEXT CONST question)
+BOOL PROC no (TEXT CONST question)
+
+INT PROC freespace
+INT PROC exectime
+PROC sleep (INT CONST seconds)
+
+PROC trace on
+PROC stop
+PROC assert (BOOL CONST b)
+PROC assert (BOOL CONST b, TEXT CONST t)
+\end{elan}
+
+\noindent
+Note: there are some other routines in the standard library
+not mentioned in the above list, but those are for internal
+use within the library, therefore we strongly advise against using
+them.
+

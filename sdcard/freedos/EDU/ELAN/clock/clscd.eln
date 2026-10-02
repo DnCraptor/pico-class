@@ -1,0 +1,26 @@
+
+PACKET small character display
+  DEFINES reset display, put 2 digits, put separator,
+		  go to next position, move to display position:
+
+PROC reset display:
+ENDPROC reset display;
+
+PROC put 2 digits (INT CONST n):
+  put (text (n, 2))
+ENDPROC put 2 digits;
+
+PROC put separator (TEXT CONST sep):
+  put (" " + sep + " ")
+ENDPROC put separator;
+
+PROC go to next position:
+  put (" ")
+ENDPROC go to next position;
+
+PROC move to display position:
+  cursor (70, 1)
+ENDPROC move to display position;
+
+ENDPACKET small character display;
+

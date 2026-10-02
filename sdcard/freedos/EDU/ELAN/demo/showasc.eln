@@ -1,0 +1,85 @@
+program:
+  LET columns = 16;
+  INT VAR i, j;
+  FOR i FROM 0 UPTO columns
+  REP
+    topline;
+    head;
+    sepline;
+    FOR j FROM 0 UPTO 15
+    REP entry
+    ENDREP;
+    baseline
+  ENDREP.
+
+  topline:
+    IF i = 0
+    THEN
+      cursor (1, 2);
+      put (""201"" + 4 * ""205"")
+    ELIF i = columns
+    THEN
+      cursor (4 * i + 2, 2);
+      put (""187"")
+    ELSE
+      cursor (4 * i + 2, 2);
+      put (""209"" + 3 * ""205"")
+    FI.
+
+  head:
+    IF i = 0
+    THEN
+      cursor (1, 3);
+      put (""186"" + 4 * ""219"")
+    ELIF i = columns
+    THEN
+      cursor (4 * i + 2, 3);
+      put (""186"")
+    ELSE
+      cursor (4 * i + 2, 3);
+      put (""179"" + text (16 * i, 3))
+    FI.
+
+  sepline:
+    IF i = 0
+    THEN
+      cursor (1, 4);
+      put (""204"" + 4 * ""205"")
+    ELIF i = columns
+    THEN
+      cursor (4 * i + 2, 4);
+      put (""185"")
+    ELSE
+      cursor (4 * i + 2, 4);
+      put (""216"" + 3 * ""205"")
+    FI.
+
+  entry:
+    IF i = 0
+    THEN
+      cursor (1, 5 + j);
+      put (""186"" + text (j, 3))
+    ELIF i = columns
+    THEN
+      cursor (4 * i + 1, 5 + j);
+      put (" "186"")
+    ELSE
+      cursor (4 * i + 1, 5 + j);
+      put (" "179" " + ascii (16 * i + j))
+    FI.
+
+  baseline:
+    IF i = 0
+    THEN
+      cursor (1, 5 + 16);
+      put (""200"" + 4 * ""205"")
+    ELIF i = columns
+    THEN
+      cursor (4 * i + 2, 5 + 16);
+      put (""188"")
+    ELSE
+      cursor (4 * i + 2, 5 + 16);
+      put (""207"" + 3 * ""205"")
+    FI.
+
+

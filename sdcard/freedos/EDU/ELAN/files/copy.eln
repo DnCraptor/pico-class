@@ -1,0 +1,27 @@
+
+copy:
+  ask name of old file;
+  ask name of new file;
+  copy from old to new.
+
+  ask name of old file:
+    TEXT VAR x;
+    put ("Old file :");
+    get (x);
+    old file (x).
+  
+  ask name of new file:
+    put ("New file :");
+    get (x);
+    new file (x).
+  
+  copy from old to new:
+    REP
+      read (x);
+      write (x);
+      write line
+    UNTIL file ended
+    ENDREP;
+    close file.
+  
+

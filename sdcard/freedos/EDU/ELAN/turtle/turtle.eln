@@ -1,0 +1,138 @@
+
+LET turtle x limit = 100.0;
+LET turtle y limit = 100.0;
+
+enter turtle graphics:
+   INT VAR x base, y base;
+   REAL VAR x scale, y scale,
+            x range, y range,
+            x pos, y pos, dx, dy,
+            angle;
+   enter graphics mode;
+   INT CONST
+     size :: min (trunc (real (graphics x limit - 1)/aspect),
+                  graphics y limit - 1),
+     xmin :: 1 + (graphics x limit -
+                  trunc (real (size) * aspect) - 1) DIV 2,
+     ymin :: 1 + (graphics y limit - size - 1) DIV 2;
+   turtle window (xmin, xmin + size,
+                  ymin, ymin + size,
+                  turtle x limit, turtle y limit).
+
+PROC turtle window (INT CONST xmin, xmax, ymin, ymax,
+                    REAL CONST x rng, y rng):
+   x range := x rng + 1.0;
+   y range := y rng + 1.0;
+   x base := max (1, xmin);
+   y base := min (graphics y limit, ymax);
+   INT CONST x top :: min (graphics x limit, xmax);
+   INT CONST y bottom :: max (1, ymin);
+   x scale := real (x top - x base + 1) * aspect / x range;
+   y scale := real (y base - y bottom + 1) / y range;
+   angle := pi / 2.0;
+   dx := cos (angle);
+   dy := sin (angle);
+   x pos := 0.0;
+   y pos := 0.0;
+   move (x base, y base)
+ENDPROC turtle window;
+
+leave turtle graphics:
+   leave graphics mode.
+
+PROC move (REAL CONST l):
+   move (x pos + dx * l, y pos + dy * l)
+ENDPROC move;
+
+PROC draw (REAL CONST l):
+   draw (x pos + dx * l, y pos + dy * l)
+ENDPROC draw;
+
+PROC new coord (REAL CONST x, y):
+   x pos := x;
+   y pos := y;
+   IF x < 0.0
+   THEN x pos := 0.0
+   ELIF x > x range
+   THEN x pos := x range
+   FI;
+   IF y < 0.0
+   THEN y pos := 0.0
+   ELIF y > y range
+   THEN y pos := y range
+   FI
+ENDPROC new coord;
+
+PROC move (REAL CONST x, y):
+   new coord (x, y);
+   move (trunc (x pos * x scale) + x base,
+         y base - trunc (y pos * y scale))
+ENDPROC move;
+
+PROC draw (REAL CONST x, y):
+   move (trunc (x pos * x scale) + x base,
+         y base - trunc (y pos * y scale));
+   new coord (x, y);
+   draw (trunc (x pos * x scale) + x base,
+         y base - trunc (y pos * y scale))
+ENDPROC draw;
+
+PROC turn (REAL CONST a):
+   angle INCR a;
+   dx := cos (angle);
+   dy := sin (angle)
+ENDPROC turn;
+
+PROC turn (INT CONST angle):
+   turn (pi * real (angle) / 180.0)
+ENDPROC turn;
+
+PROC turn right:
+   angle DECR pi / 2.0;
+   REAL CONST h :: dy;
+   dy := - dx;
+   dx := h
+ENDPROC turn right;
+
+PROC turn left:
+   angle INCR pi / 2.0;
+   REAL CONST h :: dy;
+   dy := dx;
+   dx := - h
+ENDPROC turn left;
+
+INT PROC ask int (TEXT CONST message):
+   INT VAR x; put (message); get (x); x
+ENDPROC ask int;
+
+REAL PROC ask real (TEXT CONST message):
+   REAL VAR x; put (message); get (x); x
+ENDPROC ask real;
+
+TEXT PROC ask text (TEXT CONST message):
+   TEXT VAR t; put (message); get (t); t
+ENDPROC ask text;
+
+REAL PROC sin (INT CONST a):
+  sin (pi * real (a) / 180.0)
+ENDPROC sin;
+
+REAL PROC cos (INT CONST a):
+  cos (pi * real (a) / 180.0)
+ENDPROC cos;
+
+PROC wait for confirmation (INT CONST x, y):
+  move (x, y);
+  put ("Hit space!");
+  TEXT CONST t :: inchar
+ENDPROC wait for confirmation;
+
+PROC leave graphics mode:
+  page;
+  enter text mode
+ENDPROC leave graphics mode;
+
+
+
+
+

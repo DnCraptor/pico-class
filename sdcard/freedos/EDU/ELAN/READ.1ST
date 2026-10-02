@@ -1,0 +1,45 @@
+                Elan-1 Programming Environment 
+   Copyright (c) Informatics Department, University of Nijmegen
+                   EMAIL: elan@cs.kun.nl
+                  Version 1.5,  Feb 1988.
+
+This Programming Environment is distributed as is,
+with all faults (if any), and without any warranty.
+No author or distributor accepts responsibility to anyone for the
+consequences of using it, or for whether is serves any particular
+purpose at all, or any other reason.
+Everyone is permitted to copy and distribute this Elan-1 Programming
+Environment as a whole (INCLUDING this copyright notice), provided
+they make no charge for it, and these conditions remain unchanged.
+
+Elan is an educational programming language for learning and
+teaching systematic programming. The Elan project group at the
+University of Nijmegen in the Netherlands has developed an 
+Educational Programming Environment around version 1.5 of Elan.
+
+This disk contains the distribution version of Elan-1
+and some sample Elan programs.
+
+Disk structure:
+
+ROOT --- BIN
+         CLOCK
+         COLA
+         DEMO
+         DRAGON
+         FILES
+         INTGRAPH
+         KAREL
+         PLANE
+         TURTLE       
+             
+Of course you need "command.com", "ansi.sys" and "config.sys" in order
+to be able to run the Elan interpreter.
+
+New in this version:
+        More Trace and Verify commands.
+        Sequential files.
+        More complete and corrected standard library.
+ 
+For more info, see 'Readme' in the selected folder.
+

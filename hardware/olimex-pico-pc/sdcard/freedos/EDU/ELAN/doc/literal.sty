@@ -1,9 +1,0 @@
-\def\regeltje{\par\futurelet\n\handlenext}
-\def\handlenext{\ifx\n\regeltje\penalty-5000\vskip\baselineskip\vskip 0pt plus 0.3ex\penalty-5000\else\penalty5000\strut\fi}
-{\catcode`\^^M=\active % these lines must end with %
-  \gdef\obblns{\catcode`\^^M\active \let^^M\regeltje}%
-  \global\let^^M\regeltje} % this is in case ^^M appears in a \write
-\def\obbspc{\catcode`\ \active}
-{\obbspc\global\let =\space}
-
-\newenvironment{litout}{\begingroup\obblns\obbspc\parskip 0pt}{\endgroup}

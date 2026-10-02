@@ -1,0 +1,17 @@
+program:setup dragon;start drawing;draw dragon(days, start cell);finish drawing.
+setup dragon:
+  LET dragon name = "Christmas Tree";
+  LET directions = 5;
+  LET variants = 10;
+  LET children = 3;
+  ROW variants ROW children INT CONST offsprings :: [[9, 0, 6], [5, 1, 7], [6, 2, 8], [7, 3, 9], [8, 4, 5], [1, 5, 4], [2, 6, 0], [3, 7, 1], [4, 8, 2], [0, 9, 3]];
+  ROW variants INT CONST behavior :: [0, 1, 2, 3, 4, 0, 1, 2, 3, 4];
+  INT CONST days :: 7;
+  INT CONST start cell :: 0;
+  INT CONST size of cell :: 5;
+  INT CONST start x :: graphics x limit DIV 3;
+  INT CONST start y :: 6 * graphics y limit DIV 7.
+
+
+
+

@@ -1,0 +1,54 @@
+\chapter{ASCII-TABLE}
+
+The Elan interpreter uses a slightly modified ASCII code.
+
+\vspace{1.5em}
+
+{\tt
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+   &   0   &  1  &  2  &  3  &  4  &  5  &  6  &  7  \\
+\hline
+ 0 & nul   &     &  \  &  0  &  @  &  P  &     &  p  \\
+ 1 & cls   &     &  !  &  1  &  A  &  Q  &  a  &  q  \\
+ 2 & cll   &     &  "  &  2  &  B  &  R  &  b  &  r  \\
+ 3 & brk   &     &  \# &  3  &  C  &  S  &  c  &  s  \\
+\hline
+ 4 & del   &     &  \$ &  4  &  D  &  T  &  d  &  t  \\
+ 5 & right &     &  \% &  5  &  E  &  U  &  e  &  u  \\
+ 6 & left  &     &  \& &  6  &  F  &  V  &  f  &  v  \\
+ 7 & bel   &     &  `  &  7  &  G  &  W  &  g  &  w  \\
+\hline
+ 8 & up    &     &  (  &  8  &  H  &  X  &  h  &  x  \\
+ 9 & down  & brk &  )  &  9  &  I  &  Y  &  i  &  y  \\
+ A & lf    &     &  *  &  :  &  J  &  Z  &  j  &  z  \\
+ B &       &     &  +  &  ;  &  K  &  [  &  k  &  \{ \\
+\hline
+ C &       &     &  '  &  <  &  L  &     &  l  &  |  \\
+ D & cr    &     &  -  &  =  &  M  &  ]  &  m  &  \} \\
+ E &       &     &  .  &  >  &  N  &  \verb+^+  &  n  &     \\
+ F &       &     &  /  &  ?  &  O  &  '  &  o  &     \\
+\hline
+\end{tabular}
+}
+
+\vspace{1.5em}
+
+\noindent
+The control characters have the following meanings:
+
+\begin{literal}
+{\tt nul             }null character
+{\tt cls             }clear the screen
+{\tt cll             }clear to end of line
+{\tt del             }delete character under cursor
+{\tt right           }cursor right
+{\tt left            }cursor left
+{\tt up              }cursor up
+{\tt down            }cursor down
+{\tt bel             }produce the bell-sound
+{\tt lf              }line feed
+{\tt cr              }carriage return
+{\tt brk             }break
+\end{literal}
+

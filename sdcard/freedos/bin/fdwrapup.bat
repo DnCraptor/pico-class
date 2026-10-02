@@ -1,0 +1,31 @@
+@echo off
+
+if "%1" == "CMD" goto DoWrapUp
+if "%1" == "REBOOT" goto DoWrapUp
+goto End
+
+:DoWrapUp
+set TDONE=
+if "%TTMP%" == "" goto NoTempSpace
+if not exist %TTMP%\NUL goto NoTempSpace
+deltree /y %TTMP%\*.* >NUL
+rmdir %TTMP% >NUL
+:NoTempSpace
+set TTMP=
+if "%1" == "CMD" goto NoReboot
+vpause /d 1 POSTAL
+:NoReboot
+vecho /g /p /fWhite Warning: you should reboot as soon as possible. /fGray /p
+set TEMP=%DOSDIR%\TEMP
+set PARENT=
+set EXITCODE=
+set AUTOFILE=C:\FDAUTO.BAT
+set CFGFILE=C:\FDCONFIG.SYS
+alias reboot=%DOSDIR%\BIN\fdapm warmboot
+alias reset=%DOSDIR%\BIN\fdisk /reboot
+alias halt=%DOSDIR%\BIN\fdapm poweroff
+alias shutdown=%DOSDIR%\BIN\fdapm poweroff
+cd \
+%comspec% %DOSDIR%\BIN /E:1024 /P=%DOSDIR%\BIN\FDWRAPUP.BAT
+
+:End

@@ -1,0 +1,14 @@
+This directory contains the following Elan programs:
+
+CLOCK      Clock control part (top level)
+CLDC       Display characters packet (intermediate level)
+CLLCD      Large character display packet (bottom level)
+CLSCD      Small character display packet (bottom level)
+CLSSCD     Seven-segment character display packet (lower bottom level)
+CLSSDS     Seven-segment display simulator packet (upper bottom level)
+
+Read the parts in the following order:
+     1. CLLCD or CLSCD or (CLSSCD and CLSSDS)
+     2. CLDC
+     3. CLOCK
+

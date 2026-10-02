@@ -1,0 +1,292 @@
+\chapter{EXAMPLES ELAN-1 SUBSET}
+
+The following examples are intended to demonstrate specific Elan-1
+features, such as structures, procedures, operators and
+graphics facilities, as well as the definition of
+abstract data types by means of a packet.
+
+\section{Points and line segments}
+
+This section contains a packet for defining and drawing points
+and line segments in the {\em R2}.
+It uses straight integer-graphics (see A.7).
+In order to reduce complexity no clipping is performed.
+Drawing outside the (hardware-dependent) graphics-screen will result
+in distorted pictures.
+The packet should be read by means of the packet-command ({\tt p}).
+The Elan Programming Environment can read packets but has no special
+precompilation facilities.
+
+\begin{elan}
+PACKET points and lines
+DEFINES POINT, LINE,
+        point, line, AS, *, +, =,
+        draw point, draw line, put coord:
+
+TYPE POINT = STRUCT (REAL x, y, TEXT name);
+
+TYPE LINE = STRUCT (POINT a, b, TEXT name); 
+
+POINT PROC point (REAL x, y):
+  \# denotation-procedure for a point \#
+  POINT: [x, y, ""]
+ENDPROC point;
+
+POINT OP * (REAL factor, POINT point):
+  POINT: [factor * point.x, factor * point.y, ""]
+ENDOP *;
+
+BOOL OP = (POINT point1, point2):
+  point1.x = point2.x AND point1.y = point2.y
+ENDOP =;
+
+LINE PROC line (POINT point1, point2):
+  \# denotation-procedure for a line \#
+  LINE: [point1, point2, ""]
+ENDPROC line;
+
+LINE OP + (LINE line1, line2):
+  assert (line1.b = line2.a, "lines not connected");
+  LINE: [line1.a, line2.b, ""]
+ENDOP +;
+
+LINE OP * (REAL factor, LINE line):
+  LINE: [factor * line.a, factor * line.b, ""]
+ENDOP *;
+
+BOOL OP = (LINE line1, line2):
+  line1.a = line2.a AND line1.b = line2.b OR
+  line1.a = line2.b AND line1.b = line2.a
+ENDOP =;
+
+POINT OP AS (POINT point, TEXT name):
+  \# giving a name to a point \#
+  POINT: [point.x, point.y, name]
+ENDOP AS;
+
+LINE OP AS (LINE line, TEXT name):
+  \# giving a name to a line \#
+  LINE: [line.a, line.b, name]
+ENDOP AS;
+
+PROC put coord (POINT point):
+  \# showing the name and coordinates of a point \#
+  IF NOT (point.name = "")
+  THEN put (point.name + " = ");
+  FI;
+  put ("(" + text (point.x) + "," + text (point.y) + ")")
+ENDPROC put coord;
+
+PROC put coord (LINE line):
+  \# showing the name and coordinates of a line segment \#
+  IF NOT (line.name = "")
+  THEN put (line.name + " = ");
+  FI;
+  put ("(" + text (line.a.x) + "," + text (line.a.y) + ")");
+  put ("(" + text (line.b.x) + "," + text (line.b.y) + ")")
+ENDPROC put coord;
+
+PROC draw point (POINT point):
+  \# drawing a point and its name on the screen \#
+  move (int (point.x), int (point.y / aspect));
+  plot pixel;
+  put (point.name)
+ENDPROC draw point;
+
+PROC draw line (LINE line):
+  \# drawing a line and its name on the screen \#
+  INT x name :: int ((line.a.x + line.b.x) / 2.0),
+      y name :: int ((line.a.y + line.b.y) / 2.0 / aspect),
+      len :: length (line.name) * character width;
+  draw point (line.a);
+  draw point (line.b);
+  move (x name, y name);
+  put (line.name);
+  move (x name, y name);
+  draw (x name + len, y name);
+  move (int (line.a.x), int (line.a.y / aspect));
+  draw (int (line.b.x), int (line.b.y / aspect))
+ENDPROC draw line;
+
+ENDPACKET points and lines;
+\end{elan}
+
+\section{Points and line segments example}
+
+This example demonstrates the use of the previous packet.
+It draws a triangle, annotating its points and sides with names.
+Note that the coordinates of {\tt a}, {\tt b} and {\tt c} should
+be chosen to fit the screen of the particular computer (see A.7).
+
+\begin{elan}
+program:
+  POINT a :: point (100.0, 400.0) AS "A",
+        b :: point (400.0, 100.0) AS "B",
+        c :: point (400.0, 400.0) AS "C";
+  LINE ab :: line (a, b) AS "AB",
+       bc :: line (b, c) AS "BC",
+       ca :: ab + bc AS "AC";
+  enter graphics mode;
+  draw line (ab);
+  draw line (bc);
+  draw line (ca);
+  TEXT VAR wait :: inchar;
+  enter text mode.
+\end{elan}
+
+\noindent
+The resulting picture looks like:
+
+\pic(315,160){\small
+  \put(010,010){\line(1,0){140}}
+  \put(150,010){\line(0,1){140}}
+  \put(010,010){\line(1,1){140}}
+  %
+  \put(010,010){\tt A}
+  \put(150,010){\tt B}
+  \put(150,150){\tt C}
+  \put(080,010){$\overline{\tt AC}$}
+  \put(150,080){$\overline{\tt BC}$}
+  \put(080,080){$\overline{\tt AB}$}
+}
+
+\section{Intersection and projection}
+
+This section contains an addendum to the first packet.
+Procedures for finding the intersection of two lines and
+the projection of a point on a line are defined.
+Note that intersection of parallel lines will result in an error message.
+
+\begin{elan}
+POINT OP X (LINE line1, line2):
+  calculate parameters;
+  the intersection.
+
+calculate parameters:
+  REAL VAR rc1, b1, rc2, b2;
+  BOOL vertical1 := (line1.a.x = line1.b.x);
+  IF NOT vertical1
+  THEN
+    rc1 := (line1.a.y - line1.b.y) / (line1.a.x - line1.b.x);
+    b1 := line1.a.y - rc1 * line1.a.x
+  ELSE
+    rc1 := maxreal
+  FI;
+  BOOL vertical2 := (line2.a.x = line2.b.x);
+  IF NOT vertical2
+  THEN
+    rc2 := (line2.a.y - line2.b.y) / (line2.a.x - line2.b.x);
+    b2 := line2.a.y - rc2 * line2.a.x
+  ELSE
+    rc2 := maxreal
+  FI;
+  assert (rc1 <> rc2, "intersection of two parallel lines").
+
+the intersection:
+  IF   vertical1
+  THEN POINT: [line1.a.x, rc2 * line1.a.x + b2, ""]
+  ELIF vertical2
+  THEN POINT: [line2.a.x, rc1 * line2.a.x + b1, ""]
+  ELSE POINT: [(b2 - b1) / (rc1 - rc2),
+               (rc1 * b2 - b1 * rc2) / (rc1 - rc2),
+               ""]
+  FI.
+
+ENDOP X;
+
+POINT OP ON (POINT point, LINE line):
+  calculate parameters;
+  the projection.
+
+calculate parameters:
+  REAL VAR rc1, b1, rc2, b2;
+  BOOL vertical :: (line.a.x = line.b.x),
+       horizontal :: (line.a.y = line.b.y);
+  IF NOT (horizontal OR vertical)
+  THEN
+    rc1 := (line.a.y - line.b.y) / (line.a.x - line.b.x);
+    b1 := line.a.y - rc1 * line.a.x;
+    rc2 := -1.0 / rc1;
+    b2 := point.y - rc2 * point.x;
+  FI.
+
+the projection:
+  IF   horizontal
+  THEN POINT: [point.x, line.a.y, ""]
+  ELIF vertical
+  THEN POINT: [line.a.x, point.y, ""]
+  ELSE POINT: [(b2 - b1) / (rc1 - rc2),
+               (rc1 * b2 - b1 * rc2) / (rc1 - rc2),
+               ""]
+  FI.
+
+ENDOP ON;
+\end{elan}
+
+\section{Intersection and projection example}
+
+This example demonstrates the use of the {\tt X} (intersect) and
+{\tt ON} (projection) operators.
+A triangle with its projection lines is drawn, showing the
+intersection of the three projection lines trough one point.
+Again, the coordinates of {\tt a}, {\tt b} and {\tt c} should
+be judiciously chosen to fit the screen.
+
+\begin{elan}
+program:
+  POINT a :: point (100.0, 370.0) AS "A",
+        b :: point (460.0, 370.0) AS "B",
+        c :: point (370.0, 100.0) AS "C";
+  LINE ab :: line (a, b) AS "AB",
+       bc :: line (b, c) AS "BC",
+       ca :: line (c, a) AS "AC";
+  POINT a on bc :: (a ON bc) AS "PA",
+        b on ca :: (b ON ca) AS "PB",
+        c on ab :: (c ON ab) AS "PC";
+  POINT x :: (line (c, c on ab) X line (a, a on bc)) AS "X";
+  enter graphics mode;
+  draw line (ab);
+  draw line (bc);
+  draw line (ca);
+  draw line (line (a, a on bc));
+  draw line (line (b, b on ca));
+  draw line (line (c, c on ab));
+  draw point (x);
+  move (1, graphics y limit - 2 * line height);
+  put coord (x);
+  TEXT VAR wait :: inchar;
+  enter text mode.
+\end{elan}
+
+\noindent
+The resulting picture looks like:
+
+\pic(315,220){\small\tt
+  \put(010,030){\line(1,0){240}}
+  \put(250,030){\line(-1,3){060}}
+  \put(010,030){\line(1,1){180}}
+  %
+  \put(010,030){A}
+  \put(250,030){B}
+  \put(190,210){C}
+  \put(100,120){$\overline{\tt AC}$}
+  \put(220,120){$\overline{\tt BC}$}
+  \put(130,030){$\overline{\tt AB}$}
+  %
+  \put(010,030){\line(3,1){216}}
+  \put(226,101){PA}
+  %
+  \put(250,030){\line(-1,1){120}}
+  \put(130,150){PB}
+  %
+  \put(190,210){\line(0,-1){180}}
+  \put(190,030){PC}
+  %
+  \put(190,090){X}
+  %
+  \put(010,010){X = ( 3.700000e+02, 2.800000e+02)}
+}
+
+\noindent
+Further examples are included with the distributed software.
+

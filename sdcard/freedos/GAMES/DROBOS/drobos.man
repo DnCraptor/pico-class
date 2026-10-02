@@ -1,0 +1,295 @@
+Jouni Miettunen * jon@stekt.oulu.fi * Oulu * Finland * Europe * 1994
+31 July 1994                                          DROBOWHOIDS(6)
+
+* NAME          * MOVING AROUND     * STAYING ALIVE * TO DO
+* SYNOPSIS      * LASTSTAND         * SCORING       * CREDITS
+* CONFIGURATION * ONE TO ONE        * FILES         * AUTHOR AND POSTCARDWARE
+* DESCRIPTION   * SONIC SCREWDRIVER * BUGS
+* WEAPONS       * TELEPORTING       * HISTORY
+
+* NAME
+	DRoboWHOids 1.3 - a game of logic
+
+The name is derived from the following words: Daleks, robots, Doctor
+Who, androids.. The main object was to create an original name that
+wouldn't already exist. It seems that not only all the wheels have been
+reinvented, but also all the good names have been reserved. I call the
+game as drobos, please feel free to do the same.
+
+	What's in a name? that which we call a rose
+	By any other name would smell as sweet.
+			William Shakespeare (Romeo and Juliet)
+
+* SYNOPSIS
+	drobos
+
+* CONFIGURATION
+
+- 8088/8086 compatible processor.
+- Standard VGA w/256k VideoRAM using 640x480x16 mode.
+- Mouse is supported, but not required.
+- Pc speaker sounds (yes, they can be disabled :)
+
+If environmental variable CDTMP is set to point to some directory and
+the current disk is write-protected, the score is read and saved into
+the CDTMP directory. If current disk is not write-protected, then CDTMP
+is ignored and the current directory used.
+
+* DESCRIPTION
+
+The drobos game idea is better known as "unix robots" or "Mac daleks",
+so if you're already familiar with it, you might skip to STAYING ALIVE.
+
+You are on an open field surrounded by hordes of weird creatures called
+either "robots" or "daleks" depending whether you've ever seen the
+ancient "Dr.Who" tv series. If you have, then they are robots..
+
+Actually you are a famous science fiction movie star being surrounded by
+a spaceshipful of fans from Andromeda. All they want is some souvenirs:
+an autograph or a leg, your choice. You start with a pencil (== Sonic
+Screwdriver), but unfortunately it gets lost after the first round of
+signatures.. So better start using your legs, while you've still got
+all of them.
+
+Ahem, back to real life: daleks want you. Yes, they really want you and
+you really don't want them to get you. That's it: run for your life.
+...but wait, there's nowhere to run! Daleks are all over the place and
+you can't get out. This game doesn't have a Happy Ending (TM), you're
+doomed even before the game starts, but you might as well make your end
+an event to be remembered and take as many daleks with you as possible. 
+
+* WEAPONS
+
+You have several kind of weapons: Sonic Screwdrivers, mindless running,
+teleporting and as the most important your keen perception, ingenuity
+and cunning. It might also help, if you were born lucky. Very unlikely.
+
+Each time you materialize on a new level you'll be given one more Sonic
+Screwdriver by some mysterious whim of fate. An interesting detail is
+that if you never teleported during the previous level, you'll be given
+an extra Sonic Screwdriver, too. Why.. it just seemed like a good idea.
+
+Most of the time you'll be busy running away, but sooner or later you'll
+be trapped in an impossible location. That's when you give up all the
+hope, close your eyes and perform a teleport in time and space. You'll
+probably find yourself somewhere else with new problems. Please note
+that this does NOT work in Real Life (TM), the old problems do remain.
+
+The best weapon is your brilliant mind and superior intelligence. The
+daleks are rather simple-minded creatures and since all they think about
+is you they won't notice anything else. By choosing wisely your steps
+and making tactically correct manouvering movements you will be able to
+get daleks crash into each others leaving behind a "scrapheap" and then
+force the rest of surviving daleks walk blindly into them and their end.
+
+* MOVING AROUND
+
+When you take a step, the daleks take a step. All of them.
+
+Daleks always move towards you, so that they move on diagonal lines
+until they are on the same horizontal or vertical line as you are. This
+information is vital to maximize your span of life, so please take a
+moment to think about it and how to best use it into your advantage.
+
+	...
+
+Thank you. Now I'll describe your moving possibilities:
+
+You can step into any 8 surrounding squares, if they are free. You can't
+walk on a scrapheap, a dalek or out of the field. However, if there's
+nothing behind a scrapheap, you can push it forward and step into its
+place. You also can take a step on the place, where you already are.
+
+You can use keyboard numberpad (I do):
+
+(7) home - up left	(8) up arrow - up	(9) page up - up right
+(4) left arrow - left	(5) spacebar - stay	(6) left arrow - right
+(1) end - down left	(2) down arrow - down	(3) page down - down right
+
+If you keep down the shift key, while pressing a direction key, you'll
+keep on moving to the selected direction until you run into something or
+get dangerously close to daleks. This operation is safe and provided to
+speed up the less interesting movement phases.
+
+Please note the buttons at the right side of the screen: you can use the
+"hot keys" to press buttons from keyboard:
+
+	a - About	e - Exit	l - Laststand
+	b - Best	n - New		o - One to one
+	c - Card	q - Quiet	s - Sonic Screwdriver
+					t - Teleport
+
+I can assure you that it is just a pure co-incident that the highlited
+letters of the last menuitems seem to form the word "lost". Please don't
+let that affect your playing.
+
+With mouse you move the cursor on the square where you want to go and
+press the left button until your character has reached the square. Be
+careful with this, you might get killed on the way to the target square.
+
+You can also click on arrow squares at the bottom right corner.
+
+* LASTSTAND
+
+Selecting Laststand will mean that you stand on the current place until
+the end: either you die or all the daleks die. It is highly recommended
+to select a safe place before doing Laststand.
+
+* ONE TO ONE
+
+With this feature you can wait on your current place until one or more
+drobos reach your neighbourhood. The automatic play will be interrupted
+as soon as you get into any danger. The operation is safe for you and
+provided just to speed up the routinely parts of the game.
+
+* SONIC SCREWDRIVER
+
+You can use Sonic Screwdriver once per level to destroy all daleks in
+the 8 neighbouring squares, scrapheaps are saved. Using it also means
+taking a step on the current place.
+
+* TELEPORTING
+
+When you get into an impossible situation, you can teleport. Teleporting
+is guaranteed to move you into a safe place, however there might be a
+dalek standing right next you. Since teleporting is considered same as
+taking a step, you would be captured by that daleks right away.
+
+The first teleport of each level differs from the rest by being "safe".
+There will be a sonic screwdriver kind of effect just before and after
+the teleport, even though no Sonic Screwdriver will be used. Wisely used
+this can be a very useful effect and safe your valuable Sonicdrivers.
+
+Beware: teleporting can damage your health (National Board of Health). 
+
+* STAYING ALIVE
+
+The key to success is the way daleks move: always towards you, always on
+diagonal lines until they reach horizontal or vertical line you're on.
+By moving sideways you can control a bit _where_ the daleks will collide
+and it's your advantage to create as many scrapheaps as possible.
+
+Get them into a line behind you and walk at the side of the field. When
+you teleport you are likely to get into a position, where you can get
+them to collide easily.
+
+When you walk around, select your path so that as many daleks as
+possible will collide into a scrapheap on their way towards you.
+
+When you reach a scrapheap (or rather a cluster of them) stay with it
+and always try to get it between you and the daleks.
+
+As long as you can go into some direction, go there. Teleporting is the
+very last way of escaping.
+
+	@ = you		D = dalek	# = scrapheap
+
+Don't move, just stay on current place (Laststand):
+		 D
+		D D		D
+				#		#
+		 @		@		@
+
+Wait and move behind a scrapheap:
+
+		DDD
+				#D		@#
+		@		@
+
+Take a step right to get all three at the same time:
+
+		DDD
+				 #
+		@		 @
+
+Step up left to create scrapheap and then down right behind it:
+		D
+		 D		D
+		 D		@#		#
+		@				@
+
+Down right to collide first 2, back and keep stepping in place (spacebar):
+		 DDDDDDDD
+		@		#DDDDDD		@#DDDDD
+				@
+
+* SCORING
+
+You get 10 for every destroyed dalek, except in the Laststand mode it's
+15 points to encourage you to use it. The Sonic Screwdriver gives 20
+points per dalek. For each survived level you'll also receive a bonus of
+100*level points.
+
+* FILES
+
+drobos.exe	the game itself, you really need this one
+icons.pcx	the characters
+arrows.pcx	the arrow controls
+drobos.man	manual - this file
+readme.not	some misc notes
+warranty	there's no warranty
+file_id.diz	short description for BBSs
+jouninfo.txt	Have I made anything else? Yep, some!
+vendor.txt	distribution conditions
+
+* BUGS
+
+None known, but I have a feeling I forgot something..
+
+* HISTORY
+
+1.0	this was probably the first stable development version.
+1.1	I desided to release it after all.
+1.2	2 games: Classic and Survival. Real good one.
+1.3	the Survival half of version 1.2.
+
+* TO DO
+
+I'm happy with the result, so this is it. That's what I said also the
+last time.
+
+After having talked with Yaron, I desided to write a new version, but
+since we didn't quite agree on details, I integrated 2 games into one
+program. Well, due some unfortunate backup procedures I lost the source
+of version 1.2 and have now rewritten half of it. I'm almost happy..
+
+One day I might add the Classic half (see 1.1), twice as fast daleks,
+solid and/or movable obstacles on field, different field shapes, more
+logic for drobos movement, more and better weapons..
+
+But I really doubt it. Drobos was meant to be a simple relaxing project
+between some more demanding plans. It's still a simple game, but coding
+did get a bit troublesome.
+
+* CREDITS
+
+I am most grateful to Audrey deLisle for being first to comment. For
+more credits please see the About dialog in the game, eg. this game is
+more like a Mac daleks than a unix robots(6). Still it's the same game.
+
+The following people have been most kind to test this game, making sure
+it works most of the time and suggesting changes and additions to it:
+
+	David Leadbetter (Australia)	Jari Karjala (Finland)
+	Ronny Wester (Sweden)		Henry Huang (USA)
+	Yaron Shoham (Israel)
+
+* AUTHOR AND POSTCARDWARE
+
+I made this game and now I'm giving it away for free. I do keep all the
+copyrights, but you have the "right to use" without any further notice.
+However if you liked the game, you are encouraged to send me a postcard
+and let me know that you exist, how the game really should work and if I
+should waste my time writing more such ridiculous programs..
+
+Of course I'd be more happy with flattering praising, but I'll take any
+feedback. So far I've got 3 cards for drobos. Well, _I_ like the game ;)
+
+	DRoboWHOids 1.3
+	c/o Mr. Jouni Miettunen
+	Rautatienkatu 20 A 10
+	FIN-90100 OULU
+	FINLAND - EUROPE
+
+31 July 1994                                          DROBOWHOIDS(6)
+Jouni Miettunen * jon@stekt.oulu.fi * Oulu * Finland * Europe * 1994

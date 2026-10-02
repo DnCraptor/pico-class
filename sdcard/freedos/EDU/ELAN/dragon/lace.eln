@@ -1,0 +1,21 @@
+
+program:
+  setup dragon;
+  start drawing;
+  draw dragon (days, start cell);
+  finish drawing.
+
+  setup dragon:
+    LET dragon name = "Lace Curve";
+    LET directions = 12;
+    LET variants = 24;
+    LET children = 3;
+    ROW variants ROW children INT CONST offsprings :: [[0, 1, 2], [3, 4, 5], [6, 7, 0], [1, 8, 9], [10, 11, 12], [7, 0, 1], [8, 13, 14], [15, 10, 16], [6, 7, 17], [11, 18, 3], [4, 15, 19], [13, 6, 20], [18, 3, 4], [11, 18, 21], [8, 13, 6], [7, 0, 22], [13, 6, 7], [0, 1, 8], [18, 3, 23], [4, 15, 10], [15, 10, 11], [1, 8, 13], [3, 4, 15], [10, 11, 18]];
+    ROW variants INT CONST behavior :: [2, 4, 1, 10, 0, 11, 10, 0, 6, 5, 4, 6, 3, 8, 5, 2, 3, 9, 8, 11, 9, 7, 1, 7];
+    INT CONST days :: 6;
+    INT CONST start cell :: 10;
+    INT CONST size of cell :: 4;
+    INT CONST start x :: graphics x limit DIV 2;
+    INT CONST start y :: graphics y limit DIV 4.
+  
+

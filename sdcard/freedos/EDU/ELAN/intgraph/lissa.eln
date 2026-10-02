@@ -1,0 +1,94 @@
+
+PROC graphics2 (REAL CONST tmin, tmax, INT CONST steps,
+                REAL PROC (REAL CONST) fx, fy):
+   REAL VAR t, delta t :: (tmax - tmin) / real (steps - 1);
+   move (graphics x limit DIV 3, graphics y limit DIV 2);
+   put ("Computing...");
+   determine minimal and maximal function values;
+   page;
+   draw the axes with annotation;
+   draw the graphics.
+
+determine minimal and maximal function values:
+   t := tmin;
+   REAL VAR xmin :: fx (t), xmax :: fx (t),
+            ymin :: fy (t), ymax :: fy (t);
+   WHILE t <= tmax
+   REP
+     t INCR delta t;
+     IF xmax < fx (t) THEN xmax := fx (t)
+     ELIF xmin > fx (t) THEN xmin := fx (t)
+     FI;
+     IF ymax < fy (t) THEN ymax := fy (t)
+     ELIF ymin > fy (t) THEN ymin := fy (t)
+     FI
+   ENDREP.
+
+draw the axes with annotation:
+   fix viewport and world;
+   draw the axis x with annotation;
+   draw the axis y with annotation.
+
+fix viewport and world:
+   INT CONST
+      xvmin :: 10 * character width,
+      xvmax :: graphics x limit - 10 * character width,
+      yvmin :: graphics y limit - 2 * line height,
+      yvmax :: 2 * line height;
+   REAL VAR
+      sx :: real (xvmax - xvmin) / (xmax - xmin),
+      sy :: real (yvmax - yvmin) / (ymax - ymin),
+      cx :: real (xvmin) - sx * xmin,
+      cy :: real (yvmin) - sy * ymin.
+
+draw the axis x with annotation:
+   INT CONST y0 :: round (cy);
+   move (xvmin, y0);
+   draw (xvmax, y0);
+   move (xvmin - 8 * character width,
+         y0 - line height DIV 3);
+   plot text (text (xmin, 7, 2));
+   move (xvmax - 3 * character width DIV 2,
+         y0 - line height DIV 3);
+   plot text (text (xmax, 7, 2)).
+
+draw the axis y with annotation:
+   INT CONST x0 :: round (cx);
+   move (x0, yvmin);
+   draw (x0, yvmax);
+   move (x0 - 5 * character width,
+         yvmin + line height DIV 3);
+   plot text (text (ymin, 7, 2));
+   move (x0 - 5 * character width,
+         yvmax - 4 * line height DIV 3);
+   plot text (text (ymax, 7, 2)).
+
+draw the graphics:
+   t := tmin;
+   move (round (fx (t) * sx + cx),
+         round (fy (t) * sy + cy));
+   WHILE t <= tmax
+   REP
+     t INCR delta t;
+     draw (round (fx (t) * sx + cx),
+           round (fy (t) * sy + cy))
+   ENDREP.
+ENDPROC graphics2;
+
+
+REAL PROC fy (REAL CONST t):
+   sin (t)
+ENDPROC fy;
+
+REAL PROC fx (REAL CONST t):
+   sin (6.0 * t)
+ENDPROC fx;
+
+program:
+   enter graphics mode;
+   graphics2 (0.0, 2.0 * pi, 200,
+              REAL PROC (REAL CONST) fx,
+              REAL PROC (REAL CONST) fy);
+   wait for confirmation ( 2 * graphics x limit DIV 3, 1);
+   leave graphics mode.
+

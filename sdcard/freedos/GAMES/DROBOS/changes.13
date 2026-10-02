@@ -1,0 +1,63 @@
+DRoboWHOids 1.3 changes
+=======================
+
+D*MN! Never ever update the backup _and_ backup of backup at the same
+time, no matter how much hurry you are in. I did it and wiped out the
+1.2 source code..
+
+1.3 is the Survival half of 1.2, see below for more details. The only
+(?) difference is that the level bonus is now 100*level points. I also
+used 2 different button routines, one for arrow buttons and a colored
+version for the rest of the buttons.
+
+DRoboWHOids 1.2 changes
+=======================
+
+One of the worst things I know is writing a manual <sigh> ..
+
+Bugs:
+-----
+
+There was one bug in drobos 1.1: when Sonic Screwdriver was used the
+"sonicdriver" button was set to down-position. If mouse button was kept
+pressed down and cursor moved over the "sonicdriver" button, the button
+was drawn in up-position, even thought there was no Sonic Screwdriver
+left to use. Fixed.
+
+Running:
+--------
+
+Pressing SHIFT-direction key makes user to "run" into a direction until
+a wall or scrapheap is hit or a Dalek comes dangerously close. This way
+of moving is safe. Scoring is 10 points per Dalek.
+
+One-to-one:
+-----------
+
+One-to-one feature allows user to stand in current place until a Dalek
+arrives into a neighbouring tile. Scoring is 10 points per Dalek.
+
+The lower part of the button table highlightnings can be read as "Gee,
+lost". Please don't let this discourage you.
+
+Game: classic vs. survival
+--------------------------
+
+There were some requests that didn't IMHO quite fit into the idea of
+drobos, but since they were good, I had to do something..
+
+The old drobos 1.1 is now the Classic game with the enhanced movement
+control, all the new features were put together as the Survival game:
+
+- you can save Sonic Screwdrivers to be used in higher levels
+- no bonus for unused ssd, instead you'll get 100 points per survived level
+- scrapheaps are movable (you can build a haven for yourself)
+- the first teleport is safe (lethal == you "zap" before and afterwards)
+- different score tables for both games (old score file NOT COMPATIBLE)
+
+Technical details:
+------------------
+
+All score routines are rewritten to handle 2 separate score tables. I
+also rewrote all palette handling routines == if there's any trouble
+it's because of me and has nothing to do with GPPP.

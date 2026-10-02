@@ -1,0 +1,21 @@
+
+draw a rosette:
+   enter turtle graphics;
+   go to the centre;
+   UPTO 6
+   REP draw equilateral hook;
+   turn (60)
+   ENDREP;
+   wait for confirmation (10, 10);
+   leave turtle graphics.
+
+
+go to the centre:
+   REAL CONST d:: turtle y limit / 3.0;
+   move (turtle x limit / 2.0, turtle y limit / 2.0).
+
+
+draw equilateral hook:
+   draw (d); turn (120);
+   draw (d); turn (120);
+   move (d); turn (120).
