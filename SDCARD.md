@@ -70,7 +70,7 @@ pico-nes ищет игры в каталоге `/NES` на SD-карте (рас
 | `/freedos/GAMES/TYPEFAST` | TypeFast | клавиатурный тренажёр в виде игры: успеть набрать падающие слова | текст | [clasqm/freedos-repo](https://github.com/clasqm/freedos-repo) `5254279` | авторы не заявляли авторских прав, просят сохранять комментарии в исходниках |
 | `/freedos/GAMES/DRMIND` | Dr. Mind Lite | «Быки и коровы» (Mastermind) в цвете | VGA/MCGA | там же | CC BY-ND 4.0 |
 | `/freedos/GAMES/DROBOS` | Drobos | «Далеки»: увести героя от роботов, сталкивая их между собой | EGA | там же | свободное распространение, без продажи |
-| `/freedos/GAMES/SHUFFLE` | Shuffle V | «Пятнашки» | текст | там же | freeware для некоммерческого использования (J. R. Ferguson). **Известная проблема:** в murm386 v1.19 не реагирует на клавиши (программа на Turbo Vision) |
+| `/freedos/GAMES/SHUFFLE` | Shuffle V | «Пятнашки» | текст | там же | freeware для некоммерческого использования (J. R. Ferguson). **Известная проблема:** в murm386 v1.19 зависает при запуске во всех трёх сборках (Turbo Pascal, интерфейс в стиле Turbo Vision; файл сжат LZEXE 0.91) |
 | `/freedos/GAMES/HANOI` | Towers of Hanoi | «Ханойская башня» — классическая рекурсивная задача | текст | там же | то же |
 | `/freedos/GAMES/LINES` | Color Lines (Gamos, 1992) | «Линии»: собирать ряды из пяти шариков одного цвета; правила — `LINES.TXT` | EGA | загружено вручную | не указаны |
 | `/freedos/GAMES/LIFE` | Life2 | «Жизнь» Конвея | текст | там же | freeware по данным freedos-repo |
@@ -81,9 +81,9 @@ pico-nes ищет игры в каталоге `/NES` на SD-карте (рас
 | `/freedos/EDU/LOGO`, `/freedos/EDU/LOGO_DOC` | LogoWriter 3, русская версия ИНТ | Лого с черепашьей графикой. Запуск — `LOGOWR.COM`; документация — `LOGO_DOC` | графика | загружено вручную | не указаны |
 | `/freedos/EDU/TP55` | Turbo Pascal 5.5 (Borland, 1989) | среда и компилятор Pascal с примерами (`*.PAS`), BGI-графикой и документацией (`DOC`, `README`); в каталоге `TURBO3` — средства совместимости с TP 3.0. Запуск — `TURBO.EXE`, каталог включён в `PATH` | текст, графика BGI | Borland Museum / Embarcadero Antique Software | Embarcadero: бесплатно, «as is», только для личного использования; распространение через интернет и на носителях не разрешено. Будет удалено из репозитория при претензии правообладателя |
 | `/freedos/EDU/ELEMENTS` | Elements | периодическая таблица | текст | там же | freeware по данным freedos-repo |
-| `/freedos/EDU/GRAPHXY` | GraphXY | построение графиков функций | EGA/VGA | там же | freeware. **Известная проблема:** в murm386 v1.19 зависает на старте (Borland C++ 3.x: автоопределение BGI или эмулятор FPU) |
+| `/freedos/EDU/GRAPHXY` | GraphXY | построение графиков функций | EGA/VGA | там же | freeware. Режим VGA 640×480, 16 цветов, драйвер `EGAVGA.BGI` и шрифты `*.CHR` загружаются из текущего каталога — запускать из `\FREEDOS\EDU\GRAPHXY`. **Известная проблема:** в murm386 v1.19 работает только в сборке 386 с PSRAM (`/emu/psram/PCp2-386-VGA256-…`), в остальных не запускается |
 
-Файлы взяты из пакетов freedos-repo без изменений, кроме имён: в нескольких случаях упрощены до 8.3 (`hanoie.exe` → `HANOI.EXE`, `Kingdom.com` → `KINGDOM.COM`). На murm386 v1.19 не работают Shuffle V и GraphXY (см. таблицу); остальные программы поштучно ещё не проверялись.
+Файлы взяты из пакетов freedos-repo без изменений, кроме имён: в нескольких случаях упрощены до 8.3 (`hanoie.exe` → `HANOI.EXE`, `Kingdom.com` → `KINGDOM.COM`). На murm386 v1.19 Shuffle V не работает ни в одной сборке, GraphXY работает только в сборке 386 с PSRAM (см. таблицу); остальные программы поштучно ещё не проверялись.
 
 ## 5. Игры для pico-speccy (`/ZX`)
 
