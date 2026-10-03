@@ -24,6 +24,7 @@
 | `sdcard/emu/psram/PCp2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `210e92f` (2026-10-03), сборка с PSRAM: ядро 8086/186/286 (`CPU_TARGET=286`), остальное как у сборки 386 | 504 МГц / 1.6 В | `38c1c02510df2656ddb5c89e390e1c9e074f1a481c05d4d2a1820a5354d73685` |
 | `sdcard/emu/PCp2-speccy-VGA-HDMI-HSTX-1.0.8.uf2` | [drewpo28/pico-speccy](https://github.com/drewpo28/pico-speccy) | релиз [v1.0.8](https://github.com/drewpo28/pico-speccy/releases/tag/v1.0.8), тег `v1.0.8` = `119f372` (2026-09-29) | 378 МГц / 1.5 В (по умолчанию; 252–504 МГц и 1.15–1.80 В — в меню) | `9f577078666fc52e566ffde7736a0eb3132ce7676303c0f6cbce0a8e88f06155` |
 | `sdcard/emu/PCp2-z26-HDMI-PWM-4.0.8.uf2` | [DnCraptor/pico-z26](https://github.com/DnCraptor/pico-z26) | 4.0.8, `9689fc5` (2026-10-03) | 378 МГц / 1.6 В (по умолчанию; до 524 МГц — в меню) | `e63befc68d57a448532a6504c29b9977b8bdd81efde853d7181cf341a659995e` |
+| `sdcard/emu/PCp2-atari800-HDMI-PWM-378-3.3.1.uf2` | [DnCraptor/atari800](https://github.com/DnCraptor/atari800) | 3.3.1, ветка `hdmi` = `4c5189a` (2026-10-04) | 378 МГц / 1.6 В | `0cbb34046ee81b9cdfbeb6f87dc78696e255d689fdcfd44ea384417558b6d2ac` |
 | `sdcard/emu/PCp2-frank_apple-HDMI-378MHz-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `b95b7c7` (2026-10-02), сборка без PSRAM | 378 МГц / 1.6 В | `088957d8cbb4b1b82de98bbef82766eb0a4e593dd7c198842a0521ef2ac32a0f` |
 | `sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2` | там же | 1.05, `9ca41fc` (2026-10-03), сборка с PSRAM 84 МГц | 378 МГц / 1.6 В | `4bfdf99cd9a92afa8ccaacc501819c923a7493232b2d319a4da1b7a50e2746b4` |
 
@@ -48,8 +49,8 @@ sha256sum -c SHA256SUMS          # Linux, Git Bash в Windows
 shasum -a 256 -c SHA256SUMS      # macOS
 ```
 
-Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 8).
+Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 9).
 
 ## 4. Лицензии
 
-MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 — под GPLv2. Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).
+MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 и atari800 — под GPLv2. Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).

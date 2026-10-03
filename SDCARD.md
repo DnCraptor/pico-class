@@ -32,6 +32,7 @@
 | `/ZX/*` | свободные игры для pico-speccy, см. раздел 5 | см. раздел 5 |
 | `/apple/*.DSK` | образы дисков для murmapple (Apple IIe), см. раздел 6 | см. раздел 6 |
 | `/z26/*.bin` | свободные homebrew-игры для pico-z26 (Atari 2600), см. раздел 7 | см. раздел 7 |
+| `/atari800/*` | свободные программы для atari800 (Atari 400/800, XL/XE, 5200), см. раздел 8 | см. раздел 8 |
 | `/freedos/GAMES/*`, `/freedos/EDU/*` | свободные программы для murm386, см. раздел 4 | см. раздел 4 |
 
 Памятка `/mos2/README.md` написана для сборки MOS2 под Olimex PICO-PC (PCp2): видеорежимы, выводы звука и геймпада в ней указаны для этой платы.
@@ -135,7 +136,27 @@ pico-z26 ищет игры в каталоге `/z26` на SD-карте (рас
 
 Образы взяты из репозиториев без изменений (у Berta — из релиза на GitHub), переименованы в короткие имена. Исходники — в тех же репозиториях. Проверка 2026-10-03 на PCp2 с pico-z26 4.0.8 (`9689fc5`): обе игры работают. Игры 8 КБ и больше с переключением банков в этой версии pico-z26 не запускаются, см. [`hardware/COMPATIBILITY.md`](hardware/COMPATIBILITY.md).
 
-## 8. Проверка целостности
+## 8. Программы для atari800 (`/atari800`)
+
+atari800 хранит файлы в каталоге `/atari800` на SD-карте и открывает в нём выбор файлов. Образы ПЗУ Atari не нужны: в эмулятор встроены AltirraOS для 400/800 и XL/XE, Altirra 5200 OS и Altirra BASIC. По умолчанию эмулируется 130XE. Подборка охватывает разные машины линейки, чтобы на одном рабочем месте можно было сравнить 400/800, XL/XE и игровую приставку 5200.
+
+Управление: **F1** — меню эмулятора; **Alt+R** — запустить программу (`.XEX`, `.ATR`); **Alt+C** — картридж (`.CAR`); **Alt+D** — дисководы; **Alt+Y** — настройки системы (тип машины, объём памяти, ОС); **F2/F3/F4** — консольные клавиши Option/Select/Start; **F9/F10** — громкость. Джойстик — геймпад NES DPAD или клавиатура, кнопка — Ctrl.
+
+| Файл | Программа | Что делать | Машина | Источник | Лицензия |
+|---|---|---|---|---|---|
+| `FASTBAS.ATR` | FastBasic 4.7 (Daniel Serpell) | современный BASIC с редактором прямо на Atari; на диске примеры, в том числе игры Joyas и Carrera 3D | 400/800 48 КБ и выше | [dmsc/fastbasic](https://github.com/dmsc/fastbasic), релиз v4.7 (`55dc52f`), `fastbasic-v4.7.atr` | GPL v2+ с исключением для скомпилированных программ; на диске BW-DOS (freeware) |
+| `ACTION.CAR` | Action! 3.6 (Clinton Parker, OSS, 1983) | язык программирования с редактором и компилятором в картридже | 400/800, XL/XE | образ картриджа из [jhusak/atari_action_compiler](https://github.com/jhusak/atari_action_compiler) `7de960e`, `inc/action_36.c`; исходники — [pjones1063/Atari_OSS_Action](https://github.com/pjones1063/Atari_OSS_Action) `e35661c` | GPL v3 (исходники открыты автором в 2015 году) |
+| `SFXMM.ATR` | SFX Music Maker (GSD, 2021) | сочинять музыку и звуковые эффекты | только XL/XE 64 КБ | [GSoftwareDevelopment/SFX-Tracker](https://github.com/GSoftwareDevelopment/SFX-Tracker), релиз 1.0 (`0c744bf`), `SFXMM.ATR` | MIT; на диске Atari DOS 2.5; документация на польском |
+| `FIREFITE.XEX` | Firefighter (Bill Kendrick, 2025) | тушить пожар и выводить людей к выходу; можно вдвоём | 48 КБ | [billkendrick/firefighter](https://github.com/billkendrick/firefighter), релиз 0.1-beta10 (`546c7a7`) | GPL v3 |
+| `GEMDROP.XEX` | Gem Drop Deluxe (Bill Kendrick) | головоломка: ловить и бросать цветные камни, собирая тройки | 48 КБ | [billkendrick/gemdrop_deluxe](https://github.com/billkendrick/gemdrop_deluxe) `e6a3dc4`, собрано из исходников (cc65) | GPL v2 |
+| `CHESS.ATR` | cc65 Chess 2.0 (Stefan Wessels) | шахматы против компьютера или друг против друга | 48 КБ | [StewBC/cc65-Chess](https://github.com/StewBC/cc65-Chess), релиз V2.0 (`7f1ef43`), `cc65-Chess.atr` | Unlicense (общественное достояние); на диске MyPicoDos (freeware) |
+| `SCORCH.XEX` | Scorch (Pecus, pirx) | артиллерийская дуэль на 2–6 игроков: выбрать угол и силу выстрела | 48 КБ | [pkali/scorch_src](https://github.com/pkali/scorch_src) `f1e2c46`, `scorch.xex` | Unlicense |
+| `SCORCH52.CAR` | Scorch для приставки Atari 5200 | то же на приставке 5200 | Atari 5200 (тип машины 5200 в Alt+Y) | там же, `scorch.bin` с заголовком CAR (тип 4, 5200 32 КБ) | Unlicense |
+| `DLI0.XEX`, `DLI1.XEX` | примеры прерываний списка отображения (Seban/Slight, 2016) | короткие демонстрации цветовых приёмов: радужные полосы и картинка с дополнительными цветами | 48 КБ | [seban-slt/atari8_6502_code_examples](https://github.com/seban-slt/atari8_6502_code_examples) `da91a1a`, собрано из исходников (xasm) | общественное достояние (`README.md`) |
+
+Образы взяты из репозиториев и релизов без изменений, кроме отмеченных: собраны из исходников `GEMDROP.XEX` и `DLI*.XEX`, к образу Scorch для 5200 добавлен 16-байтный заголовок CAR. Файлы переименованы в имена 8.3. Все программы проверены на ПК во встроенной AltirraOS (atari800 с Altirra ROM, без оригинальных ПЗУ Atari).
+
+## 9. Проверка целостности
 
 Из корня репозитория:
 
@@ -146,6 +167,6 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 Файлы `*.md` в `SHA256SUMS` не включены: git может менять в них концы строк при checkout. Файлы под `sdcard/` git хранит байт в байт (`.gitattributes`), поэтому контрольные суммы совпадают в любой ОС.
 
-## 9. Лицензии
+## 10. Лицензии
 
-MOS2 и её приложения распространяются под GPLv3, исходники — murmulator-os2, тег `v.2.3.2`. Условия для FreeDOS, SeaBIOS, образа DR-DOS, игр и программ указаны в разделах 2–7. Собственные файлы репозитория (документы, `/test/*`) распространяются на условиях [`LICENSE`](LICENSE).
+MOS2 и её приложения распространяются под GPLv3, исходники — murmulator-os2, тег `v.2.3.2`. Условия для FreeDOS, SeaBIOS, образа DR-DOS, игр и программ указаны в разделах 2–8. Собственные файлы репозитория (документы, `/test/*`) распространяются на условиях [`LICENSE`](LICENSE).
