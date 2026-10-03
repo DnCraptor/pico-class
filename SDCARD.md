@@ -134,13 +134,12 @@ pico-z26 ищет игры в каталоге `/z26` на SD-карте (рас
 |---|---|---|---|---|---|
 | `pipes.bin` | Pipes 2600 (albf, 2014) | головоломка: проложить трубы от старта до финиша, пока не потекла вода (в духе Pipe Dream) | [albf/pipes-2600](https://github.com/albf/pipes-2600) `ea0e196`, `pipe2600.bin` | MIT | 8 КБ, F8 + SuperChip |
 | `2048.bin` | 2048 2600 (Carlos Duarte do Nascimento, 2014) | головоломка «2048»: сдвигать плитки джойстиком и складывать одинаковые числа; старт — кнопкой | [chesterbr/2048-2600](https://github.com/chesterbr/2048-2600) `35de3c1` | MIT | 2 КБ |
-| `snake.bin` | Snake (Carlos Reyes, 2021) | «Змейка»: есть яблоки и расти; SELECT — скорость, RESET — старт | [careyes17/snake-atari-2600](https://github.com/careyes17/snake-atari-2600) `eeea968` | MIT | 2 КБ |
 | `berta.bin` | Berta and Butterflies (vandalton, 2024) | слонёнок Берта ловит бабочек с четырёх сторон — по мотивам «Ну, погоди!» / Game & Watch «Egg» | [vandalton/BertaAndButterflies](https://github.com/vandalton/BertaAndButterflies), релиз v1.00 (`7f81d40`), `berta-and-butterflies.v1.00.ntsc.en.bin` | MIT | 4 КБ |
 | `mssnake.bin` | Ms Snake! (D. Olmisani, L. Olmisani, M. Segnalini, 2017) | «Змейка» с яркой графикой и музыкой | [mad4j/atari-mssnake](https://github.com/mad4j/atari-mssnake) `8d495ba`, `game/ntsc-pal60/ms-snake!-NTSC-PAL60.bas.bin` | GPLv3 | 32 КБ, F4 + SuperChip |
 
-Образы взяты из репозиториев без изменений (у Berta — из релиза на GitHub), переименованы в короткие имена. Исходники — в тех же репозиториях. Проверка 2026-10-03 на PCp2 с pico-z26 4.0.8 (`8c110c8`): работает только `berta.bin` (4 КБ, без переключения банков). Остальные не запускаются: эта версия не передаёт эмулятору размер образа, поэтому образы 2 КБ (`2048.bin`, `snake.bin`) не зеркалируются, а для 8 и 32 КБ (`pipes.bin`, `mssnake.bin`) не включается переключение банков; исправление предложено в pico-z26.
+Образы взяты из репозиториев без изменений (у Berta — из релиза на GitHub), переименованы в короткие имена. Исходники — в тех же репозиториях. Проверка 2026-10-03 на PCp2 с pico-z26 4.0.8 (`c305954`): `2048.bin` и `berta.bin` работают. `pipes.bin` и `mssnake.bin` (картриджи с дополнительной памятью SuperChip) дают чёрный экран: в эмуляторе окно чтения этой памяти задано шире, чем нужно, и перекрывает ROM; исправление предложено в pico-z26.
 
-Не включены: Plane (gonzalorf, 2022) — в игре нет звука, управление на рабочем месте оказалось непонятным; Hellway (свободная, но с «Hell» в названии — руководитель может добавить сам, [opbokel/hellway](https://github.com/opbokel/hellway)), незаконченные проекты, игры без лицензии и игры по чужим персонажам.
+Не включены: Snake (careyes17, 2021) — в pico-z26 змейка не реагирует на джойстик, причина не найдена; Plane (gonzalorf, 2022) — в игре нет звука, управление на рабочем месте оказалось непонятным; Hellway (свободная, но с «Hell» в названии — руководитель может добавить сам, [opbokel/hellway](https://github.com/opbokel/hellway)), незаконченные проекты, игры без лицензии и игры по чужим персонажам.
 
 ## 8. Проверка целостности
 
