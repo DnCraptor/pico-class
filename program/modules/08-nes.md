@@ -131,4 +131,5 @@
 - [Atari 5200 — Википедия](https://ru.wikipedia.org/wiki/Atari_5200) — приставка и её связь с компьютерами Atari.
 - [Кризис индустрии видеоигр 1983 года — Википедия](https://ru.wikipedia.org/wiki/Кризис_индустрии_компьютерных_игр_1983_года) — причины и последствия.
 - [Dendy — Википедия](https://ru.wikipedia.org/wiki/Dendy) — история Денди в России.
+- [pico-nes](https://murmulator.ru/pico-nes) и [игры](https://murmulator.ru/gamesfamicom) - домашняя страница pico-nes и ссылки на игры.
 - Состав `/NES` и подробнее об играх — [`SDCARD.md`](../../SDCARD.md), раздел 3; возможности эмуляторов — строки pico-nes и atari800 в [`hardware/COMPATIBILITY.md`](../../hardware/COMPATIBILITY.md).
