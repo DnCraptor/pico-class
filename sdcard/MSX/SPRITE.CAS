@@ -1,0 +1,31 @@
+¦ÞºÌ}têêêêêêêêêêSPRITE¦ÞºÌ}t10 REM SPRITE - hardware sprites
+20 SCREEN 2,0:COLOR 15,1,1:CLS
+30 FOR I=1 TO 8:READ A:S$=S$+CHR$(A):NEXT I
+40 SPRITE$(0)=S$
+50 DATA 24,60,126,219,255,36,90,165
+60 FOR I=1 TO 40:PSET(RND(1)*255,RND(1)*160),15:NEXT I
+70 LINE(0,168)-(255,191),12,BF
+80¦ÞºÌ}t OPEN "GRP:" AS #1
+90 COLOR 1:PRESET(8,176):PRINT #1,"Arrows - move, Space - exit"
+100 X=120:Y=100:EX=0:EY=40:VX=3:VY=2:H=0
+110 ON SPRITE GOSUB 300:SPRITE ON
+120 D=STICK(0)
+130 IF D=8 OR D=1 OR D=2 THEN Y=Y-2
+140 IF D>=4 AND D<=6 THEN Y=Y+2
+150 IF D¦ÞºÌ}t>=2 AND D<=4 THEN X=X+2
+160 IF D>=6 AND D<=8 THEN X=X-2
+170 IF X<0 THEN X=0 ELSE IF X>247 THEN X=247
+180 IF Y<0 THEN Y=0 ELSE IF Y>152 THEN Y=152
+190 EX=EX+VX:IF EX<0 OR EX>247 THEN VX=-VX:EX=EX+VX
+200 EY=EY+VY:IF EY<0 OR EY>152 THEN VY=-VY:EY=EY+VY
+¦ÞºÌ}t210 PUT SPRITE 0,(X,Y),11,0
+220 PUT SPRITE 1,(EX,EY),9,0
+230 IF STRIG(0)=0 THEN 120
+240 CLOSE #1:SCREEN 0:COLOR 15,4,4:END
+300 REM sprites touched each other
+310 SPRITE OFF:BEEP:H=H+1
+320 LINE(176,168)-(255,175),12,BF
+330 COLOR 1:PRESET(176,168):PRI¦ÞºÌ}tNT #1,"Hits:";H
+340 EX=EX+40*SGN(VX):IF EX>247 THEN EX=0
+350 SPRITE ON:RETURN
+

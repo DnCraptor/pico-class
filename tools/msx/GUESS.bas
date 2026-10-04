@@ -1,0 +1,14 @@
+10 REM GUESS - guess the number
+20 SCREEN 0:WIDTH 40:COLOR 15,4,4:KEY OFF:CLS
+30 R=RND(-TIME):N=INT(RND(1)*100)+1
+40 T=0
+50 PRINT "I am thinking of a number 1 to 100."
+60 INPUT "Your guess";G
+70 T=T+1
+80 IF G<N THEN PRINT "Bigger!":GOTO 60
+90 IF G>N THEN PRINT "Smaller!":GOTO 60
+100 PLAY "T200O5L16CEGO6C"
+110 PRINT "Right!";T;"tries."
+120 PRINT:PRINT "Press any key"
+130 A$=INPUT$(1)
+140 KEY ON:CLS

@@ -1,0 +1,18 @@
+¦ήΊΜ}tκκκκκκκκκκHELLO ¦ήΊΜ}t10 REM HELLO - first program
+20 SCREEN 0:WIDTH 40:COLOR 15,4,4:KEY OFF
+30 CLS
+40 LOCATE 14,1:PRINT "HELLO, MSX!"
+50 LOCATE 0,4:INPUT "What is your name";N$
+60 FOR I=1 TO 5
+70 PRINT I;"Hello, ";N$;"!"
+80 NEXT I
+90 PRINT:PRINT "Now the colours:"
+100¦ήΊΜ}t FOR C=1 TO 15
+110 COLOR 15,C,C
+120 FOR T=1 TO 300:NEXT T
+130 NEXT C
+140 COLOR 15,4,4
+150 PRINT:PRINT "Press any key"
+160 A$=INPUT$(1)
+170 KEY ON:CLS
+
