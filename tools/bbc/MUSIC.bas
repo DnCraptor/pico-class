@@ -1,0 +1,11 @@
+10 REM MUSIC - the SOUND command
+20 MODE 7
+30 PRINT "Twinkle, twinkle, little star..."
+40 FOR I%=1 TO 14
+50   READ P%,D%
+60   SOUND 1,-12,P%,D%
+70   SOUND 1,0,P%,1
+80 NEXT
+90 END
+100 DATA 53,5,53,5,81,5,81,5,89,5,89,5,81,10
+110 DATA 73,5,73,5,69,5,69,5,61,5,61,5,53,10

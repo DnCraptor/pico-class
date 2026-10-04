@@ -1,0 +1,15 @@
+10 REM HELLO - procedures and REPEAT
+20 MODE 7
+30 PROCtitle("HELLO FROM BBC BASIC")
+40 INPUT "What is your name";N$
+50 C%=0
+60 REPEAT
+70   PRINT "Hello, ";N$;"!"
+80   C%=C%+1
+90 UNTIL C%=5
+100 PRINT "Bye!"
+110 END
+120 DEF PROCtitle(T$)
+130 PRINT CHR$(141);CHR$(131);T$
+140 PRINT CHR$(141);CHR$(131);T$
+150 ENDPROC

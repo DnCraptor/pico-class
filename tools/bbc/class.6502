@@ -1,0 +1,9 @@
+\ pico-class: BBC BASIC programs disc (built with beebasm)
+PUTTEXT "boot.txt", "!BOOT", 0, &FFFFFF
+PUTBASIC "MENU.bas", "MENU"
+PUTBASIC "HELLO.bas", "HELLO"
+PUTBASIC "TELETXT.bas", "TELETXT"
+PUTBASIC "SHAPES.bas", "SHAPES"
+PUTBASIC "SPIRAL.bas", "SPIRAL"
+PUTBASIC "MUSIC.bas", "MUSIC"
+PUTBASIC "GUESS.bas", "GUESS"

@@ -27,6 +27,7 @@
 | `sdcard/emu/PCp2-atari800-HDMI-PWM-378-3.3.1.uf2` | [DnCraptor/atari800](https://github.com/DnCraptor/atari800) | 3.3.1, ветка `hdmi` = `6866352` (2026-10-04) | 378 МГц / 1.6 В | `5910211fc75a3ff462d5b60f8eefe7ebc344bd9d8901f94f7f0f0988eb8ee409` |
 | `sdcard/emu/PCp2-gnw-HDMI-0.1.18.uf2` | [DnCraptor/murmulator_game_n_watch](https://github.com/DnCraptor/murmulator_game_n_watch) | 0.1.18, `master` = `6d06e88` (2026-10-04) | 252 МГц / 1.3 В | `a7a34684f5b76b1ae0ee958bab777e87b385697e6df2c44c3e95f14beae5893b` |
 | `sdcard/emu/PCp2-frank-c64-HDMI-378MHz-F66-PWM-v1.08.uf2` | [DnCraptor/murmc64](https://github.com/DnCraptor/murmc64) | v1.08, `main` = `2a398e1` (2026-10-04), сборка без PSRAM | 378 МГц / 1.6 В | `bb8790edbfcb69c1702bebeca5e16c4d425d0a56a3e2694a7328376169ad1b66` |
+| `sdcard/emu/PCp2-frank-micro-HDMI-252MHz-1.00.uf2` | [DnCraptor/frank-micro](https://github.com/DnCraptor/frank-micro) | 1.00, `main` = `06f7894` (2026-10-04), `PLATFORM=pc`, видеодрайвер со звуком по HDMI | 252 МГц | `83d753dc4cea5112f503d3e6a5dbd0341f5531eebfc37c7065929a35afa4cdd4` |
 | `sdcard/emu/PCp2-frank_apple-HDMI-378MHz-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `b95b7c7` (2026-10-02), сборка без PSRAM | 378 МГц / 1.6 В | `088957d8cbb4b1b82de98bbef82766eb0a4e593dd7c198842a0521ef2ac32a0f` |
 | `sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2` | там же | 1.05, `9ca41fc` (2026-10-03), сборка с PSRAM 84 МГц | 378 МГц / 1.6 В | `4bfdf99cd9a92afa8ccaacc501819c923a7493232b2d319a4da1b7a50e2746b4` |
 
@@ -51,8 +52,8 @@ sha256sum -c SHA256SUMS          # Linux, Git Bash в Windows
 shasum -a 256 -c SHA256SUMS      # macOS
 ```
 
-Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 10).
+Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 11).
 
 ## 4. Лицензии
 
-MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 и atari800 — под GPLv2, эмулятор Game & Watch — под Apache 2.0, murmc64 — под GPLv2 или более поздней. Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).
+MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 и atari800 — под GPLv2, эмулятор Game & Watch — под Apache 2.0, murmc64 — под GPLv2 или более поздней, frank-micro — под GPLv3 или более поздней. Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).
