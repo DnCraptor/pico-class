@@ -10,4 +10,7 @@
 100  IF G%>N% THEN PRINT "Smaller!"
 110 UNTIL G%=N%
 120 PRINT "Right! ";STR$(T%);" tries."
-130 END
+130 PRINT
+140 PRINT "Press any key for menu"
+150 A=GET
+160 CHAIN "MENU"

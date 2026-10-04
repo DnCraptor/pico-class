@@ -12,6 +12,8 @@
 | `MUSIC.bas` | `MUSIC` | мелодия командой `SOUND`, ноты в строках `DATA` |
 | `GUESS.bas` | `GUESS` | игра «Угадай число» |
 
+Каждая программа заканчивается строкой «Press any key for menu» (в MODE 2 — «Any key: menu»): `A=GET` ждёт клавишу, `CHAIN "MENU"` возвращает в меню.
+
 Сборка образа диска ассемблером [beebasm](https://github.com/stardot/beebasm) (GPL v3), в этом каталоге:
 
 ```sh

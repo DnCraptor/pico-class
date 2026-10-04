@@ -9,6 +9,6 @@
 90 PRINT CHR$(136);CHR$(129);"Flashing red text"
 100 PRINT CHR$(157);CHR$(132);"Yellow on blue  ";CHR$(156)
 110 PRINT
-120 PRINT "Press any key"
+120 PRINT "Press any key for menu"
 130 A=GET
-140 MODE 7
+140 CHAIN "MENU"
