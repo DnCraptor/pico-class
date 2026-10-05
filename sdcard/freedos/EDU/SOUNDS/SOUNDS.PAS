@@ -94,11 +94,12 @@ begin
   Port[$43] := $36; Port[$40] := 0; Port[$40] := 0;
 end;
 
-function KeyPressed: Boolean;   { нажата ли клавиша - через BIOS, INT 16h }
-var r: Registers;
+function KeyPressed: Boolean;
+{ Есть ли нажатая клавиша в буфере клавиатуры. Буфер лежит в области данных
+  BIOS (сегмент 40h): слово 1Ah - откуда читать, 1Ch - куда писать; если они
+  равны, буфер пуст. Так проверку не испортит ни одна реализация INT 16h. }
 begin
-  r.ah := 1; Intr($16, r);
-  KeyPressed := (r.flags and FZero) = 0;
+  KeyPressed := MemW[$40:$1A] <> MemW[$40:$1C];
 end;
 
 function ReadKey: Char;         { дождаться клавиши и прочитать её }
