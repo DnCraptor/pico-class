@@ -1,4 +1,4 @@
-{ VIDEO.PAS - видеорежимы PC 1981-1991 годов: одна и та же картинка
+{ VIDEO.PAS - видеорежимы PC 1981-1989 годов: одна и та же картинка
   в каждом режиме, который умеет видеоадаптер.
 
   Для каждого режима программа сначала рассказывает о нем (разрешение,
@@ -10,7 +10,6 @@
   и программа так и скажет.
 
   Сокращения:
-    MDA  - Monochrome Display Adapter, монохромный адаптер дисплея
     CGA  - Color Graphics Adapter, цветной графический адаптер
     EGA  - Enhanced Graphics Adapter, улучшенный графический адаптер
     MCGA - Multi-Color Graphics Array, многоцветная графическая матрица
@@ -32,25 +31,19 @@ program Video;
 uses Dos;
 
 type
-  TKind = (kMDA, kText, kCGA4, kCGA2, kPlanar, kLin1, kLin8,
-           kVBE8, kVBE16, kVBE24);
+  TKind = (kText, kCGA4, kCGA2, kPlanar, kLin1, kLin8, kVBE8);
 
 const
-  NMODE = 12;
-  Keys: array[1..NMODE] of Char =
-    ('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C');
-  ModeNo: array[1..NMODE] of Word =
-    ($07, $03, $04, $06, $0D, $10, $11, $12, $13, $100, $10E, $10F);
+  NMODE = 9;
+  Keys: array[1..NMODE] of Char = ('1', '2', '3', '4', '5', '6', '7', '8', '9');
+  ModeNo: array[1..NMODE] of Word = ($03, $04, $06, $0D, $10, $11, $12, $13, $100);
   Kinds: array[1..NMODE] of TKind =
-    (kMDA, kText, kCGA4, kCGA2, kPlanar, kPlanar, kLin1, kPlanar, kLin8,
-     kVBE8, kVBE16, kVBE24);
-  ResW: array[1..NMODE] of Word = (80, 80, 320, 640, 320, 640, 640, 640, 320, 640, 320, 320);
-  ResH: array[1..NMODE] of Word = (25, 25, 200, 200, 200, 350, 480, 480, 200, 400, 200, 200);
+    (kText, kCGA4, kCGA2, kPlanar, kPlanar, kLin1, kPlanar, kLin8, kVBE8);
+  ResW: array[1..NMODE] of Word = (80, 320, 640, 320, 640, 640, 640, 320, 640);
+  ResH: array[1..NMODE] of Word = (25, 200, 200, 200, 350, 480, 480, 200, 400);
   Bytes: array[1..NMODE] of LongInt =
-    (4000, 4000, 16000, 16000, 32000, 112000, 38400, 153600, 64000,
-     256000, 128000, 192000);
+    (4000, 16000, 16000, 32000, 112000, 38400, 153600, 64000, 256000);
   Title: array[1..NMODE] of String[46] = (
-    'MDA, текст 80 x 25, один цвет',
     'CGA, цветной текст 80 x 25',
     'CGA 320 x 200, 4 цвета',
     'CGA 640 x 200, 2 цвета',
@@ -59,9 +52,7 @@ const
     'MCGA 640 x 480, 2 цвета',
     'VGA 640 x 480, 16 цветов из 262 144',
     'MCGA и VGA 320 x 200, 256 цветов',
-    'SVGA 640 x 400, 256 цветов (VESA)',
-    'SVGA 320 x 200, 65 536 цветов (VESA)',
-    'SVGA 320 x 200, 16,7 миллиона цветов (VESA)');
+    'SVGA 640 x 400, 256 цветов (VESA)');
 
   { цвета EGA и VGA по умолчанию (0..255 на каждую составляющую) }
   EgaR: array[0..15] of Byte = (0, 0, 0, 0, 170, 170, 170, 170, 85, 85, 85, 85, 255, 255, 255, 255);
@@ -80,7 +71,6 @@ var
   BPL: Word;                    { байт на строку экрана }
   Gran: LongInt;                { VESA: шаг окна памяти в байтах }
   Bank: Integer;                { VESA: какой кусок памяти сейчас виден в окне }
-  VbeBytes: Byte;               { VESA: байт на точку }
   CR, CG, CB: Byte;             { текущий цвет: красный, зеленый, синий }
 
 { ---------- клавиатура ---------- }
@@ -135,7 +125,6 @@ begin
     if (info[0] and 1) = 0 then Exit;        { режим есть, но этому монитору не подходит }
     Gran := LongInt(info[4] + 256 * info[5]) * 1024;
     BPL := info[$10] + 256 * info[$11];
-    VbeBytes := (info[$19] + 7) div 8;
     if Gran = 0 then Exit;
     r.ax := $4F02; r.bx := ModeNo[i]; Intr($10, r);
     if r.ax <> $004F then Exit;
@@ -249,34 +238,6 @@ begin
       Mem[$A000:y * 320 + x] := DevColor;
     kVBE8:
       VbeByte(LongInt(y) * BPL + x, DevColor);
-    kVBE16:
-      begin                     { 5 бит красного, 6 зеленого, 5 синего }
-        c := (Word(CR shr 3) shl 11) or (Word(CG shr 2) shl 5) or (CB shr 3);
-        a := LongInt(y) * BPL + LongInt(x) * 2;
-        VbeByte(a, Lo(c)); VbeByte(a + 1, Hi(c));
-      end;
-    kVBE24:
-      begin                     { по байту: синий, зеленый, красный }
-        a := LongInt(y) * BPL + LongInt(x) * VbeBytes;
-        VbeByte(a, CB); VbeByte(a + 1, CG); VbeByte(a + 2, CR);
-      end;
-  end;
-end;
-
-var
-  PixB: array[0..3] of Byte;    { VESA: байты одной точки }
-
-procedure VbePixBytes;          { байты точки текущего цвета для VESA 16 и 24 бит }
-var c: Word;
-begin
-  if Kind = kVBE16 then
-  begin                         { 5 бит красного, 6 зеленого, 5 синего }
-    c := (Word(CR shr 3) shl 11) or (Word(CG shr 2) shl 5) or (CB shr 3);
-    PixB[0] := Lo(c); PixB[1] := Hi(c);
-  end
-  else
-  begin                         { по байту: синий, зеленый, красный }
-    PixB[0] := CB; PixB[1] := CG; PixB[2] := CR; PixB[3] := 0;
   end;
 end;
 
@@ -304,20 +265,6 @@ begin
           FillChar(Mem[$A000:off], k, DevColor);
           a := a + k; n := n - k;
         end;
-      end;
-    kVBE16, kVBE24:
-      begin
-        VbePixBytes;
-        if Kind = kVBE16 then bp := 2 else bp := VbeBytes;
-        a := LongInt(y) * BPL + LongInt(x1) * bp;
-        SelectBank(a div Gran); off := a mod Gran;
-        for x := x1 to x2 do
-          for k := 0 to bp - 1 do
-          begin
-            Mem[$A000:off] := PixB[k];
-            Inc(off);
-            if off = Gran then begin SelectBank(Bank + 1); off := 0; end;
-          end;
       end;
     kPlanar:
       begin                     { края - по точке, середина - целыми байтами }
@@ -377,25 +324,17 @@ var
   SR, SG, SB, SD: array[0..639] of Byte;   { цвет каждой точки строки и его номер }
 
 procedure StripRow(y: Integer);
-var x, k, bp: Integer; a, off: LongInt;
+var x: Integer; a, off: LongInt;
 begin
-  if Kind >= kVBE8 then
+  if Kind = kVBE8 then
   begin                         { VESA: адрес растет по строке, банк меняется на границе }
-    if Kind = kVBE8 then bp := 1
-    else if Kind = kVBE16 then bp := 2
-    else bp := VbeBytes;
     a := LongInt(y) * BPL;
     SelectBank(a div Gran); off := a mod Gran;
     for x := 0 to W - 1 do
     begin
-      CR := SR[x]; CG := SG[x]; CB := SB[x];
-      if Kind = kVBE8 then PixB[0] := SD[x] else VbePixBytes;
-      for k := 0 to bp - 1 do
-      begin
-        Mem[$A000:off] := PixB[k];
-        Inc(off);
-        if off = Gran then begin SelectBank(Bank + 1); off := 0; end;
-      end;
+      Mem[$A000:off] := SD[x];
+      Inc(off);
+      if off = Gran then begin SelectBank(Bank + 1); off := 0; end;
     end;
   end
   else
@@ -533,22 +472,6 @@ begin
   end;
 end;
 
-procedure ShowMDA;
-{ MDA: у каждой буквы байт атрибута, но цвет один - атрибут делает буквы
-  ярче, подчеркивает, мигает или меняет местами букву и фон.
-  В режиме 7 шрифт 8 x 14 без русских букв - только латиница. }
-begin
-  PutText($B000, 2, 1, 'IBM Monochrome Display Adapter, 1981: text only, 80 x 25', $0F);
-  PutText($B000, 2, 3, 'Normal text            (attribute 07h)', $07);
-  PutText($B000, 2, 4, 'Bright text            (attribute 0Fh)', $0F);
-  PutText($B000, 2, 5, 'Underlined text        (attribute 01h)', $01);
-  PutText($B000, 2, 6, 'Inverse text           (attribute 70h)', $70);
-  PutText($B000, 2, 7, 'Blinking text          (attribute 87h)', $87);
-  PutText($B000, 2, 9, 'Every character takes 2 bytes: the code and the attribute.', $07);
-  PutText($B000, 2, 10, '80 x 25 x 2 = 4000 bytes for the whole screen.', $07);
-  PutText($B000, 2, 23, 'Press any key', $70);
-end;
-
 procedure ShowText;             { CGA: 16 цветов букв на 8 цветах фона }
 var fg, bg: Integer; s: String[4];
 begin
@@ -638,59 +561,46 @@ begin
   Writeln(Title[i]);
   case i of
     1: begin
-         Writeln('IBM PC, 1981. Только текст, никаких рисунков. Монитор зеленый или янтарный.');
-         Writeln('У каждого знака 2 байта: код буквы и атрибут - яркая, подчеркнутая,');
-         Writeln('мигающая или инверсная.');
-       end;
-    2: begin
-         Writeln('IBM PC, 1981. Тот же текст 80 x 25, но в цвете: 16 цветов букв, 8 цветов фона.');
+         Writeln('IBM PC, 1981. Текст 80 x 25 знаков в цвете: 16 цветов букв, 8 цветов фона.');
          Writeln('Атрибут знака: 4 бита - цвет буквы, 4 бита - цвет фона.');
        end;
-    3: begin
+    2: begin
          Writeln('CGA, 1981. 4 цвета - это 2 бита на точку: в одном байте 4 точки.');
          Writeln('Цвета не любые: черный и одна из двух готовых палитр. Здесь палитра 1:');
          Writeln('голубой, малиновый, серый. Зеленую траву нарисовать нечем!');
        end;
-    4: begin
+    3: begin
          Writeln('CGA, 1981. 1 бит на точку: в байте 8 точек, только черный и белый.');
          Writeln('Оттенки получаются узором из точек - это называется дизеринг.');
        end;
-    5: begin
+    4: begin
          Writeln('EGA, 1984. 16 цветов - это 4 бита на точку. Память разложена на 4 слоя');
          Writeln('(плоскости): в каждом по одному биту цвета каждой точки.');
        end;
-    6: begin
+    5: begin
          Writeln('EGA, 1984. 16 цветов, каждый можно выбрать из 64. Нужна карта со 128 КБ:');
          Writeln('базовая EGA с 64 КБ показывала в этом режиме только 4 цвета.');
        end;
-    7: begin
+    6: begin
          Writeln('MCGA, 1987 (IBM PS/2 модели 30). Точки квадратные: 640 x 480 - это 4:3,');
          Writeln('как сам экран. Но цвета всего два - снова узор из точек.');
        end;
-    8: begin
+    7: begin
          Writeln('VGA, 1987 (IBM PS/2 модели 50 и старше). 16 цветов, каждый из 262 144.');
          Writeln('Это больше 128 КБ: в murm386 нужен адаптер VGA 256K.');
        end;
-    9: begin
+    8: begin
          Writeln('MCGA и VGA, 1987. Ровно 1 байт на точку - проще всего для программиста,');
          Writeln('поэтому этот режим так любили игры. 64 000 байт - как раз одно окно');
          Writeln('памяти 64 КБ. Каждый из 256 цветов выбирается из 262 144.');
        end;
-    10: begin
+    9: begin
          Writeln('SVGA, конец 1980-х: у каждой фирмы свои карты, а включать режимы');
          Writeln('договорились по стандарту VESA (1989). 256 000 байт не помещаются в окно');
          Writeln('64 КБ: программа видит память кусками ("банками") и переключает их.');
        end;
-    11: begin
-         Writeln('SVGA, "High Color": 16 бит на точку - 5 бит красного, 6 зеленого,');
-         Writeln('5 синего. Номеров цветов больше нет: в памяти сразу яркость каждой части.');
-       end;
-    12: begin
-         Writeln('SVGA, "True Color": 24 бита на точку - по байту на красный, зеленый и синий.');
-         Writeln('Ступенек между оттенками глаз уже не видит.');
-       end;
   end;
-  if i <= 2 then
+  if i = 1 then
     Writeln('Память: ', ResW[i], ' x ', ResH[i], ' знаков x 2 байта = ', Num(Bytes[i]), ' байт.')
   else
   begin
@@ -710,7 +620,6 @@ begin
   Assign(f, 'DUMP' + Keys[i] + '.BIN'); Rewrite(f, 1);
   case Kind of
     kCGA4, kCGA2: BlockWrite(f, Mem[$B800:0], 16384);
-    kMDA: BlockWrite(f, Mem[$B000:0], 4000);
     kText: BlockWrite(f, Mem[$B800:0], 4000);
     kLin1: BlockWrite(f, Mem[$A000:0], 38400);
     kLin8: BlockWrite(f, Mem[$A000:0], 64000);
@@ -763,7 +672,6 @@ begin
   W := ResW[i]; H := ResH[i];
   t0 := Ticks;
   case Kind of
-    kMDA: ShowMDA;
     kText: ShowText;
   else
     begin

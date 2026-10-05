@@ -48,6 +48,8 @@ const
   DSS_RATE = 7000;              { Disney Sound Source всегда играет 7000 чисел в секунду }
   QUARTER  = 220;               { длина четверти, миллисекунды: темп }
   NNOTES   = 30;
+  WAVE_MAX = 56320;             { мелодия: 8 тактов по 8 восьмых по 880 чисел }
+  SPEECH_MAX = 25000;           { самый длинный SPEECH.RAW: 3 секунды }
   { мелодия: номера нот MIDI (60 = до первой октавы) и длины в восьмых }
   MelNote: array[1..NNOTES] of Byte = (
     64,64,65,67, 67,65,64,62, 60,60,62,64, 64,62,62,
@@ -69,8 +71,6 @@ var
   Speech: PBuf;                 { фраза из SPEECH.RAW }
   SpeechLen: Word;
   Work: PBuf;                   { фраза, испорченная для пункта D }
-  Wave7, Speech7: PBuf;         { мелодия и фраза для Disney Sound Source: 7000 в секунду }
-  Wave7Len, Speech7Len: Word;
   SinTab: array[0..255] of ShortInt;
   Stop: Boolean;                { нажали Esc - остановить звук }
 
@@ -539,28 +539,24 @@ end;
 
 { ---------- 7. Disney Sound Source: ЦАП с очередью на LPT1 (378h) ---------- }
 
-procedure Resample7(src: PBuf; srcLen: Word; dst: PBuf; var dstLen: Word);
-{ 8000 -> 7000 чисел в секунду: из каждых 8 чисел остаются 7. Делается один
-  раз при запуске: пока звук играет, процессору на это не хватило бы времени. }
-var i: Word;
-begin
-  dstLen := LongInt(srcLen) * DSS_RATE div RATE;
-  for i := 0 to dstLen - 1 do
-    dst^[i] := src^[LongInt(i) * RATE div DSS_RATE];
-end;
-
 procedure DssPlay(buf: PBuf; len: Word);
+{ Звук записан как 8000 чисел в секунду, а Sound Source берет 7000: каждое
+  восьмое число пропускаем, остальные 7 из 8 отдаем. Счет только словами
+  (Word) - на медленном процессоре на большее времени нет. }
 var i, t: Word;
 begin
   i := 0;
   Port[$37A] := $04;
   while (i < len) and not Stop do
   begin
-    t := 0;
-    while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { очередь полна - ждем }
-    Port[$378] := buf^[i];
-    Port[$37A] := $0C;          { строб (линия SELECT): число уходит в очередь }
-    Port[$37A] := $04;
+    if (i and 7) <> 7 then
+    begin
+      t := 0;
+      while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { очередь полна - ждем }
+      Port[$378] := buf^[i];
+      Port[$37A] := $0C;        { строб (линия SELECT): число уходит в очередь }
+      Port[$37A] := $04;
+    end;
     if (i and 1023) = 0 then
       if KeyPressed then if ReadKey = #27 then Stop := True;
     Inc(i);
@@ -570,18 +566,19 @@ end;
 procedure PlayDisney;
 begin
   Writeln('  играю: Sound Source сам берет 7000 чисел в секунду из очереди');
-  DssPlay(Wave7, Wave7Len);
+  DssPlay(Wave, WaveLen);
   if not Stop then
   begin
     WaitMs(400);
-    DssPlay(Speech7, Speech7Len);
+    DssPlay(Speech, SpeechLen);
   end;
 end;
 
 { ---------- 8. Sound Blaster: ЦАП и DMA, порт 220h ---------- }
 
 const SB = $220;
-var DmaBuf: PBuf;               { 64000 байт: внутри - окно на 32000, удобное для DMA }
+const CHUNK = 28160;            { кусок для DMA: половина мелодии, 4 такта }
+var DmaBuf: PBuf;               { 2 x CHUNK байт: внутри - окно на CHUNK, удобное для DMA }
     DmaOfs: Word;
 
 procedure DspWrite(b: Byte);    { послать байт в DSP }
@@ -609,7 +606,7 @@ var phys, edge: LongInt;
 begin
   phys := LongInt(Seg(DmaBuf^)) * 16 + Ofs(DmaBuf^);
   edge := (phys or $FFFF) + 1;  { следующая граница 64 КБ }
-  if edge - phys >= 32000 then DmaOfs := 0
+  if edge - phys >= CHUNK then DmaOfs := 0
   else DmaOfs := edge - phys;
 end;
 
@@ -641,7 +638,7 @@ begin
   while (from < len) and not Stop do
   begin
     n := len - from;
-    if n > 28160 then n := 28160;         { половина мелодии: 4 такта }
+    if n > CHUNK then n := CHUNK;
     SbPlayChunk(src, from, n);
     from := from + n;
   end;
@@ -773,6 +770,20 @@ end;
 
 { ---------- меню ---------- }
 
+procedure Alloc(var p: PBuf; size: Word);
+{ Память под звук. Если ее не хватает - сказать об этом, а не упасть.
+  Так бывает, если запустить программу из среды Turbo Pascal: среда сама
+  занимает память, и для звука ее остается мало. }
+begin
+  if MaxAvail < size then
+  begin
+    Writeln('SOUNDS: мало памяти для звука - нужно около 160 КБ.');
+    Writeln('Запускайте SOUNDS.EXE из Volkov Commander, а не из среды Turbo Pascal.');
+    Halt(1);
+  end;
+  GetMem(p, size);
+end;
+
 procedure LoadSpeech;
 var f: file; n: Word;
 begin
@@ -780,7 +791,7 @@ begin
   Assign(f, 'SPEECH.RAW');
   {$I-} Reset(f, 1); {$I+}
   if IOResult <> 0 then Exit;
-  BlockRead(f, Speech^, 32000, n);
+  BlockRead(f, Speech^, SPEECH_MAX, n);
   Close(f);
   SpeechLen := n;
 end;
@@ -828,19 +839,14 @@ end;
 var c: Char; i: Integer; Arg: String;
 begin
   for i := 0 to 255 do SinTab[i] := Round(127 * Sin(i * 2 * Pi / 256));
-  GetMem(Wave, 65000);
-  GetMem(Speech, 32000);
-  GetMem(Work, 32000);
-  GetMem(DmaBuf, 64000);
-  GetMem(Wave7, 50000);
-  GetMem(Speech7, 28000);
+  Alloc(Wave, WAVE_MAX);
+  Alloc(Speech, SPEECH_MAX);
+  Alloc(Work, SPEECH_MAX);
+  Alloc(DmaBuf, 2 * CHUNK);
   FindDmaWindow;
   LoadSpeech;
   Writeln('SOUNDS: подготовка - вычисляю волну для ЦАП...');
   MakeWave(RATE);
-  Resample7(Wave, WaveLen, Wave7, Wave7Len);
-  Speech7Len := 0;
-  if SpeechLen > 0 then Resample7(Speech, SpeechLen, Speech7, Speech7Len);
   PitMode2;
   if ParamCount > 0 then
   begin

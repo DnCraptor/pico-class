@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dump2png.py - turns the video memory dumps DUMP3.BIN..DUMPC.BIN written by
+"""dump2png.py - turns the video memory dumps DUMP2.BIN..DUMP9.BIN written by
 a test build of VIDEO.PAS (tpc /DDUMP) into one picture: every graphics mode
 side by side, scaled to the same size. Usage: dump2png.py DUMPDIR OUT.PNG
 Needs Pillow and NumPy."""
@@ -50,30 +50,22 @@ for k in range(24):
 
 mono = np.array([(0, 0, 0), (255, 255, 255)])
 pics = [
-    ('CGA 320x200, 4', np.array(CGA)[cga('3', 2, 320, 200)]),
-    ('CGA 640x200, 2', mono[cga('4', 1, 640, 200)]),
-    ('EGA 320x200, 16', planar('5', 320, 200)),
-    ('EGA 640x350, 16', planar('6', 640, 350)),
-    ('MCGA 640x480, 2', mono[np.unpackbits(raw('7')).reshape(480, 640)]),
-    ('VGA 640x480, 16', planar('8', 640, 480)),
-    ('320x200, 256', PAL[raw('9').reshape(200, 320)]),
-    ('SVGA 640x400, 256', PAL[raw('A').reshape(400, 640)]),
+    ('CGA 320x200, 4', np.array(CGA)[cga('2', 2, 320, 200)]),
+    ('CGA 640x200, 2', mono[cga('3', 1, 640, 200)]),
+    ('EGA 320x200, 16', planar('4', 320, 200)),
+    ('EGA 640x350, 16', planar('5', 640, 350)),
+    ('MCGA 640x480, 2', mono[np.unpackbits(raw('6')).reshape(480, 640)]),
+    ('VGA 640x480, 16', planar('7', 640, 480)),
+    ('320x200, 256', PAL[raw('8').reshape(200, 320)]),
+    ('SVGA 640x400, 256', PAL[raw('9').reshape(400, 640)]),
 ]
-d = raw('B').view('<u2').reshape(200, 320).astype(int)
-pics.append(('SVGA 320x200, 65536',
-             np.stack([(d >> 11) << 3, ((d >> 5) & 63) << 2, (d & 31) << 3], -1)))
-d = raw('C')
-bpl = len(d) // 200
-bpp = bpl // 320
-pics.append(('SVGA 320x200, 16.7M',
-             d.reshape(200, bpl)[:, :320 * bpp].reshape(200, 320, bpp)[:, :, [2, 1, 0]]))
 
 TW, TH, CAP = 320, 240, 16
-sheet = Image.new('RGB', (TW * 5, (TH + CAP) * 2), (255, 255, 255))
+sheet = Image.new('RGB', (TW * 4, (TH + CAP) * 2), (255, 255, 255))
 draw = ImageDraw.Draw(sheet)
 for n, (name, a) in enumerate(pics):
     im = Image.fromarray(a.astype(np.uint8)).resize((TW, TH), Image.BOX)
-    x, y = (n % 5) * TW, (n // 5) * (TH + CAP)
+    x, y = (n % 4) * TW, (n // 4) * (TH + CAP)
     sheet.paste(im, (x, y + CAP))
     draw.text((x + 4, y + 2), name, fill=(0, 0, 0))
 sheet.save(sys.argv[2], optimize=True)
