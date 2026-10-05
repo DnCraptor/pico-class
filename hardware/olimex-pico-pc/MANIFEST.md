@@ -31,6 +31,7 @@
 | `sdcard/emu/PCp2-frank-msx-HDMI-VGA-252MHz-0.01.uf2` | [DnCraptor/frank-msx](https://github.com/DnCraptor/frank-msx) | 0.01, `main` = `14d8d4d` (2026-10-04), `PLATFORM=pc`, USB HID включён; PSRAM необязательна: без неё — только MSX1, картриджи записываются во флеш-память | 252 МГц | `eae531dcfacfc4724b43b9b11455dbd7b102b3d8cb13f137c1b2f2cd7de9484c` |
 | `sdcard/emu/PCp2-korvet-400-PWM-HDMI-DVI-0.7.1.uf2` | [DnCraptor/emu80v4](https://github.com/DnCraptor/emu80v4), ветка `korvet` (порт Emu80 v4) | 0.7.1, `korvet` = `730ea0f` (2026-10-04), `PICO_BOARD=olimex-pico-pc`, HDMI через libdvi (800×600, такт от PIO), звук PWM; PSRAM необязательна | 400 МГц / 1.5 В | `e956f8a0f4bca7229370a6e4814c681b9b1dc544ce53b8bdd30c9bc57b0732b5` |
 | `sdcard/emu/PCp2-v06c-400-PWM-HDMI-DVI-0.7.6.uf2` | там же, ветка `vector06c` | 0.7.6, `vector06c` = `f55ad6b` (2026-10-05), `PICO_BOARD=olimex-pico-pc`, HDMI через libdvi (800×600, такт от PIO), звук PWM; PSRAM необязательна | 400 МГц / 1.5 В | `f79b88a05740682a8c83dc411d85a39e47a528b2947874a9225d8e60679c79dd` |
+| `sdcard/emu/PCp2-pce-HDMI-PWM-1.1.1.uf2` | [DnCraptor/pico-pce](https://github.com/DnCraptor/pico-pce) (ядро pce-go) | 1.1.1, `main` = `a790a67` (2026-10-05), `PICO_BOARD=olimex-pico-pc`, `PICO_PLATFORM=rp2350`, HDMI через PIO, звук PWM (стерео на джек), USB-клавиатура (TinyUSB host); картридж записывается во флеш-память сразу за прошивкой | 378 МГц / 1.6 В | `6b98c8a79ed69533150e0669009907a76c2c79008595020150d06f3ebc42749a` |
 | `sdcard/emu/PCp2-frank_apple-HDMI-378MHz-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `b95b7c7` (2026-10-02), сборка без PSRAM | 378 МГц / 1.6 В | `088957d8cbb4b1b82de98bbef82766eb0a4e593dd7c198842a0521ef2ac32a0f` |
 | `sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2` | там же | 1.05, `9ca41fc` (2026-10-03), сборка с PSRAM 84 МГц | 378 МГц / 1.6 В | `4bfdf99cd9a92afa8ccaacc501819c923a7493232b2d319a4da1b7a50e2746b4` |
 
@@ -55,8 +56,8 @@ sha256sum -c SHA256SUMS          # Linux, Git Bash в Windows
 shasum -a 256 -c SHA256SUMS      # macOS
 ```
 
-Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 14).
+Здесь проверяются только файлы платы; общая часть карты проверяется по `SHA256SUMS` в корне репозитория (см. `SDCARD.md`, раздел 15).
 
 ## 4. Лицензии
 
-MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 и atari800 — под GPLv2, эмулятор Game & Watch — под Apache 2.0, murmc64 — под GPLv2 или более поздней, frank-micro — под GPLv3 или более поздней, frank-msx — под GPLv3, кроме ядра fMSX, EMULib и эмулятора Z80 (Marat Fayzullin): у них собственная лицензия fMSX, порт для RP2350 сделан с разрешения автора (`LICENSE.fMSX` в репозитории frank-msx), emu80v4 — под GPLv3. Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).
+MOS2, pico-launcher, PICO-BK и pico-nes распространяются под GPLv3, murm386 — под MIT, pico-z26 и atari800 — под GPLv2, эмулятор Game & Watch — под Apache 2.0, murmc64 — под GPLv2 или более поздней, frank-micro — под GPLv3 или более поздней, frank-msx — под GPLv3, кроме ядра fMSX, EMULib и эмулятора Z80 (Marat Fayzullin): у них собственная лицензия fMSX, порт для RP2350 сделан с разрешения автора (`LICENSE.fMSX` в репозитории frank-msx), emu80v4 — под GPLv3, pico-pce — под GPLv2 (лицензия ядра pce-go). Исходники соответствуют коммитам, указанным в разделе 1. Лицензии содержимого общей части карты — в [`../../SDCARD.md`](../../SDCARD.md).
