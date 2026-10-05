@@ -6,7 +6,8 @@
     2  Tandy / PCjr          - генератор звука SN76489 (PSG), 3 голоса;
                                после мелодии - три голоса по очереди и шум
     3  AdLib                 - FM-синтезатор Yamaha OPL2
-    4  Covox Sound Master    - генератор звука AY-3-8930 (PSG), порт 240h
+    4  Covox Sound Master    - генератор звука AY-3-8930 (PSG), только порт 240h:
+                               в настройках murm386 - Sound Master (240h), не 220h
     5  Roland MPU-401        - ноты General MIDI для синтезатора
     6  Covox Speech Thing    - 8-битный ЦАП на LPT2 (порт 278h)
     7  Disney Sound Source   - ЦАП с очередью на 16 чисел на LPT1 (378h)
@@ -391,7 +392,7 @@ end;
 
 { ---------- 4. Covox Sound Master: AY-3-8930, порт 240h ---------- }
 
-const SM_BASE = $240;
+const SM_BASE = $240;           { карта бывала и на 220h - эта программа туда не пишет }
 
 procedure AyWrite(reg, val: Byte);
 begin
@@ -781,7 +782,7 @@ begin
   Writeln('  1  PC speaker (1981)          пищалка: одна прямоугольная волна');
   Writeln('  2  Tandy / PCjr (1984)        PSG SN76489: 3 прямоугольных голоса и шум');
   Writeln('  3  AdLib (1987)               FM-синтез, микросхема OPL2: 9 голосов');
-  Writeln('  4  Covox Sound Master (1989)  PSG AY-3-8930, порт 240h');
+  Writeln('  4  Covox Sound Master (1989)  PSG AY-3-8930, только порт 240h!');
   Writeln('  5  Roland MPU-401 (1984)      ноты MIDI для синтезатора');
   Writeln('  6  Covox Speech Thing (1986)  ЦАП на LPT2: любая волна');
   Writeln('  7  Disney Sound Source (1990) ЦАП с очередью на LPT1');
