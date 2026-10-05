@@ -1,39 +1,55 @@
-{ SOUNDS.PAS - one tune on the sound devices of the PC, 1981-1992.
-  The same melody ("Ode to Joy", Beethoven) plays on:
-    1  PC speaker            - one square wave from the timer chip
-    2  Tandy / PCjr          - SN76489 tone generator (PSG), 3 voices
-    3  AdLib                 - Yamaha OPL2 FM synthesizer
-    4  Covox Sound Master    - AY-3-8930 tone generator (PSG), at 240h
-    5  Roland MPU-401        - General MIDI notes for a synthesizer
-    6  Covox Speech Thing    - 8-bit DAC on LPT2 (278h)
-    7  Disney Sound Source   - DAC with a 16-byte FIFO on LPT1 (378h)
-    8  Sound Blaster         - DAC fed by DMA (220h, DMA 1)
-  For the DACs (6-8) the program computes the sound wave itself, sample by
-  sample, and then says a sentence from SPEECH.RAW (8000 Hz, 8 bit).
-  No Crt unit: its delay loop crashes on fast machines; the timer chip is
-  used for all timing instead.
-  Part of the pico-class kit, see tools/sound/README.md. }
+{ SOUNDS.PAS - одна мелодия на звуковых устройствах PC 1981-1992 годов.
+  Одна и та же мелодия ("Ода к радости" Бетховена) звучит на:
+    1  PC speaker (пищалка)  - одна прямоугольная волна от микросхемы таймера
+    2  Tandy / PCjr          - генератор звука SN76489 (PSG), 3 голоса
+    3  AdLib                 - FM-синтезатор Yamaha OPL2
+    4  Covox Sound Master    - генератор звука AY-3-8930 (PSG), порт 240h
+    5  Roland MPU-401        - ноты General MIDI для синтезатора
+    6  Covox Speech Thing    - 8-битный ЦАП на LPT2 (порт 278h)
+    7  Disney Sound Source   - ЦАП с очередью на 16 чисел на LPT1 (378h)
+    8  Sound Blaster         - ЦАП, числа подаёт контроллер DMA (220h, DMA 1)
+  Для ЦАП (6-8) программа сама вычисляет звуковую волну, число за числом,
+  а потом произносит фразу из файла SPEECH.RAW (8000 чисел в секунду, 8 бит).
+  D - та же фраза с меньшим числом бит и меньшей частотой дискретизации.
+  G - игра "Угадай устройство".
+
+  Сокращения:
+    PSG  - Programmable Sound Generator, программируемый генератор звука
+    FM   - Frequency Modulation, частотная модуляция
+    OPL  - FM Operator Type-L, семейство FM-микросхем Yamaha
+    MIDI - Musical Instrument Digital Interface, цифровой интерфейс
+           музыкальных инструментов
+    ЦАП  - цифро-аналоговый преобразователь (DAC, Digital-to-Analog Converter)
+    DMA  - Direct Memory Access, прямой доступ к памяти (ПДП)
+    DSP  - Digital Signal Processor: так называется микросхема-контроллер
+           Sound Blaster, которой программа посылает команды
+    PIT  - Programmable Interval Timer, микросхема таймера 8253/8254
+    LPT  - порт принтера
+
+  Модуль Crt не используется: его задержка Delay ломается на быстрых
+  машинах. Все паузы отсчитывает микросхема таймера.
+  Часть комплекта pico-class, см. tools/sound/README.md. }
 
 program Sounds;
 
-{$F+}  { far calls everywhere: the note procedures are passed as parameters }
+{$F+}  { дальние вызовы везде: процедуры нот передаются как параметры }
 
 uses Dos;
 
 const
-  PIT_HZ   = 1193182;
-  RATE     = 8000;              { DAC sample rate for Covox and Sound Blaster }
-  DSS_RATE = 7000;              { the Disney Sound Source plays at a fixed 7 kHz }
-  QUARTER  = 220;               { milliseconds }
+  PIT_HZ   = 1193182;           { частота, на которой считает таймер }
+  RATE     = 8000;              { частота дискретизации для Covox и Sound Blaster }
+  DSS_RATE = 7000;              { Disney Sound Source всегда играет 7000 чисел в секунду }
+  QUARTER  = 220;               { длина четверти, миллисекунды: темп }
   NNOTES   = 30;
-  { the melody: MIDI note numbers (60 = C4) and lengths in eighths }
+  { мелодия: номера нот MIDI (60 = до первой октавы) и длины в восьмых }
   MelNote: array[1..NNOTES] of Byte = (
     64,64,65,67, 67,65,64,62, 60,60,62,64, 64,62,62,
     64,64,65,67, 67,65,64,62, 60,60,62,64, 62,60,60);
   MelLen: array[1..NNOTES] of Byte = (
     2,2,2,2, 2,2,2,2, 2,2,2,2, 3,1,4,
     2,2,2,2, 2,2,2,2, 2,2,2,2, 3,1,4);
-  { the bass: one note a bar (8 eighths) }
+  { бас: одна нота на такт (8 восьмых) }
   NBARS = 8;
   BassNote: array[1..NBARS] of Byte = (48, 43, 48, 43, 48, 43, 48, 48);
 
@@ -42,51 +58,53 @@ type
   PBuf = ^TBuf;
 
 var
-  Wave: PBuf;                   { computed melody for the DACs }
+  Wave: PBuf;                   { вычисленная мелодия для ЦАП }
   WaveLen: Word;
-  Speech: PBuf;
+  WaveRate: Word;               { для какой частоты она вычислена; 0 - ещё нет }
+  Speech: PBuf;                 { фраза из SPEECH.RAW }
   SpeechLen: Word;
+  Work: PBuf;                   { фраза, испорченная для пункта D }
   SinTab: array[0..255] of ShortInt;
-  Stop: Boolean;
+  Stop: Boolean;                { нажали Esc - остановить звук }
 
-{ ---------- timer, keyboard ---------- }
+{ ---------- таймер, клавиатура ---------- }
 
-function PitCount: Word;        { channel 0 counter, counts down at 1.19 MHz }
+function PitCount: Word;        { счётчик канала 0, считает вниз 1,19 млн раз в секунду }
 var lo, hi: Byte;
 begin
-  Port[$43] := $00;             { latch channel 0 }
+  Port[$43] := $00;             { защёлкнуть счётчик канала 0 }
   lo := Port[$40];
   hi := Port[$40];
   PitCount := lo or (Word(hi) shl 8);
 end;
 
 procedure PitMode2;
-{ Channel 0 in mode 2 counts down by 1 per tick (the BIOS uses mode 3,
-  which counts by 2); the reload value stays 65536, 18.2 interrupts/s. }
+{ В режиме 2 канал 0 уменьшается на 1 за такт (BIOS ставит режим 3,
+  в нём счёт идёт по 2); перезагрузка прежняя - 65536, 18,2 прерывания в секунду. }
 begin
   Port[$43] := $34; Port[$40] := 0; Port[$40] := 0;
 end;
 
-procedure PitMode3;
+procedure PitMode3;             { вернуть режим, как было у BIOS }
 begin
   Port[$43] := $36; Port[$40] := 0; Port[$40] := 0;
 end;
 
-function KeyPressed: Boolean;
+function KeyPressed: Boolean;   { нажата ли клавиша - через BIOS, INT 16h }
 var r: Registers;
 begin
   r.ah := 1; Intr($16, r);
   KeyPressed := (r.flags and FZero) = 0;
 end;
 
-function ReadKey: Char;
+function ReadKey: Char;         { дождаться клавиши и прочитать её }
 var r: Registers;
 begin
   r.ah := 0; Intr($16, r);
   ReadKey := Chr(r.al);
 end;
 
-procedure WaitTicks(ticks: LongInt);   { wait this many 1.19 MHz ticks }
+procedure WaitTicks(ticks: LongInt);   { подождать столько тактов таймера }
 var last, now: Word;
 begin
   last := PitCount;
@@ -98,13 +116,13 @@ begin
   end;
 end;
 
-procedure WaitMs(ms: Word);
+procedure WaitMs(ms: Word);     { подождать миллисекунды; Esc - остановить }
 begin
   if KeyPressed then if ReadKey = #27 then Stop := True;
   if not Stop then WaitTicks(LongInt(ms) * 1193);
 end;
 
-function Freq(note: Byte): Real;       { MIDI note -> Hz, A4 = 440 }
+function Freq(note: Byte): Real;       { нота MIDI -> частота в герцах, ля = 440 }
 begin
   Freq := 440.0 * Exp((note - 69) * Ln(2.0) / 12.0);
 end;
@@ -114,10 +132,10 @@ end;
 procedure SpeakerOn(f: Real);
 var d: Word;
 begin
-  d := Round(PIT_HZ / f);
-  Port[$43] := $B6;             { channel 2, square wave }
+  d := Round(PIT_HZ / f);       { делитель: во сколько раз медленнее таймера }
+  Port[$43] := $B6;             { канал 2 таймера, прямоугольная волна }
   Port[$42] := Lo(d); Port[$42] := Hi(d);
-  Port[$61] := Port[$61] or 3;  { gate the timer to the speaker }
+  Port[$61] := Port[$61] or 3;  { подключить таймер к динамику }
 end;
 
 procedure SpeakerOff;
@@ -125,7 +143,7 @@ begin
   Port[$61] := Port[$61] and $FC;
 end;
 
-procedure PlaySpeaker;
+procedure PlaySpeaker;          { голос один - поэтому только мелодия, без баса }
 var i: Integer;
 begin
   i := 1;
@@ -140,13 +158,13 @@ begin
   SpeakerOff;
 end;
 
-{ ---------- chip players: melody + bass on two voices ---------- }
+{ ---------- общий проигрыватель для микросхем: мелодия и бас на двух голосах ---------- }
 
 type
-  TNoteProc = procedure(voice: Byte; note: Byte);   { note 0 = silence }
+  TNoteProc = procedure(voice: Byte; note: Byte);   { нота 0 - тишина }
 
 procedure PlayChip(play: TNoteProc);
-{ walks the melody in eighths and starts the bass at every bar }
+{ идёт по мелодии восьмыми и в начале каждого такта берёт ноту баса }
 var i, k, eighth: Integer;
 begin
   i := 1; eighth := 0;
@@ -169,42 +187,42 @@ begin
   play(0, 0); play(1, 0);
 end;
 
-{ ---------- 2. Tandy / PCjr: SN76489 at 0C0h ---------- }
+{ ---------- 2. Tandy / PCjr: SN76489, порт 0C0h ---------- }
 
 procedure TandyNote(voice: Byte; note: Byte);
 var n: Word;
 begin
   if note = 0 then
-    Port[$C0] := $90 or (voice shl 5) or $0F       { volume off }
+    Port[$C0] := $90 or (voice shl 5) or $0F       { громкость - выключено }
   else
   begin
-    n := Round(3579545.0 / (32.0 * Freq(note)));   { 10-bit period }
+    n := Round(3579545.0 / (32.0 * Freq(note)));   { период, 10 бит }
     Port[$C0] := $80 or (voice shl 5) or (n and $0F);
     Port[$C0] := n shr 4;
-    Port[$C0] := $90 or (voice shl 5) or (voice * 3);  { bass a bit softer }
+    Port[$C0] := $90 or (voice shl 5) or (voice * 3);  { бас немного тише }
   end;
 end;
 
 procedure PlayTandy;
 var v: Byte;
 begin
-  for v := 0 to 3 do Port[$C0] := $9F or (v shl 5);  { all four voices off }
+  for v := 0 to 3 do Port[$C0] := $9F or (v shl 5);  { все четыре голоса выключить }
   PlayChip(TandyNote);
 end;
 
-{ ---------- 3. AdLib: OPL2 at 388h ---------- }
+{ ---------- 3. AdLib: OPL2, порты 388h и 389h ---------- }
 
-procedure OplWrite(reg, val: Byte);
+procedure OplWrite(reg, val: Byte);   { записать число в регистр OPL2 }
 var i: Integer; b: Byte;
 begin
   Port[$388] := reg;
-  for i := 1 to 6 do b := Port[$388];
+  for i := 1 to 6 do b := Port[$388];  { микросхеме нужно время: ждём, читая порт }
   Port[$389] := val;
   for i := 1 to 35 do b := Port[$388];
 end;
 
 const
-  { operator offsets of channels 0 and 1: modulator, carrier }
+  { номера операторов голосов 0 и 1: модулятор и несущая }
   OplMod: array[0..1] of Byte = ($00, $01);
   OplCar: array[0..1] of Byte = ($03, $04);
 
@@ -212,16 +230,16 @@ procedure OplSetup;
 var r: Integer; ch: Byte;
 begin
   for r := $01 to $F5 do OplWrite(r, 0);
-  OplWrite($01, $20);           { allow waveform select }
+  OplWrite($01, $20);           { разрешить выбор формы волны }
   for ch := 0 to 1 do
   begin
-    { a soft electric-piano-like sound: two operators, modulator feeds the carrier }
+    { мягкий звук, похожий на электропианино: модулятор раскачивает несущую }
     OplWrite($20 + OplMod[ch], $01);  OplWrite($20 + OplCar[ch], $01);
     OplWrite($40 + OplMod[ch], $10);  OplWrite($40 + OplCar[ch], $00);
     OplWrite($60 + OplMod[ch], $F2);  OplWrite($60 + OplCar[ch], $F3);
     OplWrite($80 + OplMod[ch], $77);  OplWrite($80 + OplCar[ch], $75);
     OplWrite($E0 + OplMod[ch], $00);  OplWrite($E0 + OplCar[ch], $00);
-    OplWrite($C0 + ch, $06);          { feedback 3, FM }
+    OplWrite($C0 + ch, $06);          { обратная связь 3, режим FM }
   end;
 end;
 
@@ -232,18 +250,20 @@ type
   end;
 const
   NPATCH = 4;
-  { the same two operators, set four different ways: the modulator's
-    loudness (40h) and frequency multiple (20h) decide how many overtones
-    the carrier gets - that is the whole trick of FM synthesis }
+  { Одни и те же два оператора, настроенные четырьмя способами. Регистры:
+    20h - множитель частоты, 40h - громкость (0 - громче всего, 3Fh - тише),
+    60h - атака и спад, 80h - уровень и время затухания, E0h - форма волны,
+    C0h - обратная связь. Громкость модулятора (40h) и его множитель (20h)
+    решают, сколько обертонов получит несущая, - в этом весь фокус FM-синтеза. }
   Patches: array[1..NPATCH] of TPatch = (
-    (name: 'flute';     m20: $21; m40: $3F; m60: $F0; m80: $F0; mE0: 0;
-                        c20: $21; c40: $00; c60: $A1; c80: $15; cE0: 0; fbC0: $00),
-    (name: 'piano';     m20: $01; m40: $10; m60: $F2; m80: $77; mE0: 0;
-                        c20: $01; c40: $00; c60: $F3; c80: $75; cE0: 0; fbC0: $06),
-    (name: 'trumpet';   m20: $21; m40: $16; m60: $71; m80: $AE; mE0: 0;
-                        c20: $21; c40: $00; c60: $81; c80: $9E; cE0: 0; fbC0: $0E),
-    (name: 'bell';      m20: $05; m40: $14; m60: $F2; m80: $13; mE0: 0;
-                        c20: $01; c40: $00; c60: $F2; c80: $14; cE0: 0; fbC0: $00));
+    (name: 'флейта';      m20: $21; m40: $3F; m60: $F0; m80: $F0; mE0: 0;
+                          c20: $21; c40: $00; c60: $A1; c80: $15; cE0: 0; fbC0: $00),
+    (name: 'пианино';     m20: $01; m40: $10; m60: $F2; m80: $77; mE0: 0;
+                          c20: $01; c40: $00; c60: $F3; c80: $75; cE0: 0; fbC0: $06),
+    (name: 'труба';       m20: $21; m40: $16; m60: $71; m80: $AE; mE0: 0;
+                          c20: $21; c40: $00; c60: $81; c80: $9E; cE0: 0; fbC0: $0E),
+    (name: 'колокольчик'; m20: $05; m40: $14; m60: $F2; m80: $13; mE0: 0;
+                          c20: $01; c40: $00; c60: $F2; c80: $14; cE0: 0; fbC0: $00));
 
 procedure OplPatch(ch: Byte; var pt: TPatch);
 begin
@@ -258,14 +278,14 @@ end;
 procedure AdlibNote(voice: Byte; note: Byte);
 var block: Byte; f: Real; fnum: Word;
 begin
-  OplWrite($B0 + voice, 0);     { key off }
+  OplWrite($B0 + voice, 0);     { отпустить клавишу }
   if note = 0 then Exit;
-  block := note div 12 - 1;     { octave }
+  block := note div 12 - 1;     { октава }
   if block > 7 then block := 7;
   f := Freq(note);
-  fnum := Round(f * 1048576.0 / 49716.0 / (1 shl block));
+  fnum := Round(f * 1048576.0 / 49716.0 / (1 shl block));   { число частоты, 10 бит }
   OplWrite($A0 + voice, Lo(fnum));
-  OplWrite($B0 + voice, $20 or (block shl 2) or (Hi(fnum) and 3));   { key on }
+  OplWrite($B0 + voice, $20 or (block shl 2) or (Hi(fnum) and 3));   { нажать клавишу }
 end;
 
 procedure PlayAdlib;
@@ -276,7 +296,7 @@ begin
 end;
 
 procedure PlayAdlibPatches;
-{ A: the first bar of the tune with four FM instruments, one after another }
+{ A: первый такт мелодии четырьмя FM-инструментами по очереди }
 const Scale: array[1..8] of Byte = (64, 64, 65, 67, 67, 65, 64, 62);
 var p, i: Integer;
 begin
@@ -300,24 +320,24 @@ begin
   OplWrite($B0, 0);
 end;
 
-{ ---------- 4. Covox Sound Master: AY-3-8930 at 240h ---------- }
+{ ---------- 4. Covox Sound Master: AY-3-8930, порт 240h ---------- }
 
 const SM_BASE = $240;
 
 procedure AyWrite(reg, val: Byte);
 begin
-  Port[SM_BASE] := reg;         { select a register }
-  Port[SM_BASE + 1] := val;     { write it }
+  Port[SM_BASE] := reg;         { выбрать регистр }
+  Port[SM_BASE + 1] := val;     { записать в него }
 end;
 
 procedure SoundMasterNote(voice: Byte; note: Byte);
 var n: Word;
 begin
   if note = 0 then
-    AyWrite(8 + voice, 0)       { volume 0 }
+    AyWrite(8 + voice, 0)       { громкость 0 }
   else
   begin
-    n := Round(1773400.0 / (16.0 * Freq(note)));   { 12-bit period }
+    n := Round(1773400.0 / (16.0 * Freq(note)));   { период, 12 бит }
     AyWrite(voice * 2, Lo(n));
     AyWrite(voice * 2 + 1, Hi(n) and $0F);
     AyWrite(8 + voice, 15 - voice * 3);
@@ -326,18 +346,18 @@ end;
 
 procedure PlaySoundMaster;
 begin
-  AyWrite(7, $3C);              { tone on voices A and B; C and noise off }
+  AyWrite(7, $3C);              { тон на голосах A и B; голос C и шум выключены }
   PlayChip(SoundMasterNote);
   AyWrite(8, 0); AyWrite(9, 0); AyWrite(10, 0);
 end;
 
-{ ---------- 5. Roland MPU-401: MIDI at 330h ---------- }
+{ ---------- 5. Roland MPU-401: MIDI, порты 330h и 331h ---------- }
 
-procedure MidiOut(b: Byte);
+procedure MidiOut(b: Byte);     { отправить один байт MIDI }
 var t: Word;
 begin
   t := 0;
-  while ((Port[$331] and $40) <> 0) and (t < 60000) do Inc(t);
+  while ((Port[$331] and $40) <> 0) and (t < 60000) do Inc(t);   { ждём, пока примет }
   Port[$330] := b;
 end;
 
@@ -347,33 +367,33 @@ procedure MidiNote(voice: Byte; note: Byte);
 begin
   if MidiLast[voice] <> 0 then
   begin
-    MidiOut($80 + voice); MidiOut(MidiLast[voice]); MidiOut(0);   { note off }
+    MidiOut($80 + voice); MidiOut(MidiLast[voice]); MidiOut(0);   { отпустить ноту }
   end;
   MidiLast[voice] := note;
   if note <> 0 then
   begin
-    MidiOut($90 + voice); MidiOut(note); MidiOut(100 - voice * 20);  { note on }
+    MidiOut($90 + voice); MidiOut(note); MidiOut(100 - voice * 20);  { нажать ноту }
   end;
 end;
 
 procedure PlayMidi;
 var t: Word;
 begin
-  Port[$331] := $FF;            { reset }
+  Port[$331] := $FF;            { сброс }
   for t := 1 to 30000 do ;
-  Port[$331] := $3F;            { UART mode: bytes go straight to MIDI }
+  Port[$331] := $3F;            { режим UART: байты идут прямо в MIDI }
   for t := 1 to 30000 do ;
-  MidiOut($C0); MidiOut(0);     { channel 1: General MIDI program 1, piano }
-  MidiOut($C1); MidiOut(32);    { channel 2: program 33, acoustic bass }
+  MidiOut($C0); MidiOut(0);     { канал 1: инструмент General MIDI 1, пианино }
+  MidiOut($C1); MidiOut(32);    { канал 2: инструмент 33, акустический бас }
   MidiLast[0] := 0; MidiLast[1] := 0;
   PlayChip(MidiNote);
 end;
 
-{ ---------- the computed wave for the DACs ---------- }
+{ ---------- волна для ЦАП: вычисляем каждое число ---------- }
 
 procedure MakeWave(rate: Word);
-{ Two voices: the melody as a sine with a fading "piano" envelope, the bass
-  as a quieter square wave. Every sample is 128 + the sum of the voices. }
+{ Два голоса: мелодия - синусоида, которая затухает, как у пианино,
+  бас - тихая прямоугольная волна. Каждое число = 128 + сумма голосов. }
 var i: Integer;
     n, len, bar: Word;
     ph1, inc1, ph2, inc2: LongInt;
@@ -381,14 +401,14 @@ var i: Integer;
     ampFix, ampDec: Word;
     eighthLen: Word;
 begin
-  eighthLen := LongInt(rate) * QUARTER div 2000;
+  eighthLen := LongInt(rate) * QUARTER div 2000;   { сколько чисел в восьмой }
   WaveLen := 0;
   ph1 := 0; ph2 := 0; inc2 := 0;
   for i := 1 to NNOTES do
   begin
     len := MelLen[i] * eighthLen;
-    inc1 := Round(Freq(MelNote[i]) * 256.0 * 256.0 / rate);   { 8.8 fixed }
-    ampFix := 70 * 256;                     { 8.8 fixed: fades from 70 to 15 }
+    inc1 := Round(Freq(MelNote[i]) * 256.0 * 256.0 / rate);   { шаг по таблице синуса, 8.8 }
+    ampFix := 70 * 256;                     { громкость, 8.8: затухает с 70 до 15 }
     ampDec := 55 * 256 div len;
     for n := 0 to len - 1 do
     begin
@@ -400,7 +420,7 @@ begin
       end;
       amp := ampFix shr 8;
       ampFix := ampFix - ampDec;
-      if n > len - rate div 50 then amp := 0;    { short gap before the next note }
+      if n > len - rate div 50 then amp := 0;    { короткая пауза перед следующей нотой }
       v := SinTab[(ph1 shr 8) and 255] * amp div 128;
       if (ph2 shr 15) and 1 = 0 then v := v + 18 else v := v - 18;
       Wave^[WaveLen] := 128 + v;
@@ -409,11 +429,22 @@ begin
       ph2 := ph2 + inc2;
     end;
   end;
+  WaveRate := rate;
 end;
 
-{ ---------- 6. Covox Speech Thing: DAC on LPT2 (278h) ---------- }
+procedure NeedWave(rate: Word); { вычислить волну, если её ещё нет для этой частоты }
+begin
+  if WaveRate <> rate then
+  begin
+    Writeln('  вычисляю волну...');
+    MakeWave(rate);
+  end;
+end;
+
+{ ---------- 6. Covox Speech Thing: ЦАП на LPT2 (278h) ---------- }
 
 procedure CovoxPlay(buf: PBuf; len: Word);
+{ процессор сам отдаёт каждое число и ждёт по таймеру следующего - 8000 раз в секунду }
 var i: Word; last, now: Word;
 const STEP = PIT_HZ div RATE;
 begin
@@ -435,9 +466,8 @@ end;
 
 procedure PlayCovox;
 begin
-  Writeln('  computing the wave...');
-  MakeWave(RATE);
-  Writeln('  playing: the computer sends 8000 numbers a second to the DAC');
+  NeedWave(RATE);
+  Writeln('  играю: компьютер сам отдаёт ЦАП 8000 чисел в секунду');
   CovoxPlay(Wave, WaveLen);
   if not Stop then
   begin
@@ -446,10 +476,10 @@ begin
   end;
 end;
 
-{ ---------- 7. Disney Sound Source: DAC with FIFO on LPT1 (378h) ---------- }
+{ ---------- 7. Disney Sound Source: ЦАП с очередью на LPT1 (378h) ---------- }
 
 procedure DssPlay(buf: PBuf; len: Word; step: Word);
-{ step: source samples per output sample in 8.8 fixed point }
+{ step: на сколько чисел источника сдвигаться за одно число, 8.8 }
 var src: LongInt; t: Word;
 begin
   src := 0;
@@ -457,9 +487,9 @@ begin
   while (src shr 8) < len do
   begin
     t := 0;
-    while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { FIFO full }
+    while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { очередь полна - ждём }
     Port[$378] := buf^[src shr 8];
-    Port[$37A] := $0C;          { strobe (select line): the byte goes into the FIFO }
+    Port[$37A] := $0C;          { строб (линия SELECT): число уходит в очередь }
     Port[$37A] := $04;
     src := src + step;
     if (src and $FFFF) < step then
@@ -469,9 +499,8 @@ end;
 
 procedure PlayDisney;
 begin
-  Writeln('  computing the wave...');
-  MakeWave(DSS_RATE);
-  Writeln('  playing: the Sound Source takes the numbers at its own 7000 a second');
+  NeedWave(DSS_RATE);
+  Writeln('  играю: Sound Source сам берёт 7000 чисел в секунду из очереди');
   DssPlay(Wave, WaveLen, 256);
   if not Stop then
   begin
@@ -480,13 +509,13 @@ begin
   end;
 end;
 
-{ ---------- 8. Sound Blaster: DAC + DMA at 220h ---------- }
+{ ---------- 8. Sound Blaster: ЦАП и DMA, порт 220h ---------- }
 
 const SB = $220;
-var DmaBuf: PBuf;               { 64000 bytes: holds a DMA-safe 32000-byte window }
+var DmaBuf: PBuf;               { 64000 байт: внутри - окно на 32000, удобное для DMA }
     DmaOfs: Word;
 
-procedure DspWrite(b: Byte);
+procedure DspWrite(b: Byte);    { послать байт в DSP }
 var t: Word;
 begin
   t := 0;
@@ -494,7 +523,7 @@ begin
   Port[SB + $C] := b;
 end;
 
-function DspReset: Boolean;
+function DspReset: Boolean;     { сброс DSP; ответ AAh - Sound Blaster на месте }
 var t: Word;
 begin
   Port[SB + 6] := 1;
@@ -506,11 +535,11 @@ begin
 end;
 
 procedure FindDmaWindow;
-{ A DMA transfer must not cross a 64 KB boundary of physical memory. }
+{ Передача DMA не может пересечь границу 64 КБ физической памяти. }
 var phys, edge: LongInt;
 begin
   phys := LongInt(Seg(DmaBuf^)) * 16 + Ofs(DmaBuf^);
-  edge := (phys or $FFFF) + 1;  { next 64 KB boundary }
+  edge := (phys or $FFFF) + 1;  { следующая граница 64 КБ }
   if edge - phys >= 32000 then DmaOfs := 0
   else DmaOfs := edge - phys;
 end;
@@ -520,17 +549,17 @@ var phys: LongInt; i: Word;
 begin
   for i := 0 to len - 1 do DmaBuf^[DmaOfs + i] := src^[from + i];
   phys := LongInt(Seg(DmaBuf^)) * 16 + Ofs(DmaBuf^) + DmaOfs;
-  { the DMA controller, channel 1: memory -> Sound Blaster, single pass }
-  Port[$0A] := $05;                       { mask channel 1 }
-  Port[$0C] := 0;                         { reset the byte flip-flop }
-  Port[$0B] := $49;                       { single, read memory, channel 1 }
+  { контроллер DMA, канал 1: из памяти в Sound Blaster, один проход }
+  Port[$0A] := $05;                       { замаскировать канал 1 }
+  Port[$0C] := 0;                         { сбросить триггер байтов }
+  Port[$0B] := $49;                       { один проход, чтение памяти, канал 1 }
   Port[$02] := Lo(Word(phys)); Port[$02] := Hi(Word(phys));
-  Port[$83] := phys shr 16;               { page }
+  Port[$83] := phys shr 16;               { страница }
   Port[$03] := Lo(len - 1); Port[$03] := Hi(len - 1);
-  Port[$0A] := $01;                       { unmask channel 1 }
-  { the Sound Blaster: 8-bit single-cycle DMA output }
+  Port[$0A] := $01;                       { снять маску канала 1 }
+  { Sound Blaster: вывод 8 бит через DMA, один проход }
   DspWrite($14); DspWrite(Lo(len - 1)); DspWrite(Hi(len - 1));
-  { wait as long as the chunk plays, then acknowledge the interrupt }
+  { процессор свободен; ждём, пока кусок отыграет, и подтверждаем прерывание }
   for i := 1 to len div 80 do
     if not Stop then WaitTicks(PIT_HZ div 100);
   i := Port[SB + $E];
@@ -543,34 +572,139 @@ begin
   while (from < len) and not Stop do
   begin
     n := len - from;
-    if n > 28160 then n := 28160;         { half the melody: 4 bars }
+    if n > 28160 then n := 28160;         { половина мелодии: 4 такта }
     SbPlayChunk(src, from, n);
     from := from + n;
   end;
 end;
 
+function SbStart: Boolean;      { найти Sound Blaster и настроить на 8000 чисел в секунду }
+begin
+  SbStart := False;
+  if not DspReset then Exit;
+  DspWrite($D1);                          { включить выход ЦАП }
+  DspWrite($40); DspWrite(256 - 1000000 div RATE);   { постоянная времени: 8000 Гц }
+  SbStart := True;
+end;
+
 procedure PlaySoundBlaster;
 begin
-  if not DspReset then
+  if not SbStart then
   begin
-    Writeln('  no Sound Blaster at 220h');
+    Writeln('  Sound Blaster на 220h не найден');
     Exit;
   end;
-  DspWrite($D1);                          { speaker on }
-  DspWrite($40); DspWrite(256 - 1000000 div RATE);   { time constant: 8000 Hz }
-  Writeln('  computing the wave...');
-  MakeWave(RATE);
-  Writeln('  playing: the DMA controller feeds the DAC, the processor is free');
+  NeedWave(RATE);
+  Writeln('  играю: числа подаёт контроллер DMA, процессор свободен');
   SbPlay(Wave, WaveLen);
   if not Stop then
   begin
     WaitMs(400);
     SbPlay(Speech, SpeechLen);
   end;
-  DspWrite($D3);                          { speaker off }
+  DspWrite($D3);                          { выключить выход ЦАП }
 end;
 
-{ ---------- menu ---------- }
+procedure DacPlay(buf: PBuf; len: Word);
+{ сыграть через Sound Blaster, а если его нет - через Covox Speech Thing }
+begin
+  if SbStart then
+  begin
+    SbPlay(buf, len);
+    DspWrite($D3);
+  end
+  else CovoxPlay(buf, len);
+end;
+
+{ ---------- D. Качество цифрового звука: биты и частота дискретизации ---------- }
+
+procedure PlayQuality;
+const
+  NSTEP = 7;
+  Bits: array[1..NSTEP] of Byte = (8, 4, 2, 1, 8, 8, 8);
+  Hold: array[1..NSTEP] of Byte = (1, 1, 1, 1, 2, 4, 8);
+  Info: array[1..NSTEP] of String[60] = (
+    '8 бит, 8000 чисел в секунду: 256 ступенек',
+    '4 бита: 16 ступенек',
+    '2 бита: 4 ступеньки',
+    '1 бит: 2 ступеньки - только "вкл" и "выкл", как у пищалки',
+    '8 бит, 4000 чисел в секунду',
+    '8 бит, 2000 чисел в секунду',
+    '8 бит, 1000 чисел в секунду');
+var s, mask, half, q: Byte; i, src: Word;
+begin
+  if SpeechLen = 0 then
+  begin
+    Writeln('  нет файла SPEECH.RAW: запускайте SOUNDS из его каталога');
+    Exit;
+  end;
+  s := 1;
+  while (s <= NSTEP) and not Stop do
+  begin
+    Writeln('  ', Info[s]);
+    { оставить в каждом числе только старшие биты: ступенек меньше }
+    mask := Lo($FF shl (8 - Bits[s]));
+    half := 128 shr Bits[s];    { середина ступеньки, чтобы звук не сдвигался }
+    for i := 0 to SpeechLen - 1 do
+    begin
+      src := i - i mod Hold[s]; { повторять число Hold раз: чисел в секунду меньше }
+      q := Speech^[src];
+      if Bits[s] < 8 then q := (q and mask) + half;
+      Work^[i] := q;
+    end;
+    DacPlay(Work, SpeechLen);
+    WaitMs(600);
+    Inc(s);
+  end;
+end;
+
+{ ---------- G. Игра "Угадай устройство" ---------- }
+
+procedure Game;
+const
+  Names: array[1..5] of String[50] = (
+    'пищалка - PC speaker',
+    'PSG - генератор звука SN76489 (Tandy)',
+    'FM-синтез - микросхема OPL2 (AdLib)',
+    'MIDI - ноты для синтезатора (MPU-401)',
+    'ЦАП - волна, записанная числами');
+var dev, last, score, total: Integer; c: Char;
+begin
+  Randomize;
+  NeedWave(RATE);               { заранее, чтобы пауза на вычисление не подсказывала }
+  last := 0; score := 0; total := 0;
+  repeat
+    repeat dev := Random(5) + 1 until dev <> last;
+    last := dev;
+    Writeln;
+    Writeln('Слушай мелодию...');
+    Stop := False;
+    case dev of
+      1: PlaySpeaker;
+      2: PlayTandy;
+      3: PlayAdlib;
+      4: PlayMidi;
+      5: DacPlay(Wave, WaveLen);
+    end;
+    if Stop then Exit;          { Esc во время мелодии - в меню }
+    Writeln('Что это было?  1 - пищалка  2 - PSG  3 - FM  4 - MIDI  5 - ЦАП');
+    Write('Твой ответ: ');
+    repeat c := ReadKey until (c in ['1'..'5']) or (c = #27);
+    if c = #27 then Exit;
+    Writeln(c);
+    Inc(total);
+    if Ord(c) - Ord('0') = dev then
+    begin
+      Writeln('Угадал!');
+      Inc(score);
+    end
+    else Writeln('Нет, это ', Names[dev], '.');
+    Writeln('Угадано ', score, ' из ', total, '.   Enter - ещё раз, Esc - в меню');
+    repeat c := ReadKey until (c = #13) or (c = #27);
+  until c = #27;
+end;
+
+{ ---------- меню ---------- }
 
 procedure LoadSpeech;
 var f: file; n: Word;
@@ -587,21 +721,23 @@ end;
 procedure Menu;
 begin
   Writeln;
-  Writeln('SOUNDS - one tune on the sound devices of the PC');
+  Writeln('SOUNDS - одна мелодия на звуковых устройствах PC');
   Writeln;
-  Writeln('  1  PC speaker (1981)            one square wave, one voice');
-  Writeln('  2  Tandy / PCjr (1984)          PSG SN76489: square waves, 3 voices');
-  Writeln('  3  AdLib (1987)                 OPL2 FM synthesis: 9 voices');
-  Writeln('  4  Covox Sound Master (1989)    PSG AY-3-8930, port 240h');
-  Writeln('  5  Roland MPU-401 (1984)        MIDI notes for a synthesizer');
-  Writeln('  6  Covox Speech Thing (1986)    8-bit DAC on LPT2: any wave');
-  Writeln('  7  Disney Sound Source (1990)   DAC with a buffer on LPT1');
-  Writeln('  8  Sound Blaster (1989)         DAC fed by DMA, plus OPL2');
-  Writeln('  A  AdLib: four FM instruments   flute, piano, trumpet, bell');
+  Writeln('  1  PC speaker (1981)          пищалка: одна прямоугольная волна');
+  Writeln('  2  Tandy / PCjr (1984)        PSG SN76489: прямоугольные волны, 3 голоса');
+  Writeln('  3  AdLib (1987)               FM-синтез, микросхема OPL2: 9 голосов');
+  Writeln('  4  Covox Sound Master (1989)  PSG AY-3-8930, порт 240h');
+  Writeln('  5  Roland MPU-401 (1984)      ноты MIDI для синтезатора');
+  Writeln('  6  Covox Speech Thing (1986)  ЦАП на LPT2: любая волна');
+  Writeln('  7  Disney Sound Source (1990) ЦАП с очередью на LPT1');
+  Writeln('  8  Sound Blaster (1989)       ЦАП, числа подаёт DMA; и OPL2');
+  Writeln('  A  AdLib: четыре инструмента  флейта, пианино, труба, колокольчик');
+  Writeln('  D  Качество цифрового звука   меньше бит, меньше чисел в секунду');
+  Writeln('  G  Игра "Угадай устройство"');
   Writeln;
-  Writeln('  Esc - stop / quit.  Turn the device on in the emulator settings first.');
-  Writeln('  (SOUNDS 3 plays device 3 and quits.)');
-  Write('Your choice: ');
+  Writeln('  Esc - остановить звук / выйти.');
+  Writeln('  Устройство сначала включается в настройках эмулятора (Win+F11).');
+  Write('Выбор: ');
 end;
 
 procedure PlayDevice(c: Char);
@@ -617,6 +753,8 @@ begin
     '7': PlayDisney;
     '8': PlaySoundBlaster;
     'a', 'A': PlayAdlibPatches;
+    'd', 'D': PlayQuality;
+    'g', 'G': Game;
   end;
 end;
 
@@ -625,14 +763,16 @@ begin
   for i := 0 to 255 do SinTab[i] := Round(127 * Sin(i * 2 * Pi / 256));
   GetMem(Wave, 65000);
   GetMem(Speech, 32000);
+  GetMem(Work, 32000);
   GetMem(DmaBuf, 64000);
+  WaveRate := 0;
   FindDmaWindow;
   LoadSpeech;
   PitMode2;
   if ParamCount > 0 then
   begin
     Arg := ParamStr(1);
-    PlayDevice(Arg[1]);         { SOUNDS 3 - play one device and quit }
+    PlayDevice(Arg[1]);         { SOUNDS 3 - сыграть одно устройство и выйти }
   end
   else
     repeat
