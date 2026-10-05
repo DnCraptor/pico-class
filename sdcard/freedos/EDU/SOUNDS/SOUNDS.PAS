@@ -11,7 +11,7 @@
     5  Roland MPU-401        - ноты General MIDI для синтезатора
     6  Covox Speech Thing    - 8-битный ЦАП на LPT2 (порт 278h)
     7  Disney Sound Source   - ЦАП с очередью на 16 чисел на LPT1 (378h)
-    8  Sound Blaster         - ЦАП, числа подаёт контроллер DMA (220h, DMA 1)
+    8  Sound Blaster         - ЦАП, числа подает контроллер DMA (220h, DMA 1)
   Для ЦАП (6-8) программа сама вычисляет звуковую волну, число за числом,
   а после мелодии произносит фразу из файла SPEECH.RAW (8000 чисел в
   секунду, 8 бит).
@@ -69,15 +69,17 @@ var
   Speech: PBuf;                 { фраза из SPEECH.RAW }
   SpeechLen: Word;
   Work: PBuf;                   { фраза, испорченная для пункта D }
+  Wave7, Speech7: PBuf;         { мелодия и фраза для Disney Sound Source: 7000 в секунду }
+  Wave7Len, Speech7Len: Word;
   SinTab: array[0..255] of ShortInt;
   Stop: Boolean;                { нажали Esc - остановить звук }
 
 { ---------- таймер, клавиатура ---------- }
 
-function PitCount: Word;        { счётчик канала 0, считает вниз 1,19 млн раз в секунду }
+function PitCount: Word;        { счетчик канала 0, считает вниз 1,19 млн раз в секунду }
 var lo, hi: Byte;
 begin
-  Port[$43] := $00;             { защёлкнуть счётчик канала 0 }
+  Port[$43] := $00;             { защелкнуть счетчик канала 0 }
   lo := Port[$40];
   hi := Port[$40];
   PitCount := lo or (Word(hi) shl 8);
@@ -85,7 +87,7 @@ end;
 
 procedure PitMode2;
 { В режиме 2 канал 0 уменьшается на 1 за такт (BIOS ставит режим 3,
-  в нём счёт идёт по 2); перезагрузка прежняя - 65536, 18,2 прерывания в секунду. }
+  в нем счет идет по 2); перезагрузка прежняя - 65536, 18,2 прерывания в секунду. }
 begin
   Port[$43] := $34; Port[$40] := 0; Port[$40] := 0;
 end;
@@ -103,7 +105,7 @@ begin
   KeyPressed := MemW[$40:$1A] <> MemW[$40:$1C];
 end;
 
-function ReadKey: Char;         { дождаться клавиши и прочитать её }
+function ReadKey: Char;         { дождаться клавиши и прочитать ее }
 var r: Registers;
 begin
   r.ah := 0; Intr($16, r);
@@ -170,7 +172,7 @@ type
   TNoteProc = procedure(voice: Byte; note: Byte);   { нота 0 - тишина }
 
 procedure PlayChip(play: TNoteProc);
-{ идёт по мелодии восьмыми и в начале каждого такта берёт ноту баса }
+{ идет по мелодии восьмыми и в начале каждого такта берет ноту баса }
 var i, k, eighth: Integer;
 begin
   i := 1; eighth := 0;
@@ -203,7 +205,7 @@ begin
   else
   begin
     n := Round(3579545.0 / (32.0 * Freq(note)));   { период, 10 бит }
-    { ниже 109 Гц SN76489 не умеет (период больше 1023): берём октавой выше }
+    { ниже 109 Гц SN76489 не умеет (период больше 1023): берем октавой выше }
     while n > 1023 do n := n shr 1;
     Port[$C0] := $80 or (voice shl 5) or (n and $0F);
     Port[$C0] := n shr 4;
@@ -218,7 +220,7 @@ end;
 
 procedure TandyVoices;
 { Три голоса по очереди: каждый плавно становится громче, потом все вместе
-  затихают. Затем четвёртый голос - шум, как взрыв в игре. }
+  затихают. Затем четвертый голос - шум, как взрыв в игре. }
 const Chord: array[0..2] of Byte = (60, 64, 67);   { до, ми, соль }
 var v, a: Integer; n: Word;
 begin
@@ -286,7 +288,7 @@ procedure OplWrite(reg, val: Byte);   { записать число в регистр OPL2 }
 var i: Integer; b: Byte;
 begin
   Port[$388] := reg;
-  for i := 1 to 6 do b := Port[$388];  { микросхеме нужно время: ждём, читая порт }
+  for i := 1 to 6 do b := Port[$388];  { микросхеме нужно время: ждем, читая порт }
   Port[$389] := val;
   for i := 1 to 35 do b := Port[$388];
 end;
@@ -427,7 +429,7 @@ procedure MidiOut(b: Byte);     { отправить один байт MIDI }
 var t: Word;
 begin
   t := 0;
-  while ((Port[$331] and $40) <> 0) and (t < 60000) do Inc(t);   { ждём, пока примет }
+  while ((Port[$331] and $40) <> 0) and (t < 60000) do Inc(t);   { ждем, пока примет }
   Port[$330] := b;
 end;
 
@@ -504,7 +506,7 @@ end;
 { ---------- 6. Covox Speech Thing: ЦАП на LPT2 (278h) ---------- }
 
 procedure CovoxPlay(buf: PBuf; len: Word);
-{ процессор сам отдаёт каждое число и ждёт по таймеру следующего - 8000 раз в секунду }
+{ процессор сам отдает каждое число и ждет по таймеру следующего - 8000 раз в секунду }
 var i: Word; last, now: Word;
 const STEP = PIT_HZ div RATE;
 begin
@@ -526,7 +528,7 @@ end;
 
 procedure PlayCovox;
 begin
-  Writeln('  играю: компьютер сам отдаёт ЦАП 8000 чисел в секунду');
+  Writeln('  играю: компьютер сам отдает ЦАП 8000 чисел в секунду');
   CovoxPlay(Wave, WaveLen);
   if not Stop then
   begin
@@ -537,33 +539,42 @@ end;
 
 { ---------- 7. Disney Sound Source: ЦАП с очередью на LPT1 (378h) ---------- }
 
-procedure DssPlay(buf: PBuf; len: Word; step: Word);
-{ step: на сколько чисел источника сдвигаться за одно число, 8.8 }
-var src: LongInt; t: Word;
+procedure Resample7(src: PBuf; srcLen: Word; dst: PBuf; var dstLen: Word);
+{ 8000 -> 7000 чисел в секунду: из каждых 8 чисел остаются 7. Делается один
+  раз при запуске: пока звук играет, процессору на это не хватило бы времени. }
+var i: Word;
 begin
-  src := 0;
+  dstLen := LongInt(srcLen) * DSS_RATE div RATE;
+  for i := 0 to dstLen - 1 do
+    dst^[i] := src^[LongInt(i) * RATE div DSS_RATE];
+end;
+
+procedure DssPlay(buf: PBuf; len: Word);
+var i, t: Word;
+begin
+  i := 0;
   Port[$37A] := $04;
-  while (src shr 8) < len do
+  while (i < len) and not Stop do
   begin
     t := 0;
-    while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { очередь полна - ждём }
-    Port[$378] := buf^[src shr 8];
+    while ((Port[$379] and $40) <> 0) and (t < 50000) do Inc(t);   { очередь полна - ждем }
+    Port[$378] := buf^[i];
     Port[$37A] := $0C;          { строб (линия SELECT): число уходит в очередь }
     Port[$37A] := $04;
-    src := src + step;
-    if (src and $FFFF) < step then
-      if KeyPressed then if ReadKey = #27 then begin Stop := True; Exit; end;
+    if (i and 1023) = 0 then
+      if KeyPressed then if ReadKey = #27 then Stop := True;
+    Inc(i);
   end;
 end;
 
 procedure PlayDisney;
 begin
-  Writeln('  играю: Sound Source сам берёт 7000 чисел в секунду из очереди');
-  DssPlay(Wave, WaveLen, 256 * RATE div DSS_RATE);       { 8000 -> 7000 }
+  Writeln('  играю: Sound Source сам берет 7000 чисел в секунду из очереди');
+  DssPlay(Wave7, Wave7Len);
   if not Stop then
   begin
     WaitMs(400);
-    DssPlay(Speech, SpeechLen, 256 * RATE div DSS_RATE);   { 8000 -> 7000 }
+    DssPlay(Speech7, Speech7Len);
   end;
 end;
 
@@ -617,7 +628,7 @@ begin
   Port[$0A] := $01;                       { снять маску канала 1 }
   { Sound Blaster: вывод 8 бит через DMA, один проход }
   DspWrite($14); DspWrite(Lo(len - 1)); DspWrite(Hi(len - 1));
-  { процессор свободен; ждём, пока кусок отыграет, и подтверждаем прерывание }
+  { процессор свободен; ждем, пока кусок отыграет, и подтверждаем прерывание }
   for i := 1 to len div 80 do
     if not Stop then WaitTicks(PIT_HZ div 100);
   i := Port[SB + $E];
@@ -652,7 +663,7 @@ begin
     Writeln('  Sound Blaster на 220h не найден');
     Exit;
   end;
-  Writeln('  играю: числа подаёт контроллер DMA, процессор свободен');
+  Writeln('  играю: числа подает контроллер DMA, процессор свободен');
   SbPlay(Wave, WaveLen);
   if not Stop then
   begin
@@ -755,7 +766,7 @@ begin
       Inc(score);
     end
     else Writeln('Нет, это ', Names[dev], '.');
-    Writeln('Угадано ', score, ' из ', total, '.   Enter - ещё раз, Esc - в меню');
+    Writeln('Угадано ', score, ' из ', total, '.   Enter - еще раз, Esc - в меню');
     repeat c := ReadKey until (c = #13) or (c = #27);
   until c = #27;
 end;
@@ -786,7 +797,7 @@ begin
   Writeln('  5  Roland MPU-401 (1984)      ноты MIDI для синтезатора');
   Writeln('  6  Covox Speech Thing (1986)  ЦАП на LPT2: любая волна');
   Writeln('  7  Disney Sound Source (1990) ЦАП с очередью на LPT1');
-  Writeln('  8  Sound Blaster (1989)       ЦАП, числа подаёт DMA; и OPL2');
+  Writeln('  8  Sound Blaster (1989)       ЦАП, числа подает DMA; и OPL2');
   Writeln('  A  AdLib: четыре инструмента  флейта, пианино, труба, колокольчик');
   Writeln('  D  Качество цифрового звука   меньше бит, меньше чисел в секунду');
   Writeln('  G  Игра "Угадай устройство"');
@@ -821,10 +832,15 @@ begin
   GetMem(Speech, 32000);
   GetMem(Work, 32000);
   GetMem(DmaBuf, 64000);
+  GetMem(Wave7, 50000);
+  GetMem(Speech7, 28000);
   FindDmaWindow;
   LoadSpeech;
   Writeln('SOUNDS: подготовка - вычисляю волну для ЦАП...');
   MakeWave(RATE);
+  Resample7(Wave, WaveLen, Wave7, Wave7Len);
+  Speech7Len := 0;
+  if SpeechLen > 0 then Resample7(Speech, SpeechLen, Speech7, Speech7Len);
   PitMode2;
   if ParamCount > 0 then
   begin
