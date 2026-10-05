@@ -1,7 +1,10 @@
-{ SOUNDS.PAS - одна мелодия на звуковых устройствах PC 1981-1992 годов.
-  Одна и та же мелодия ("Ода к радости" Бетховена) звучит на:
-    1  PC speaker (пищалка)  - одна прямоугольная волна от микросхемы таймера
-    2  Tandy / PCjr          - генератор звука SN76489 (PSG), 3 голоса
+{ SOUNDS.PAS - звуковые устройства PC 1981-1992 годов.
+  Начало "Оды к радости" Бетховена - первые 8 тактов темы, мелодия и бас -
+  звучит на:
+    1  PC speaker (пищалка)  - одна прямоугольная волна от микросхемы таймера,
+                               голос один - только мелодия, без баса
+    2  Tandy / PCjr          - генератор звука SN76489 (PSG), 3 голоса;
+                               после мелодии - три голоса по очереди и шум
     3  AdLib                 - FM-синтезатор Yamaha OPL2
     4  Covox Sound Master    - генератор звука AY-3-8930 (PSG), порт 240h
     5  Roland MPU-401        - ноты General MIDI для синтезатора
@@ -9,7 +12,9 @@
     7  Disney Sound Source   - ЦАП с очередью на 16 чисел на LPT1 (378h)
     8  Sound Blaster         - ЦАП, числа подаёт контроллер DMA (220h, DMA 1)
   Для ЦАП (6-8) программа сама вычисляет звуковую волну, число за числом,
-  а потом произносит фразу из файла SPEECH.RAW (8000 чисел в секунду, 8 бит).
+  а после мелодии произносит фразу из файла SPEECH.RAW (8000 чисел в
+  секунду, 8 бит).
+  A - первые два такта мелодии четырьмя инструментами AdLib.
   D - та же фраза с меньшим числом бит и меньшей частотой дискретизации.
   G - игра "Угадай устройство".
 
@@ -60,7 +65,6 @@ type
 var
   Wave: PBuf;                   { вычисленная мелодия для ЦАП }
   WaveLen: Word;
-  WaveRate: Word;               { для какой частоты она вычислена; 0 - ещё нет }
   Speech: PBuf;                 { фраза из SPEECH.RAW }
   SpeechLen: Word;
   Work: PBuf;                   { фраза, испорченная для пункта D }
@@ -197,17 +201,81 @@ begin
   else
   begin
     n := Round(3579545.0 / (32.0 * Freq(note)));   { период, 10 бит }
+    { ниже 109 Гц SN76489 не умеет (период больше 1023): берём октавой выше }
+    while n > 1023 do n := n shr 1;
     Port[$C0] := $80 or (voice shl 5) or (n and $0F);
     Port[$C0] := n shr 4;
     Port[$C0] := $90 or (voice shl 5) or (voice * 3);  { бас немного тише }
   end;
 end;
 
-procedure PlayTandy;
+procedure TandyVolume(voice, att: Byte);   { ослабление: 0 - громче всего, 15 - тишина }
+begin
+  Port[$C0] := $90 or (voice shl 5) or att;
+end;
+
+procedure TandyVoices;
+{ Три голоса по очереди: каждый плавно становится громче, потом все вместе
+  затихают. Затем четвёртый голос - шум, как взрыв в игре. }
+const Chord: array[0..2] of Byte = (60, 64, 67);   { до, ми, соль }
+var v, a: Integer; n: Word;
+begin
+  for v := 0 to 2 do
+  begin
+    n := Round(3579545.0 / (32.0 * Freq(Chord[v])));
+    TandyVolume(v, 15);
+    Port[$C0] := $80 or (v shl 5) or (n and $0F);
+    Port[$C0] := n shr 4;
+  end;
+  v := 0;
+  while (v <= 2) and not Stop do
+  begin
+    Writeln('  голос ', v + 1);
+    a := 15;
+    while (a >= 0) and not Stop do
+    begin
+      TandyVolume(v, a); WaitMs(70); Dec(a);
+    end;
+    WaitMs(400);
+    Inc(v);
+  end;
+  if not Stop then Writeln('  все три голоса затихают');
+  a := 0;
+  while (a <= 15) and not Stop do
+  begin
+    for v := 0 to 2 do TandyVolume(v, a);
+    WaitMs(120); Inc(a);
+  end;
+  for v := 0 to 2 do TandyVolume(v, 15);
+  if not Stop then
+  begin
+    Writeln('  шум');
+    Port[$C0] := $E4;           { шум: белый, самый частый }
+    a := 0;
+    while (a <= 15) and not Stop do
+    begin
+      TandyVolume(3, a); WaitMs(90); Inc(a);
+    end;
+  end;
+  TandyVolume(3, 15);
+end;
+
+procedure PlayTandyTune;        { только мелодия и бас - для игры }
 var v: Byte;
 begin
-  for v := 0 to 3 do Port[$C0] := $9F or (v shl 5);  { все четыре голоса выключить }
+  for v := 0 to 3 do TandyVolume(v, 15);   { все четыре голоса выключить }
   PlayChip(TandyNote);
+end;
+
+procedure PlayTandy;
+begin
+  Writeln('  мелодия и бас');
+  PlayTandyTune;
+  if not Stop then
+  begin
+    WaitMs(500);
+    TandyVoices;
+  end;
 end;
 
 { ---------- 3. AdLib: OPL2, порты 388h и 389h ---------- }
@@ -296,8 +364,8 @@ begin
 end;
 
 procedure PlayAdlibPatches;
-{ A: первый такт мелодии четырьмя FM-инструментами по очереди }
-const Scale: array[1..8] of Byte = (64, 64, 65, 67, 67, 65, 64, 62);
+{ A: первые два такта мелодии (все ноты - четверти) четырьмя FM-инструментами по очереди }
+const Bars12: array[1..8] of Byte = (64, 64, 65, 67, 67, 65, 64, 62);
 var p, i: Integer;
 begin
   OplSetup;
@@ -309,7 +377,7 @@ begin
     i := 1;
     while (i <= 8) and not Stop do
     begin
-      AdlibNote(0, Scale[i]);
+      AdlibNote(0, Bars12[i]);
       WaitMs(QUARTER);
       Inc(i);
     end;
@@ -392,13 +460,14 @@ end;
 { ---------- волна для ЦАП: вычисляем каждое число ---------- }
 
 procedure MakeWave(rate: Word);
-{ Два голоса: мелодия - синусоида, которая затухает, как у пианино,
-  бас - тихая прямоугольная волна. Каждое число = 128 + сумма голосов. }
+{ Два голоса: мелодия - синусоида, бас - тихая прямоугольная волна.
+  Каждое число = 128 + сумма голосов. Нота мелодии звучит ровно, пока
+  "клавишу держат": быстро нарастает (5 мс), в конце плавно затихает
+  (30 мс) и короткая пауза (20 мс) перед следующей нотой. }
 var i: Integer;
     n, len, bar: Word;
     ph1, inc1, ph2, inc2: LongInt;
     amp, v: Integer;
-    ampFix, ampDec: Word;
     eighthLen: Word;
 begin
   eighthLen := LongInt(rate) * QUARTER div 2000;   { сколько чисел в восьмой }
@@ -408,8 +477,6 @@ begin
   begin
     len := MelLen[i] * eighthLen;
     inc1 := Round(Freq(MelNote[i]) * 256.0 * 256.0 / rate);   { шаг по таблице синуса, 8.8 }
-    ampFix := 70 * 256;                     { громкость, 8.8: затухает с 70 до 15 }
-    ampDec := 55 * 256 div len;
     for n := 0 to len - 1 do
     begin
       if (WaveLen mod (8 * eighthLen)) = 0 then
@@ -418,26 +485,17 @@ begin
         if bar > NBARS then bar := NBARS;
         inc2 := Round(Freq(BassNote[bar]) * 256.0 * 256.0 / rate);
       end;
-      amp := ampFix shr 8;
-      ampFix := ampFix - ampDec;
-      if n > len - rate div 50 then amp := 0;    { короткая пауза перед следующей нотой }
+      if n < 40 then amp := LongInt(90) * n div 40          { нарастание }
+      else if n >= len - 160 then amp := 0                  { пауза }
+      else if n >= len - 400 then amp := LongInt(90) * (len - 160 - n) div 240   { затухание }
+      else amp := 90;                                       { звучит ровно }
       v := SinTab[(ph1 shr 8) and 255] * amp div 128;
-      if (ph2 shr 15) and 1 = 0 then v := v + 18 else v := v - 18;
+      if (ph2 shr 15) and 1 = 0 then v := v + 24 else v := v - 24;
       Wave^[WaveLen] := 128 + v;
       Inc(WaveLen);
       ph1 := ph1 + inc1;
       ph2 := ph2 + inc2;
     end;
-  end;
-  WaveRate := rate;
-end;
-
-procedure NeedWave(rate: Word); { вычислить волну, если её ещё нет для этой частоты }
-begin
-  if WaveRate <> rate then
-  begin
-    Writeln('  вычисляю волну...');
-    MakeWave(rate);
   end;
 end;
 
@@ -466,7 +524,6 @@ end;
 
 procedure PlayCovox;
 begin
-  NeedWave(RATE);
   Writeln('  играю: компьютер сам отдаёт ЦАП 8000 чисел в секунду');
   CovoxPlay(Wave, WaveLen);
   if not Stop then
@@ -499,9 +556,8 @@ end;
 
 procedure PlayDisney;
 begin
-  NeedWave(DSS_RATE);
   Writeln('  играю: Sound Source сам берёт 7000 чисел в секунду из очереди');
-  DssPlay(Wave, WaveLen, 256);
+  DssPlay(Wave, WaveLen, 256 * RATE div DSS_RATE);       { 8000 -> 7000 }
   if not Stop then
   begin
     WaitMs(400);
@@ -594,7 +650,6 @@ begin
     Writeln('  Sound Blaster на 220h не найден');
     Exit;
   end;
-  NeedWave(RATE);
   Writeln('  играю: числа подаёт контроллер DMA, процессор свободен');
   SbPlay(Wave, WaveLen);
   if not Stop then
@@ -671,7 +726,6 @@ const
 var dev, last, score, total: Integer; c: Char;
 begin
   Randomize;
-  NeedWave(RATE);               { заранее, чтобы пауза на вычисление не подсказывала }
   last := 0; score := 0; total := 0;
   repeat
     repeat dev := Random(5) + 1 until dev <> last;
@@ -681,7 +735,7 @@ begin
     Stop := False;
     case dev of
       1: PlaySpeaker;
-      2: PlayTandy;
+      2: PlayTandyTune;
       3: PlayAdlib;
       4: PlayMidi;
       5: DacPlay(Wave, WaveLen);
@@ -721,10 +775,10 @@ end;
 procedure Menu;
 begin
   Writeln;
-  Writeln('SOUNDS - одна мелодия на звуковых устройствах PC');
+  Writeln('SOUNDS - звуковые устройства PC: начало "Оды к радости" Бетховена');
   Writeln;
   Writeln('  1  PC speaker (1981)          пищалка: одна прямоугольная волна');
-  Writeln('  2  Tandy / PCjr (1984)        PSG SN76489: прямоугольные волны, 3 голоса');
+  Writeln('  2  Tandy / PCjr (1984)        PSG SN76489: 3 прямоугольных голоса и шум');
   Writeln('  3  AdLib (1987)               FM-синтез, микросхема OPL2: 9 голосов');
   Writeln('  4  Covox Sound Master (1989)  PSG AY-3-8930, порт 240h');
   Writeln('  5  Roland MPU-401 (1984)      ноты MIDI для синтезатора');
@@ -765,9 +819,10 @@ begin
   GetMem(Speech, 32000);
   GetMem(Work, 32000);
   GetMem(DmaBuf, 64000);
-  WaveRate := 0;
   FindDmaWindow;
   LoadSpeech;
+  Writeln('SOUNDS: подготовка - вычисляю волну для ЦАП...');
+  MakeWave(RATE);
   PitMode2;
   if ParamCount > 0 then
   begin
