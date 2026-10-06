@@ -1,0 +1,6 @@
+10 REM STROKA
+20 A$ = "PRIVET"
+30 PRINT A$; " - DLINA"; LEN(A$)
+40 B$ = A$ + ", MIR!"
+50 PRINT B$; " - DLINA"; LEN(B$)
+60 PRINT "PERVYE 3 BUKVY: "; LEFT$(B$, 3)

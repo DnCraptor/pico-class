@@ -1,0 +1,5 @@
+10 REM PEREPOLNENIE: 32767 + 1
+20 A = 32767
+30 PRINT "A ="; A
+40 A = A + 1
+50 PRINT "A + 1 ="; A
