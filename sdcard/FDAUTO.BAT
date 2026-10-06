@@ -11,7 +11,7 @@ SET TZ=EST
 SET NLSPATH=%dosdir%\NLS
 SET HELPPATH=%dosdir%\HELP
 
-SET PATH=%dosdir%\BIN;%dosdir%\LINKS;%dosdir%\edu\tp55
+SET PATH=%dosdir%\BIN;%dosdir%\LINKS;%dosdir%\edu\tp55;%dosdir%\edu\tc201
 
 SET DIRCMD=/P /OGN /Y
 SET COPYCMD=/-Y
