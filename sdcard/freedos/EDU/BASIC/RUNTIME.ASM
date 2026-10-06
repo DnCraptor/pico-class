@@ -4160,9 +4160,10 @@ TIMERC:
 ; D2_TWO
 ; In : AL = value 0..99
 ; Out: two decimal digits to [DI], DI += 2
-; Uses: AX, BX, DX
+; Uses: AX, BX (DX is preserved)
 ; -------------------------------------------------
 D2_TWO:
+ push dx             ; keep DX: TIMESTR/DATES still need DH/DL
  xor ah,ah
  xor dx,dx
  mov bx,10
@@ -4174,6 +4175,7 @@ D2_TWO:
  add al,'0'
  mov [di],al
  inc di
+ pop dx
  ret
 %endif
 
