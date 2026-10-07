@@ -55,7 +55,7 @@
 
 ## 4. Установка менеджера прошивок
 
-**pico-launcher** для этой платы — [`pico-launcher/z0p2-uf2-launcher-HDMI-HID.uf2`](pico-launcher/) (проверен: запускается, запускает murm386). Сборка **MOS2** ляжет в [`murmulator-os2/`](murmulator-os2/) — *будет заполнено*. Порядок установки через BOOTSEL — как для Olimex (раздел 4); где на RP2350-PiZero кнопки BOOTSEL и RESET — *уточнить*.
+**pico-launcher** для этой платы — [`pico-launcher/z0p2-uf2-launcher-HDMI-HID.uf2`](pico-launcher/) (проверен: запускается, запускает murm386). Сборка **MOS2** ляжет в [`murmulator-os2/`](murmulator-os2/) — *будет заполнено*. Порядок установки через BOOTSEL — как для Olimex (раздел 4); где на RP2350-PiZero кнопки BOOTSEL и RESET — *уточнить*. Если менеджер не загружается — сначала включить с удержанием **F11**, а если не помогло, удалить с SD-карты файл `/.firmware` (подробно — Olimex, раздел 4, «Если что-то не загружается»).
 
 ## 5. Приёмка рабочего места
 
