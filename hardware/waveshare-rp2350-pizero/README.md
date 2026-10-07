@@ -55,7 +55,7 @@
 
 ## 4. Установка менеджера прошивок
 
-*Будет заполнено.* Сборки pico-launcher и MOS2 для этой платы лягут в [`pico-launcher/`](pico-launcher/) и [`murmulator-os2/`](murmulator-os2/). Порядок установки через BOOTSEL — как для Olimex (раздел 4); где на RP2350-PiZero кнопки BOOTSEL и RESET — *уточнить*.
+**pico-launcher** для этой платы — [`pico-launcher/z0p2-uf2-launcher-HDMI-HID.uf2`](pico-launcher/) (проверен: запускается, запускает murm386). Сборка **MOS2** ляжет в [`murmulator-os2/`](murmulator-os2/) — *будет заполнено*. Порядок установки через BOOTSEL — как для Olimex (раздел 4); где на RP2350-PiZero кнопки BOOTSEL и RESET — *уточнить*.
 
 ## 5. Приёмка рабочего места
 
@@ -71,7 +71,7 @@
 |---|---|
 | [`MANIFEST.md`](MANIFEST.md) | что лежит в каталоге платы, из каких исходников собрано, контрольные суммы |
 | [`SHA256SUMS`](SHA256SUMS) | контрольные суммы файлов платы (проверка — [`MANIFEST.md`](MANIFEST.md), раздел 3) |
-| [`pico-launcher/`](pico-launcher/) | сборка pico-launcher для `z0p2` |
+| [`pico-launcher/`](pico-launcher/) | сборка pico-launcher для `z0p2` (есть) |
 | [`murmulator-os2/`](murmulator-os2/) | сборка MOS2 для `z0p2` |
 | [`sdcard/emu/`](sdcard/emu/) | эмуляторы, собранные для `z0p2`; пока — murm386 (три сборки, как у Olimex) |
 | [`img/`](img/) | схемы подключения из репозитория MOS2 (раздел 2.1) |

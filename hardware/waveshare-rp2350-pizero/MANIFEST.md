@@ -1,12 +1,12 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-07: менеджеры прошивок ещё не собраны, из эмуляторов есть murm386. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-07: есть pico-launcher и murm386; MOS2 ещё не собран. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
 | Файл | Исходники | Версия / коммит | Параметры сборки | SHA-256 |
 |---|---|---|---|---|
-| `pico-launcher/…` | [DnCraptor/pico-launcher](https://github.com/DnCraptor/pico-launcher) | — | — | — |
+| `pico-launcher/z0p2-uf2-launcher-HDMI-HID.uf2` | [DnCraptor/pico-launcher](https://github.com/DnCraptor/pico-launcher) | `main` = `5d871d7` (2026-10-01), версия 4 — тот же коммит, что для PCp2 | профиль платы z0p2, `HID=ON` (по имени файла; HDMI) | `48d1643e4f05f778c24a38032d5cfaf047c6d87491120fc707e387c0c750eb21` |
 | `murmulator-os2/…` | [DnCraptor/murmulator-os2](https://github.com/DnCraptor/murmulator-os2) | — | — | — |
 
 ### Эмуляторы (`sdcard/emu/`)
