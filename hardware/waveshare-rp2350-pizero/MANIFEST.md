@@ -1,6 +1,6 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-07: есть pico-launcher, MOS2 и murm386. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-07: есть pico-launcher, MOS2, murm386 и pico-speccy. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -16,6 +16,8 @@
 | `sdcard/emu/z0p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2` | [DnCraptor/murm386](https://github.com/DnCraptor/murm386) | v1.19, `main` = `fc80323` (2026-10-06) — тот же коммит, что для PCp2; профиль платы `BOARD_Z2`; сборка без PSRAM (`VIDEO_MODE=RUNTIME`, подкачка гостевой памяти) | 504 МГц / 1.6 В | `a2de24ba1f24304796dc3116e6c634453edfc8c7be4a3ab0c616ebaec4afd720` |
 | `sdcard/emu/psram/z0p2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `fc80323`, `BOARD_Z2`; сборка с PSRAM: ядро 386, VGA256, гостевая память прямо в PSRAM 66 МГц (`NO_PAGING`) | 504 МГц / 1.6 В | `140828daf4994c2a3b856214f4457c0667d702e298e12a67fdbbf97f7fa8239c` |
 | `sdcard/emu/psram/z0p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `fc80323`, `BOARD_Z2`; сборка с PSRAM: ядро 8086/186/286 (`CPU_TARGET=286`), остальное как у сборки 386 | 504 МГц / 1.6 В | `4faa210a991986c71dcf0427ae3300f5ef35ee495d8c5dcaf07d80aadb89841a` |
+| `sdcard/emu/z0p2-speccy-VGA-HDMI-1.0.9.uf2` | [drewpo28/pico-speccy](https://github.com/drewpo28/pico-speccy) | релиз [v1.0.9](https://github.com/drewpo28/pico-speccy/releases/tag/v1.0.9), тег `v1.0.9` = `f5f57d4` (2026-10-07), готовая сборка из релиза; `ZERO2=ON`, HDMI через PIO; звук I2S на GP10–GP12 (как у murm386) или плата Waveshare PCM5122 Audio Board | по умолчанию сборки, меняется в меню | `f5631b5c74e07b4a691806908b82e3431138cf1ebc301ea37f829e9f856c115d` |
+| `sdcard/emu/z0p2-speccy-VGA-HDMI-PIOUSB-1.0.9.uf2` | там же | v1.0.9, `f5f57d4`; то же плюс `ZERO2_PIO_USB`: второй разъём Type-C (J2, GP28/GP29) работает как ещё один USB-хост через PIO — клавиатуру и геймпад можно подключить без хаба | по умолчанию сборки, меняется в меню | `b94859db4d3a044fcc187e5c4a8887fa6504cc812c75ca472a93ac0c5a8c3c0b` |
 
 Звук у murm386 на этой плате — I2S или PWM на GP10–GP12, выбор в **Win+F11** (Audio output: Autodetect / PWM / I2S). Свои настройки сборки для z0p2 хранят в `/.config/386/Z2/` и `/.config/286/Z2/`, отдельно от настроек PCp2: если карту переставить с платы на плату, настройки одной не испортят другую. В подкаталоге `emu/psram` — сборки, которым нужна внешняя PSRAM (как у Olimex, см. [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md)).
 
@@ -40,4 +42,4 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 ## 4. Лицензии
 
-pico-launcher и MOS2 распространяются под GPLv3, murm386 — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
+pico-launcher, MOS2 и pico-speccy распространяются под GPLv3, murm386 — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
