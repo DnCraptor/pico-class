@@ -1,13 +1,13 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-07: есть pico-launcher и murm386; MOS2 ещё не собран. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-07: есть pico-launcher, MOS2 и murm386. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
 | Файл | Исходники | Версия / коммит | Параметры сборки | SHA-256 |
 |---|---|---|---|---|
 | `pico-launcher/z0p2-uf2-launcher-HDMI-HID.uf2` | [DnCraptor/pico-launcher](https://github.com/DnCraptor/pico-launcher) | `main` = `5d871d7` (2026-10-01), версия 4 — тот же коммит, что для PCp2 | профиль платы z0p2, `HID=ON` (по имени файла; HDMI) | `48d1643e4f05f778c24a38032d5cfaf047c6d87491120fc707e387c0c750eb21` |
-| `murmulator-os2/…` | [DnCraptor/murmulator-os2](https://github.com/DnCraptor/murmulator-os2) | — | — | — |
+| `murmulator-os2/z0p2-murmulator-os-VGA-HDMI-HID-2.3.2-252MHz-8.uf2` | [DnCraptor/murmulator-os2](https://github.com/DnCraptor/murmulator-os2) | 2.3.2 build 8, `bd11190` (2026-10-07): `v.2.3.2` (`aad5813`) плюс правки для z0p2 — видеодрайвер HDMI по умолчанию и звук через I2S-модуль (`I2S_SOUND`, вывод I2S на `pio2`, постоянная частота 44100 Гц) | `ZERO2=ON`, `VGAHDMI=ON`, `HID=ON`, `CPU_MHZ=252` | `729952752ac4989c0d19e3028f37cdcf8e776beb7890976b47bb6855031e69f2` |
 
 ### Эмуляторы (`sdcard/emu/`)
 
@@ -40,4 +40,4 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 ## 4. Лицензии
 
-murm386 распространяется под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
+pico-launcher и MOS2 распространяются под GPLv3, murm386 — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.

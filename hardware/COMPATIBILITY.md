@@ -20,6 +20,7 @@
 | pico-launcher | 4 (`5d871d7`) | PCp2 | HDMI | USB HID | — | — | 252 МГц | — | ✅ | основной менеджер; приёмка 2026-10-01 без замечаний; файл в комплекте, см. `olimex-pico-pc/MANIFEST.md` |
 | pico-launcher | 4 (`5d871d7`) | z0p2 | mini-HDMI | USB HID | — | — | 252 МГц | — | ✅ | приёмка 2026-10-07: запускается и работает; файл — `waveshare-rp2350-pizero/pico-launcher/`, см. `waveshare-rp2350-pizero/MANIFEST.md` |
 | murmulator-os2 | 2.3.2 build 8 | PCp2 | HDMI | USB HID | джек, PWM | нет | 252 МГц / 1.6 В | — | ⚠️ | приёмка 2026-10-01: `wav` зависает после окончания воспроизведения (без PSRAM; с PSRAM не проверялось); `blimp` выводит на GP26, к джеку не подключён; файл в комплекте, см. `olimex-pico-pc/MANIFEST.md` |
+| murmulator-os2 | 2.3.2 build 8 (`bd11190`) | z0p2 | mini-HDMI | USB HID | I2S (модуль PCM5102A на GP10–GP12) | нет | 252 МГц / 1.6 В | звуковой модуль I2S | ⚠️ | приёмка 2026-10-07: загружается и работает; **правильная работа звука не подтверждена**: `wav /test/snd_lr.wav` звучит, `wav /test/snd_mono.wav` и `blimp` молчат, причина не найдена; файл — `waveshare-rp2350-pizero/murmulator-os2/`, см. `waveshare-rp2350-pizero/MANIFEST.md` |
 
 ## 2. Учебные и досуговые прошивки
 
