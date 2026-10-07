@@ -11,7 +11,7 @@
 | `PCp2` | Olimex RP2040-PICO-PC + Raspberry Pi Pico 2 — **основная** |
 | `m1p2` | Murmulator 1.x с RP2350 |
 | `m2p2` | Murmulator 2.0 (RP2350B) |
-| `z0p2` | Waveshare RP2350-PiZero |
+| `z0p2` | Waveshare RP2350-PiZero — требует дополнительного звукового модуля; инструкция — шаблон [`waveshare-rp2350-pizero/README.md`](waveshare-rp2350-pizero/README.md) |
 
 ## 1. Менеджеры прошивок
 
