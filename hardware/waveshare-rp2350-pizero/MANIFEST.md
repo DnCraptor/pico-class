@@ -1,6 +1,6 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-08: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, pico-speccy и murmapple. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-08: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, pico-speccy, murmapple, pico-z26 и murmc64. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -23,8 +23,15 @@
 | `sdcard/emu/z0p2-frank_apple-HDMI-252MHz-I2S-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `d3b263d` (2026-10-08): `9ca41fc` (тот же, что у сборки для PCp2 с PSRAM) плюс профиль платы `BOARD_VARIANT=Z2` — заголовок платы без `pico2.h`, HDMI на `pio0` (GPIO32–39), I2S на `pio1` (GP10–GP12), PS/2 и геймпад NES на `pio2` (выводы как у pico-nes); сборка без PSRAM, образы дисков читаются с SD-карты | 252 МГц / 1.5 В — **стабильный вариант** | `7d6f5aa257db63baff5e620ca9991864d30a05e47fc2185e7206004240730ecb` |
 | `sdcard/emu/z0p2-frank_apple-HDMI-378MHz-I2S-1.05.uf2` | там же | 1.05, `d3b263d`; то же, другая частота | 378 МГц / 1.6 В | `34930f87cd18751c6752807791485feaf6013ef6dceb39c5e2dbb13ea36a350c` |
 | `sdcard/emu/z0p2-frank_apple-HDMI-504MHz-I2S-1.05.uf2` | там же | 1.05, `d3b263d`; то же, другая частота | 504 МГц / 1.65 В | `d97f2cc7bec4e9b95f2a4fd66d32f3253491afe1fd11be6148c681a0c381b9e2` |
+| `sdcard/emu/z0p2-z26-252-HDMI-I2S-4.0.8.uf2` | [DnCraptor/pico-z26](https://github.com/DnCraptor/pico-z26) | 4.0.8, `68b7a25` (2026-10-08): `9689fc5` (тот же, что для PCp2) плюс профиль платы z0p2 — запись игры во flash с восстановлением таймингов flash (иначе после записи плата зависала с чёрным экраном), стек ядра 0 увеличен до 4 КБ, PS/2 на GP2/GP3 и геймпад NES на GP4/GP5/GP7, звук через модуль I2S на GP10–GP12 | 252 МГц / 1.6 В | `a78ae5843342d41107d2b13e9b10004d13acdfa88e660a66c0af74ea8ec1038a` |
+| `sdcard/emu/z0p2-frank-c64-HDMI-252MHz-F66-I2S-v1.08.uf2` | [DnCraptor/murmc64](https://github.com/DnCraptor/murmc64) | v1.08, `8440245` (2026-10-08): `2a398e1` (тот же, что для PCp2) плюс профиль платы z0p2 — заголовок платы без `pico2.h`, PS/2 на GP2/GP3, геймпад NES на GP4/GP5/GP7 (`pio2`), звук через модуль I2S на GP10–GP12, режим HDMI 90 Гц (`HDMI_90HZ`); сборка без PSRAM | 252 МГц / 1.5 В | `5f105f977245ebc6ab8035a9238c64d3638a97b71ea3e4141d849ff0991b0eb8` |
+| `sdcard/emu/z0p2-frank-c64-HDMI-90Hz-378MHz-F66-I2S-v1.08.uf2` | там же | v1.08, `8440245`; то же, HDMI 640×480 при 90 Гц | 378 МГц / 1.6 В | `082e574feb76895258848560d28e90e9bf0e4314336d6da95ae9fe6eb4f6d999` |
+| `sdcard/emu/z0p2-frank-c64-HDMI-378MHz-F66-I2S-v1.08.uf2` | там же | v1.08, `8440245`; то же, HDMI 640×480 при 60 Гц | 378 МГц / 1.6 В | `83553c1035904246e87bf4d627c0fcfcdd4a947265d5720a50868a41c3417b70` |
+| `sdcard/emu/z0p2-frank-c64-HDMI-504MHz-F66-I2S-v1.08.uf2` | там же | v1.08, `8440245`; то же, другая частота | 504 МГц / 1.65 В | `71f21153adc1f7a5c6beb84d2dd6e51adbe5259b254ac7209b2c06a4865f4119` |
 
 murmapple собран на три частоты. Стабильный вариант — 252 МГц. Сборки 378 и 504 МГц лежат для тех, кто хочет проверить их на своём оборудовании; на эталонной плате 378 МГц давала слабозаметные помехи и редкие срывы синхронизации, 504 МГц — эпизодические перезагрузки (подробнее — [`../COMPATIBILITY.md`](../COMPATIBILITY.md)).
+
+murmc64 собран в четырёх вариантах: 252 МГц, 378 МГц с HDMI 90 Гц, 378 МГц с HDMI 60 Гц и 504 МГц. На эталонной плате стабильно работают все, кроме 378 МГц с HDMI 60 Гц (помехи и срывы синхронизации). Вариант подбирается под конкретный экземпляр платы и монитор (режим 90 Гц принимают не все мониторы).
 
 Звук у murm386 на этой плате — I2S или PWM на GP10–GP12, выбор в **Win+F11** (Audio output: Autodetect / PWM / I2S). Свои настройки сборки для z0p2 хранят в `/.config/386/Z2/` и `/.config/286/Z2/`, отдельно от настроек PCp2: если карту переставить с платы на плату, настройки одной не испортят другую. В подкаталоге `emu/psram` — сборки, которым нужна внешняя PSRAM (как у Olimex, см. [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md)).
 
@@ -49,4 +56,4 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 ## 4. Лицензии
 
-pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 и murmapple — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
+pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 и murmapple — под MIT, pico-z26 — под GPLv2, murmc64 — под GPLv2 или более поздней. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
