@@ -121,7 +121,7 @@
 | Показать текст | `TYPE` | `cat` | `type`, `cat` |
 | Копировать | `COPY` | `cp` | `cp` |
 | Удалить файл | `DEL` | `rm` | `rm`, `del` |
-| Показать содержимое по страницам | `DIR /P` | `ls &#124; less` | `ls &#124; less` |
+| Показать содержимое по страницам | `DIR /P` | `ls \| less` | `ls \| less` |
 | Показать процессы | в классическом DOS общего аналога нет | `ps` | `ps` — задачи среды MOS2 |
 
 **Практика DOS:** `md oslab`, `cd oslab`, `echo Privet>hello.txt`, `type hello.txt`, `copy hello.txt copy.txt`, `dir`, `del copy.txt`.
