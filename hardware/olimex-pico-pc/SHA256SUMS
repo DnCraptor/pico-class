@@ -25,3 +25,4 @@ d9ff9ec03fc48f76a61b66e4f841caea6aae2712deb6be7ed3e5278ac81f0d50  sdcard/emu/pic
 6225dea98fe5a3c2736c4fc02d5802f6cda3e1c2a4262c9fc76f1e063d36fe23  sdcard/emu/psram/PCp2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2
 62a56aa6ad05fb940164a22799d3e8d5c314a346a4dfe6b45f27629f04324aae  sdcard/emu/psram/PCp2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2
 4bfdf99cd9a92afa8ccaacc501819c923a7493232b2d319a4da1b7a50e2746b4  sdcard/emu/psram/PCp2-frank_apple-HDMI-378MHz-P84-1.05.uf2
+751fc7be8492dc95e8175721faa4c2ac41cf52a74db60de5837bd2528bf2290e  sdcard/micro/micro.ini
