@@ -1,6 +1,6 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-07: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes и pico-speccy. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-08: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, pico-speccy и murmapple. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -20,6 +20,11 @@
 | `sdcard/emu/z0p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2` | [DnCraptor/pico-nes](https://github.com/DnCraptor/pico-nes) | 305, `0d6dbbe` (2026-10-08): `fa24bc7` (тот же, что для PCp2) плюс правки для z0p2 — профиль платы `rp2350pizero` без `pico2.h` (иначе SDK считает чип RP2350A и HDMI на GPIO32–39 не запускается), I2S на `pio2`, геймпад NES на GP4/GP5/GP7 (второй — GP8) и PS/2 на GP2/GP3 как в MOS2; `PICO_BOARD=rp2350pizero`, `I2S=ON`, HDMI | 252 МГц / 1.6 В | `b443c72c3a907867cfad1b3e74e96e2c2eafdd5b063cd6d492306e3acb2f962c` |
 | `sdcard/emu/z0p2-speccy-VGA-HDMI-1.0.9.uf2` | [drewpo28/pico-speccy](https://github.com/drewpo28/pico-speccy) | релиз [v1.0.9](https://github.com/drewpo28/pico-speccy/releases/tag/v1.0.9), тег `v1.0.9` = `f5f57d4` (2026-10-07), готовая сборка из релиза; `ZERO2=ON`, HDMI через PIO; звук I2S на GP10–GP12 (как у murm386) или плата Waveshare PCM5122 Audio Board | по умолчанию сборки, меняется в меню | `f5631b5c74e07b4a691806908b82e3431138cf1ebc301ea37f829e9f856c115d` |
 | `sdcard/emu/z0p2-speccy-VGA-HDMI-PIOUSB-1.0.9.uf2` | там же | v1.0.9, `f5f57d4`; то же плюс `ZERO2_PIO_USB`: второй разъём Type-C (J2, GP28/GP29) работает как ещё один USB-хост через PIO — клавиатуру и геймпад можно подключить без хаба | по умолчанию сборки, меняется в меню | `b94859db4d3a044fcc187e5c4a8887fa6504cc812c75ca472a93ac0c5a8c3c0b` |
+| `sdcard/emu/z0p2-frank_apple-HDMI-252MHz-I2S-1.05.uf2` | [DnCraptor/murmapple](https://github.com/DnCraptor/murmapple) | 1.05, `d3b263d` (2026-10-08): `9ca41fc` (тот же, что у сборки для PCp2 с PSRAM) плюс профиль платы `BOARD_VARIANT=Z2` — заголовок платы без `pico2.h`, HDMI на `pio0` (GPIO32–39), I2S на `pio1` (GP10–GP12), PS/2 и геймпад NES на `pio2` (выводы как у pico-nes); сборка без PSRAM, образы дисков читаются с SD-карты | 252 МГц / 1.5 В — **стабильный вариант** | `7d6f5aa257db63baff5e620ca9991864d30a05e47fc2185e7206004240730ecb` |
+| `sdcard/emu/z0p2-frank_apple-HDMI-378MHz-I2S-1.05.uf2` | там же | 1.05, `d3b263d`; то же, другая частота | 378 МГц / 1.6 В | `34930f87cd18751c6752807791485feaf6013ef6dceb39c5e2dbb13ea36a350c` |
+| `sdcard/emu/z0p2-frank_apple-HDMI-504MHz-I2S-1.05.uf2` | там же | 1.05, `d3b263d`; то же, другая частота | 504 МГц / 1.65 В | `d97f2cc7bec4e9b95f2a4fd66d32f3253491afe1fd11be6148c681a0c381b9e2` |
+
+murmapple собран на три частоты. Стабильный вариант — 252 МГц. Сборки 378 и 504 МГц лежат для тех, кто хочет проверить их на своём оборудовании; на эталонной плате 378 МГц давала слабозаметные помехи и редкие срывы синхронизации, 504 МГц — эпизодические перезагрузки (подробнее — [`../COMPATIBILITY.md`](../COMPATIBILITY.md)).
 
 Звук у murm386 на этой плате — I2S или PWM на GP10–GP12, выбор в **Win+F11** (Audio output: Autodetect / PWM / I2S). Свои настройки сборки для z0p2 хранят в `/.config/386/Z2/` и `/.config/286/Z2/`, отдельно от настроек PCp2: если карту переставить с платы на плату, настройки одной не испортят другую. В подкаталоге `emu/psram` — сборки, которым нужна внешняя PSRAM (как у Olimex, см. [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md)).
 
@@ -44,4 +49,4 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 ## 4. Лицензии
 
-pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
+pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 и murmapple — под MIT. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
