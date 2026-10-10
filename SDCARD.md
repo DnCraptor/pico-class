@@ -27,6 +27,7 @@
 | `/test/snd_mono.wav` | этот репозиторий | 8000 Гц, моно, 16 бит: три сигнала 440/660/880 Гц, уровень −12 dBFS |
 | `/test/snd_lr.wav` | этот репозиторий | 8000 Гц, стерео, 16 бит: 440 Гц слева, 660 Гц справа, 880 Гц в обоих каналах, −12 dBFS |
 | `/freedos/bin/*`, `/freedos/configs/*`, `/freedos/nls/*`, `/freedos/version.fdi` | FreeDOS 7.1, выборка файлов (в `version.fdi` указана 1.4 от 2025-04-02 — внутренняя версия исходного ядра) | для загрузки murm386 прямо с SD-карты |
+| `/freedos/bin/MODE.COM` | MODE из FreeDOS (Eric Auer), файл от 2015-11-25; GPL | настройка COM-порта (скорость, формат байта) и экрана; нужен `\DOSPPP\PPP9600.BAT` для связи через модем ESP32 (раздел 22) |
 | `/freedos/bin/debug.com`, `/freedos/bin/debug.lic` | Debug/X 2.51 — [Baron-von-Riedesel/DOS-debug](https://github.com/Baron-von-Riedesel/DOS-debug) (`4ac7cd6`), `DEBUG.COM` собран JWasm из `src/DEBUG.ASM` без изменений; лицензия — MIT (Paul Vojta), дополнения Japheth — public domain; текст условий — `debug.lic` | отладчик, свободный аналог DEBUG из MS-DOS: память, порты, ассемблер и дизассемблер; материал [учебного модуля 24](program/modules/24-bios-dos.md) |
 | `/fdconfig.sys`, `/FDAUTO.BAT` | конфигурация FreeDOS 7.1 | адаптированы под murm386: оболочка — Volkov Commander, в `PATH` добавлены `\FREEDOS\EDU\TP55` и `\FREEDOS\EDU\TC201`; концы строк CRLF |
 | `/freedos/VC.COM` | Volkov Commander 4.05 | файловый менеджер, запускается из `FDAUTO.BAT` |
