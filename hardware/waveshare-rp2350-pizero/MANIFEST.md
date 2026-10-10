@@ -1,6 +1,6 @@
 # Манифест комплекта: Waveshare RP2350-PiZero (z0p2)
 
-Состояние на 2026-10-08: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, pico-speccy, murmapple, pico-z26, murmc64 и frank-micro. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-08: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, pico-speccy, murmapple, pico-z26, murmc64, frank-micro, pico-gamate и emu80v4 («Корвет», «Вектор-06Ц»). Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -29,6 +29,9 @@
 | `sdcard/emu/z0p2-frank-c64-HDMI-378MHz-F66-I2S-v1.08.uf2` | там же | v1.08, `8440245`; то же, HDMI 640×480 при 60 Гц | 378 МГц / 1.6 В | `83553c1035904246e87bf4d627c0fcfcdd4a947265d5720a50868a41c3417b70` |
 | `sdcard/emu/z0p2-frank-c64-HDMI-504MHz-F66-I2S-v1.08.uf2` | там же | v1.08, `8440245`; то же, другая частота | 504 МГц / 1.65 В | `71f21153adc1f7a5c6beb84d2dd6e51adbe5259b254ac7209b2c06a4865f4119` |
 | `sdcard/emu/z0p2-frank-micro-HDMI-VGA-252MHz-1.00.uf2` | [DnCraptor/frank-micro](https://github.com/DnCraptor/frank-micro) | 1.00, `332ad17` (2026-10-08): `8a9cbba` (тот же, что для PCp2) плюс правки для z0p2 — видеодрайвер `HDMI_PIO` (HDMI на GPIO32–39; звука через HDMI нет), USB HID включён, звук только через модуль I2S (настройка выхода звука из `micro.ini` другой платы приводится к I2S); `PLATFORM=z0` | 252 МГц / 1.5 В | `2779cfbb8fc38dce71fc02a59b63976cc9ae33f27ab318a8d1a7d2f0f2fad283` |
+| `sdcard/emu/z0p2-gamate-HDMI-I2S-3.1.2.uf2` | [DnCraptor/pico-gamate](https://github.com/DnCraptor/pico-gamate) (ядро Gamate из MAME) | 3.1.2, сборка 2026-10-08 (дата из образа); коммит исходников не зафиксирован — дописать; профиль платы `waveshare_rp2350_pizero`, HDMI, звук через модуль I2S; **BIOS Gamate (Bit Corporation) встроен в прошивку**, как у сборки для PCp2 | по умолчанию сборки, меняется в меню | `126c58cfa5bb6a396c11caa3bd2fb67c2402190744be4981a253e982d2e6992e` |
+| `sdcard/emu/z0p2-korvet-400-I2S-HDMI-DVI-0.7.1.uf2` | [DnCraptor/emu80v4](https://github.com/DnCraptor/emu80v4), ветка `korvet` (порт Emu80 v4) | 0.7.1, сборка 2026-10-08 16:02 (дата из образа); коммит исходников не зафиксирован — дописать; профиль платы `waveshare_rp2350_pizero`, HDMI через libdvi, звук через модуль I2S (выход PWM — в настройках); PSRAM необязательна | 400 МГц | `e46da560641abbadfdd83fe9160cafd04ca493ff9f6bd5b3e14d5d6801885705` |
+| `sdcard/emu/z0p2-v06c-400-I2S-HDMI-DVI-0.7.6.uf2` | там же, ветка `vector06c` | 0.7.6, сборка 2026-10-08 15:53 (дата из образа); коммит исходников не зафиксирован — дописать; профиль платы `waveshare_rp2350_pizero`, HDMI через libdvi, звук через модуль I2S (выход PWM — в настройках); PSRAM необязательна | 400 МГц | `fbe2dfef826e73b9c7a53b33e97c552417783d3cbf1f17a9e5aa01686c9aea7b` |
 
 murmapple собран на три частоты. Стабильный вариант — 252 МГц. Сборки 378 и 504 МГц лежат для тех, кто хочет проверить их на своём оборудовании; на эталонной плате 378 МГц давала слабозаметные помехи и редкие срывы синхронизации, 504 МГц — эпизодические перезагрузки (подробнее — [`../COMPATIBILITY.md`](../COMPATIBILITY.md)).
 
@@ -57,4 +60,4 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 ## 4. Лицензии
 
-pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 и murmapple — под MIT, pico-z26 — под GPLv2, murmc64 — под GPLv2 или более поздней, frank-micro — под GPLv3 или более поздней. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
+pico-launcher, MOS2, PICO-BK, pico-nes и pico-speccy распространяются под GPLv3, murm386 и murmapple — под MIT, pico-z26 — под GPLv2, murmc64 — под GPLv2 или более поздней, frank-micro — под GPLv3 или более поздней, emu80v4 — под GPLv3, pico-gamate — ядро Gamate из MAME под BSD-3-Clause; **в прошивку pico-gamate встроен BIOS Gamate (Bit Corporation) без открытой лицензии;** прошивка будет удалена из комплекта при претензии правообладателя. Остальное будет дописано вместе с файлами — по образцу манифеста Olimex.
