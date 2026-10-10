@@ -1,0 +1,585 @@
+PPPD for DOS 0.5 alpha              Copyright (c) 1997 Antonio Lopez Molero
+
+
+CONTENTS
+
+        OVERVIEW
+        DIRECTORY STRUCTURE
+        NON BOOTP CONFIGURATION FILES
+        NOTES FOR THE FIRST SAMPLE
+        BOOTP CONFIGURATION FILES
+        NOTES FOR THE SECOND SAMPLE
+        TRADITIONAL LOGINS WITHOUT PAP
+        USING KERMIT AS DIALER
+        USING COMTOOL AS DIALER
+        USING CHAT0 AS SLIP DIALER
+
+OVERVIEW
+
+    This file shows how I configured my DOS Internet applications to work 
+    with the PPPD packet driver. There is also samples on how to use 
+    dialing tools other than the enclosed CHAT. I used KERMIT and COMTOOL 
+    as dialers before getting a working CHAT implementation. Even though it
+    is not a PPP topic, It also includes one example on how to use CHAT0
+    for SLIP dial out, showing the new string capture features found in
+    CHAT0. 
+
+
+DIRECTORY STRUCTURE
+
+    I have the following directory structure for holding all my DOS 
+    Internet stuff:
+
+        \DOSTCPIP
+        \DOSTCPIP\LYNX
+        \DOSTCPIP\FTPBETA
+        \DOSTCPIP\MINUET
+        \DOSTCPIP\POPML322
+        \DOSTCPIP\KERMIT
+
+    I have each separate application installed in its own directory, for 
+    example DOSLYNX is installed under \DOSTCPIP\LYNX, MINUET is installed 
+    under \DOSTCPIP\MINUET, etc.
+
+
+NON BOOTP CONFIGURATION FILES
+
+    I have the following files in the base \DOSTCPIP directory:
+
+        PPPD.EXE
+        PPPDD.EXE
+        EPPPD.EXE
+        EPPPDD.EXE
+        CHAT.EXE
+        CHAT0.EXE
+        TERMIN.COM
+        COMTOOL.COM
+        MYISP.DAT
+        PPPDRC.CFG
+        CHATSCR
+        DIALER.BAT
+
+    The files of interest for configuration purposes are MYISP.DAT, 
+    PPPDRC.CFG, CHATSCR and DIALER.BAT. I will describe them in greater 
+    detail in the following paragraphs.
+
+    MYISP.DAT - This file holds some fixed information about my ISP for use 
+    in configuring WATTCP applications (DOSLYNX and FTPBETA) through a 
+    configuration file, its contents are as follows:
+
+        nameserver=192.168.1.2
+        nameserver=192.168.1.244
+        domainslist="myisp.com"
+        smtphost=smtp.myisp.com
+        nntphost=news.myisp.com
+        mailaddr=myuserid@myisp.com
+
+    PPPDRC.CFG - Local PPPD configuration file, it looks like:
+
+        COM3
+        57600
+        irq 5
+        modem
+        crtscts
+        asyncmap 0
+        connect "chat -v -r pppdconn.lst -f chatscr"
+        user myuserid
+        passwd mypassword
+
+    Note that I'm using the 'user' and 'passwd' options in the 
+    configuration file; that is because my ISP wants PAP for PPP 
+    authentication. I'm also using the CHAT report capabilities to generate 
+    a file called PPPDCONN.LST that will hold the date/time and the baud 
+    rate for each connection.
+
+    CHATSCR - CHAT script file for handling modem interaction:
+
+        ABORT ERROR ABORT BUSY ABORT 'NO DIALTONE'
+        ABORT 'NO CARRIER' ABORT RING
+        REPORT CONNECT
+        TIMEOUT 10
+        '' ATZ
+        OK AT&F
+        OK ATDP055
+        TIMEOUT 60
+        CONNECT
+
+    DIALER.BAT - A DOS batch file used for the actual connection work, this 
+    file is run whenever I want to connect to my ISP:
+
+        @echo off
+
+        if _%1==_ goto DIALER
+
+        if %1==h goto HANGUP
+        if %1==H goto HANGUP
+        goto SYNTERR
+
+        :HANGUP
+        termin 0x60
+        echo Connection closed
+        goto END
+
+        :SYNTERR
+        echo Syntax error, call as DIALER or DIALER H
+        goto END
+
+        :DIALER
+        if exist ip-up.bat del ip-up.bat
+        pppdd debug kdebug 1 >>logger.out
+        if errorlevel goto CONNERR
+        if not exist ip-up.bat goto CONNERR
+        call ip-up.bat
+        if exist currconn.cfg del currconn.cfg
+        copy myisp.dat currconn.cfg
+        echo my_ip=%MYIP% >>currconn.cfg
+        echo gateway=%REMIP% >>currconn.cfg
+        echo netmask=%NETMASK% >>currconn.cfg
+        REM echo mss=%PEERMRU% >>currconn.cfg
+        echo Connection succesful
+        goto END
+
+        :CONNERR
+        echo Connection failed...
+
+        :END
+
+
+NOTES FOR THE FIRST SAMPLE
+
+    The PPPDD executable is used, so debug information is generated and 
+    logged to the LOGGER.OUT file. If your connection is working OK, you 
+    can use the non-debug version instead. Replace the line by:
+
+        pppd
+
+    If you run the batch file as DIALER H, then the PPPD driver is removed 
+    from memory after closing the PPP link.
+
+    Note how the CURRCONN.CFG file is created by taking the data in 
+    MYISP.DAT and the environment values set by the IP-UP.BAT call.  This 
+    file is then referenced in \DOSTCPIP\LYNX\DOSLYNX.CFG and in 
+    \DOSTCPIP\FTPBETA\WATTCP.CFG through the INCLUDE directive, so both 
+    DOSLYNX and FTP are properly configured whenever I dial into my ISP.
+
+    MINUET and POPMAIL don't make use of the CURRCONN.CFG, so they get 
+    configured through the MYIP environment variable. The rest of TCP/IP 
+    data (nameservers, etc.) are directly entered in their respective 
+    configuration dialogs, as those items are always the same. This has the 
+    limitation of making it difficult to maintain more than one ISP 
+    account, as you would need to change some of the configuration data 
+    through the program dialogs every time you connected.
+
+    The WATTCP.CFG file approach is best suited for multiple ISPs, as you 
+    could have a different MYISP.DAT for each and select one in the DIALER 
+    batch file, the generated CURRCONN.CFG file changing accordlingly.
+
+    Things gets better for MINUET and POPMAIL if you use the BOOTP method 
+    of configuration, supported only by the Ethernet emulation drivers 
+    EPPPD.EXE and EPPPDD.EXE. We will see an example in the next section.
+
+
+BOOTP CONFIGURATION FILES
+
+    A small number of changes is required for BOOTP configuration method. 
+    First, one of EPPPD.EXE or EPPPDD.EXE must be used in DIALER.BAT. Also 
+    the CURRCONN.CFG file generation is different. Now the MYISP.DAT file 
+    contains all the required data, so a simple copy is done. The last 
+    change involves the PPPDRC.CFG file. The 'namsrv' option is used to 
+    help set up the DNS IP addresses to be returned in the BOOTP replies.
+
+    Let's start with the modified MYISP.DAT file:
+
+        my_ip=bootp
+        domainslist="myisp.com"
+        smtphost=smtp.myisp.com
+        nntphost=news.myisp.com
+        mailaddr=myuserid@myisp.com
+
+    The modified PPPDRC.CFG file:
+
+        COM3
+        57600
+        irq 5
+        modem
+        crtscts
+        asyncmap 0
+        connect "chat -v -r pppdconn.lst -f chatscr"
+        user myuserid
+        passwd mypassword
+        namsrv 192.168.1.2
+        namsrv 192.168.1.244
+
+    The modified DIALER.BAT file:
+
+        @echo off
+
+        if _%1==_ goto DIALER
+
+        if %1==h goto HANGUP
+        if %1==H goto HANGUP
+        goto SYNTERR
+
+        :HANGUP
+        termin 0x60
+        echo Connection closed
+        goto END
+
+        :SYNTERR
+        echo Syntax error, call as DIALER or DIALER H
+        goto END
+
+        :DIALER
+        epppd
+        if errorlevel goto CONNERR
+        if exist currconn.cfg del currconn.cfg
+        copy myisp.dat currconn.cfg
+        echo Connection succesful
+        goto END
+
+        :CONNERR
+        echo Connection failed...
+
+        :END
+
+    
+NOTES FOR THE SECOND SAMPLE
+
+    DOS PPPD version 0.6 beta solves a previous problem found in BOOTP
+    support for MINUET, so it is possible to configure this application
+    through BOOTP now.
+
+
+TRADITIONAL LOGINS WITHOUT PAP
+
+    If your ISP is using a traditional UNIX style login, you must change 
+    the CHATSCR file to acomodate this. You might need to remove the 'user' 
+    and 'passwd' options from PPPDRC.CFG. A sample CHATSCR that handles 
+    UNIX style logins will look like this:
+
+        ABORT ERROR ABORT BUSY ABORT 'NO DIALTONE'
+        ABORT 'NO CARRIER' ABORT RING
+        REPORT CONNECT
+        TIMEOUT 10
+        '' ATZ
+        OK AT&F
+        OK ATDP055
+        TIMEOUT 60
+        CONNECT \c
+        ogin: youruserid
+        word: yourpass
+
+    Note how the \c string is used after the CONNECT expectation to send 
+    nothing to the modem, since the login: keyword is expected to come just 
+    after the CONNECT string. Note also how the login prompts are matched 
+    at final substrings, to prevent login failures due to possible garbage 
+    received after modem connection.
+
+
+USING KERMIT AS DIALER
+
+    The next sample shows how to use the KERMIT terminal emulator program 
+    to establish the modem connection. It shouldn't be necessary to use it, 
+    since the enclose CHAT program should be powerful enough to handle most 
+    common login sequences. Nevertheless, some ISPs require convoluted 
+    login prompts that are best handled by a terminal program dialing in 
+    manual mode.
+
+    First remove the 'connect ...' line from CHATSCR:
+
+        COM3
+        57600
+        irq 5
+        modem
+        crtscts
+        asyncmap 0
+        user myuserid
+        passwd mypassword
+
+    Then create the file PPPDIAL.SCR in the \DOSTCPIP directory:
+
+        set COM3 \x3e8 5
+        set port COM3
+        set speed 57600
+        set parity none
+        set flow RTS/CTS
+
+        def errfail echo \%1,hangup,goto fail ; Macro to handle failures.
+
+        if < VERSION 311 errfail {MS-DOS Kermit 3.11 or later required.}
+
+        set input timeout proceed
+        set input echo on
+
+        output ATZ\13
+        input 2 OK
+        if fail errfail {Turn on or connect your modem!}
+
+        output AT&FM1L1\13
+        input 2 OK
+        if fail errfail {Turn on or connect your modem!}
+
+        clear
+        echo Dialing, wait...\13\10
+        pause 1
+        output ATDP055\13
+        set alarm 60
+        clear
+
+        input 60 \10
+        if success goto gotmsg
+        if alarm errfail {No response from modem.}
+        hangup
+        goto fail
+
+        :GOTMSG
+        reinput 1 CONNECT 14400/LAPM-V
+        if success goto login
+
+        reinput 1 ERROR
+        if success errfail {Modem command error.}
+        reinput 0 BUSY
+        if success errfail {Line is busy.}
+        reinput 0 NO DIALTONE
+        if success errfail {No dialtone.}
+        reinput 0 NO CARRIER
+        if success errfail {No carrier.}
+        errfail {Unknown modem error.}
+
+        :FAIL                           ; Dialing failed.
+        define errfail                  ; Erase ERRFAIL definition
+        end 1                           ; Return failure code.
+
+        :LOGIN
+        end 0
+
+    Note how serial port settings exactly match the ones given to PPPD - it 
+    is absolutely necessary that they do.
+
+    Now change the DIALER.BAT file to:
+
+        set KERMIT=PATH C:\DOSTCPIP\KERMIT
+        ..\kermit\kermit take pppdial.scr
+        if errorlevel goto CONNERR
+        pppd
+        if errorlevel goto CONNERR
+        if not exist ip-up.bat goto CONNERR
+        call ip-up.bat
+        if exist currconn.cfg del currconn.cfg
+        copy myisp.dat currconn.cfg
+        echo my_ip=%MYIP% >>currconn.cfg
+        echo gateway=%REMIP% >>currconn.cfg
+        echo netmask=%NETMASK% >>currconn.cfg
+        REM echo mss=%PEERMRU% >>currconn.cfg
+        echo Connection succesful
+        goto END
+
+        :CONNERR
+        echo Connection failed...
+
+        :END
+
+    The CHATSCR file is not used now, so you can get rid off it if you 
+    want. In this sample, KERMIT is run automatically via a script, but you 
+    can omit the 'take pppdial.scr' command line option, and then it will 
+    be run in the normal interactive mode.
+
+
+USING COMTOOL AS DIALER
+
+    COMTOOL is a tiny utility for COM port manipulation written by K.H. 
+    Weiss. It can be freely distributed for non commercial applications. 
+    This utility is meant to be used inside DOS batch files, and has a 
+    terminal mode also. The COMTOOL.DOC file is the documentation for it.
+
+    The only file that changes for COMTOOL use is DIALER.BAT:
+
+        @echo off
+        set PORT=3e8
+        set IRQ=5
+        set SPEED=1
+
+        if _%1==_ goto DIALER
+
+        if %1==h goto HANGUP
+        if %1==H goto HANGUP
+        goto SYNTERR
+
+        :HANGUP
+        REM comtool %PORT% %IRQ% ^D0 ^T10 ^D1 +++ ^T5 ATH0^CR ^W20 OK ^D0 ^
+        termin 0x60
+        echo Connection closed
+        goto END
+
+        :SYNTERR
+        echo Syntax error, call as DIALER or DIALER H
+        goto END
+
+        :DIALER
+        comtool %PORT% %IRQ% ^B%SPEED% ^F81 ^D0 ^T10 ^D1 ATZ^CR ^W20 OK ^
+        if errorlevel 8 goto ABORT
+        if errorlevel 1 goto INI2
+        goto ERROR
+
+        :INI2
+        comtool %PORT% %IRQ% AT&FM1L1^CR ^W20 OK ^
+        if errorlevel 8 goto ABORT
+        if errorlevel 1 goto DIAL
+        goto ERROR
+
+        :DIAL
+        comtool %PORT% %IRQ% ATDP055^CR ^W900 CONNECT BUSY DIALTONE ^
+        if errorlevel 8 goto ABORT
+        if errorlevel 3 goto NOTONE
+        if errorlevel 2 goto ISBUSY
+        if errorlevel 1 goto CONN
+        goto ERROR
+
+        :CONN
+        if exist ip-up.bat del ip-up.bat
+        pppd
+        if errorlevel goto CONNERR
+        if not exist ip-up.bat goto CONNERR
+        call ip-up.bat
+        if exist currconn.cfg del currconn.cfg
+        copy myisp.dat currconn.cfg
+        echo my_ip=%MYIP% >>currconn.cfg
+        echo gateway=%REMIP% >>currconn.cfg
+        echo netmask=%NETMASK% >>currconn.cfg
+        REM echo mss=%PEERMRU% >>currconn.cfg
+        echo Connection succesful
+        goto END
+
+        :ABORT
+        comtool %PORT% %IRQ% ^D0 ^T10 ^D1 +++ ^T5 ATH0^CR ^W20 OK ^D0 ^
+        echo User abort...
+        goto END
+
+        :NOTONE
+        comtool %PORT% %IRQ% ^D0 ^T10 ^D1 +++ ^T5 ATH0^CR ^W20 OK ^D0 ^
+        echo No DIALTONE...
+        goto END
+
+        :ISBUSY
+        comtool %PORT% %IRQ% ^D0 ^T10 ^D1 +++ ^T5 ATH0^CR ^W20 OK ^D0 ^
+        echo Line BUSY...
+        goto END
+
+        :ERROR
+        echo MODEM error...
+        goto END
+
+        :CONNERR
+        comtool %PORT% %IRQ% ^D0 ^T10 ^D1 +++ ^T5 ATH0 ^W20 OK ^D0 ^
+        echo Connection failed...
+
+        :END
+        set PORT=
+        set IRQ=
+        set SPEED=
+
+
+USING CHAT0 AS SLIP DIALER
+
+    The following example shows how to use CHAT0 for SLIP dial out. One of
+    my ISPs still using SLIP, so I do run it very often. I'm using the
+    excellent Frank Molzahn's CSL_PKT package for my CSLIP connection, I
+    strongly recommend it if you are a C/SLIP user. It should also work for
+    other C/SLIP packet drivers, like ETHERSLIP or Tatam's
+    SLIPPER/CSLIPPER.
+
+    The DIALER.BAT for my CSLIP connection looks like:
+
+        @echo off
+
+        if _%1==_ goto DIALER
+
+        if %1==h goto UNLOAD
+        if %1==H goto UNLOAD
+
+        :SYNTERR
+        echo Syntax error, call as DIALER or DIALER H
+        goto END
+
+        :DIALER
+        termin.com 0x60 >nul
+        set MYIP=0.0.0.0
+        set REMIP=0.0.0.0
+        set NETMASK=
+        set PEERMRU=
+        if exist chatenv.bat del chatenv.bat >nul
+        chat0.exe -p com2 -s 115200 -v -r cslpconn.lst -f ignchat
+        if errorlevel 1 goto CONNERR
+        if not exist chatenv.bat goto BADIP
+        call chatenv.bat
+        if "%MYIP%"=="0.0.0.0" goto BADIP
+        lh cslpkt.com /c 2 /q 3 /d /i %MYIP%
+        if exist currconn.cfg del currconn.cfg >nul
+        copy myisp.dat currconn.cfg
+        echo my_ip=%MYIP% >>currconn.cfg
+        echo gateway=%REMIP% >>currconn.cfg
+        echo netmask=255.255.255.0 >>currconn.cfg
+        type c:\dostcpip\packetd\ign.dat >>currconn.cfg
+        echo mss=512 >>currconn.cfg
+        echo Connection succesful
+        goto END
+
+        :BADIP
+        echo.
+        echo IP address of Not completed... Exiting Dialup
+        pause
+
+        :UNLOAD
+        termin.com 0x60 >nul
+        set MYIP=
+        set REMIP=
+        echo.
+        echo Connection closed
+        goto END
+
+        :CONNERR
+        echo Connection failed
+
+        :END
+
+    And here is the IGNCHAT file used by CHAT0 for dialing, log into the
+    ISP and capture both local and remote IPs for later use:
+
+        ABORT ERROR
+        ABORT BUSY
+        ABORT 'NO DIALTONE'
+        ABORT 'NO CARRIER'
+        ABORT RING
+        REPORT CONNECT
+        TIMEOUT 2
+        '' ATZ
+        OK 'AT&F'
+        OK 'ATDT5554433'
+        TIMEOUT 60
+        CONNECT '\d&\d&\d&\d\d\d'
+        TIMEOUT 15
+        '==>' '1.1'
+        '==>' 'internet'
+        '==>' 'myaccountid\smyuserid\smypassword'
+        GRABIP MYIP
+        '' ''
+        GRABIP REMIP
+        'now.'
+
+    This peculiar login sequence is for IBM Global Network Internet
+    Services, so users who has it as ISP could make direct use of the
+    IGNCHAT file by simply replacing myaccount, myuserid and mypassword
+    with their actual values.
+
+    The GRABIP directives are used for capturing the values sent by the
+    remote into the MYIP and REMIP environment variables. CHAT0 does not
+    put these directly into the environment though, it creates a file
+    called CHATENV.BAT which contains SET directives. Note how this file is
+    checked for existence after CHAT0 call in DIALER.BAT, and is executed
+    after that for setting the environment values.
+
+    Note also how MYIP value is passed to CSLPKT; this driver supports RARP
+    emulation for providing DOS Internet applications with local IP
+    information, so passing in the MYIP value guarantees proper RARP
+    emulation operation.
+

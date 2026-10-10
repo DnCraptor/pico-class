@@ -1,0 +1,76 @@
+Version 0.6 beta
+----------------
+
+Corrections to BOOTP code for making it work with Minuet.
+
+Documentation corrections and additions (thanks to Jeffrey).
+
+Added standard CHAP implementation, MS CHAP extensions not supported.
+
+Added VJ header compression, VJ slots limited to 16 (seems to be sufficient
+for the DOS implementation and conforms to the sample code provided in the
+RFC).
+
+Minor code arrangements for eliminating unneeded stuf (like the PPP server
+mode support).
+
+Added SET_RCV_MODE and GET_RCV_MODE packet driver functions, mostly
+necessary for the Ethernet class 1 packet driver versions. These driver
+returns now a functionality value of 2 (basic+extended), although the only
+extended supported functions are SET_RCV_MODE and GET_RCV_MODE.
+
+Added SET/GET_RCV_MODE functions to class 6 drivers, added GET_STATISTICS
+function to all versions.
+
+Corrected flaw in options file handling, the code didn't include any tests
+for EOF character, so files created/modified with editors that were adding
+such code caused failure of Dospppd.
+
+Corrected bug in Dospppd processing of 'connect' option, it failed if you
+were passing an executable name without any arguments after it.
+
+Corrected implementation of 'f_access_type()' packet driver function for
+delaying the activation of 'in_use' handle flag until the rest of the
+information for a handle is entered, for preventing problems in case a
+packet arrives when the handle information isn't completed.
+
+Added VJCSTAT utility for displaying statistics about Dospppd VJ
+compression.
+
+Reworked CTRL+BREAK handling, now exits quickly.
+
+Changes to the ARP emulation code for making it work under Kermit, the fake
+source hardware address is placed in the returned ethernet header too.
+
+Reworked PPP specific packet processing, to avoid reentrance problems that
+could occur if receiving a PPP packet while processing a PPP protocol
+timeout.
+
+Improved modem hang up detection.
+
+Changed DTR behavior in PPP drivers, they left the DTR line at the same
+level they found it on entry when terminanting, now DTR is forced low on
+termination regardless of status on entry.
+
+Some BOOTP and ARP corrections for making JNOS/KA9Q happy, now it should
+work with every KA9Q incarnation.
+
+Force acceptance of remote IP address if 'ipcp-accept-remote' option was
+used, even if the remote IP is a weird one like 127.0.0.1 (I couldn't
+believe it, but it seems that some ISP at Mexico does that).
+
+Changed PAP processing for keep retrying after receiving an authenticate
+NAK; if all retries fail and the peer requested PAP, then close the driver.
+Some ISPs seems to don't close the link after an authentication failure, so
+this trick will force our end termination.
+
+Added interactive terminal mode to CHAT0.EXE and CHAT.EXE.
+
+Remote string grabbing features added to CHAT0.EXE and CHAT.EXE.
+
+
+01/05/97 - Version 0.5 alpha
+----------------------------
+
+First public release.
+

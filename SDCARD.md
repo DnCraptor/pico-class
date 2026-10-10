@@ -1,6 +1,6 @@
 # Общее содержимое SD-карты
 
-Состояние на 2026-10-08. Каталог `sdcard/` в корне репозитория — общая для всех плат часть учебной SD-карты: MOS2 и её приложения, FreeDOS для murm386, игры и учебные программы, файлы для приёмки рабочего места. Здесь описано, что в нём лежит, откуда взято и как проверить целостность. При изменении состава обновляются этот файл и [`SHA256SUMS`](SHA256SUMS).
+Состояние на 2026-10-10. Каталог `sdcard/` в корне репозитория — общая для всех плат часть учебной SD-карты: MOS2 и её приложения, FreeDOS для murm386, игры и учебные программы, файлы для приёмки рабочего места. Здесь описано, что в нём лежит, откуда взято и как проверить целостность. При изменении состава обновляются этот файл и [`SHA256SUMS`](SHA256SUMS).
 
 ## 1. Порядок подготовки карты
 
@@ -54,6 +54,7 @@
 | `/WS/*.wsc` | свободная игра для pico-wonderswan (WonderSwan Color), см. раздел 21 | см. раздел 21 |
 | `/m128/umac0.img` | образ диска для pico-mac (Mac 128K); **в эталонную карту не входит**, скачивается отдельно, см. раздел 18 | см. раздел 18 |
 | `/freedos/GAMES/*`, `/freedos/EDU/*` | свободные программы для murm386, см. раздел 4 | см. раздел 4 |
+| `/dosppp/*`, `/MTCP/*`, `/386/Zimodem-4.0.3.2-WROVER-USB-UART0.bin` | связь для murm386: драйвер PPP, программы TCP/IP и прошивка Wi-Fi-модема ESP32, см. раздел 22 | см. раздел 22 |
 
 Памятка `/mos2/README.md` написана для сборки MOS2 под Olimex PICO-PC (PCp2): видеорежимы, выводы звука и геймпада в ней указаны для этой платы.
 
@@ -461,7 +462,23 @@ pico-wonderswan (эмулятор WonderSwan и WonderSwan Color, ядро Oswan
 |---|---|---|---|
 | `wondersnake.wsc` | WonderSnake — «змейка» для WonderSwan Color (Tomasz Słanina, 2007), 20 уровней, пароли уровней. В меню ↑/↓ — START или PASSWORD, Enter (START) или A — выбрать; змейку ведёт крестовина | исходники [tslanina/Retro-WonderSwanColor-Wondersnake](https://github.com/tslanina/Retro-WonderSwanColor-Wondersnake) (`56309a6`), собрано свободными средствами (JWasm вместо Turbo Assembler) — [`tools/ws`](tools/ws/README.md) | GPLv3 |
 
-## 22. Проверка целостности
+## 22. Связь для murm386 (`/dosppp`, `/MTCP`, `/386`)
+
+Материал [учебного модуля 35](program/modules/35-communication.md). murm386 выводит COM1 гостевой машины на USB-UART (CH340) платы ESP32, если в **Win+F11** выбрано **USB modem: < COM1 >** и USB работает в режиме HOST; прошивка Zimodem превращает ESP32 в Wi-Fi-модем с командами Hayes AT и сервером PPP. Проверено на PCp2 со сборкой murm386 с PSRAM и платами ESP32-WROOM / ESP32-WROVER с мостом CH340. Пути в пакетных файлах и `MTCP.CFG` рассчитаны на то, что каталоги лежат в корне карты, — `C:\DOSPPP` и `C:\MTCP`.
+
+| Путь на карте | Программа | Источник | Условия распространения |
+|---|---|---|---|
+| `/386/Zimodem-4.0.3.2-WROVER-USB-UART0.bin` | Zimodem 4.0.3.2 — прошивка ESP32: эмулятор модема Hayes через Wi-Fi, режимы PPP и SLIP. Объединённый образ esptool (загрузчик с адреса 0x1000, таблица разделов, приложение), основной порт — UART0 (USB-UART платы). Записывается в ESP32 из Disk Manager murm386 (**Win+F12**, строка **USB modem**) | [DnCraptor/Zimodem](https://github.com/DnCraptor/Zimodem), тег `v.4.0.3.2` (`0356c38`) — форк [bozimmerman/Zimodem](https://github.com/bozimmerman/Zimodem) 4.0.3: основной порт UART0, отладочный вывод отключён, исправлена работа PPP на 9600 бит/с | Apache 2.0 (Bo Zimmerman); в прошивку входит libssh2 — BSD 3-Clause; `LICENSE` и `NOTICE` в репозитории |
+| `/dosppp/*` | DOS PPPD 0.6 beta (Antonio Lopez Molero, 1997) — пакетные драйверы PPP: `EPPPDD.EXE` (эмуляция Ethernet, с отладкой — его запускает `PPP9600.BAT`), `EPPPD.EXE`, `PPPD.EXE`, `PPPDD.EXE`, `CHAPSUPP.ZIP` — те же драйверы с CHAP; `CHAT.EXE`, `CHAT0.EXE` — набор номера по сценарию; `VJCSTAT.EXE`; документация `README.TXT`, `PPPD.MAN`, `CHAT.MAN`, `SAMPLES.TXT` | дистрибутив DOS PPPD 0.6 | свободное распространение для **некоммерческого** использования с сохранением уведомления об авторских правах (`README.TXT`, раздел LICENSING); основано на коде PPP Университета Карнеги — Меллона (BSD-подобная лицензия); `CHAT` — public domain |
+| `/dosppp/COMTOOL.COM`, `COMTOOL.DOC` | COMTOOL (K. H. Weiss, 1994) — отправка команд модему и ожидание ответа из пакетного файла, простой терминал | входит в дистрибутив DOS PPPD | свободное распространение для **некоммерческого** использования, не в составе коммерческих пакетов |
+| `/dosppp/TERMIN.COM`, `PKTSTAT.COM`, `ETHERSL.COM` | из коллекции пакетных драйверов Crynwr (Russell Nelson): выгрузка пакетного драйвера, его статистика; EtherSLIP — драйвер SLIP с эмуляцией Ethernet (для режима `AT+SLIP`) | `TERMIN`, `PKTSTAT` — из дистрибутива DOS PPPD; `ETHERSL.COM` — добавлен отдельно | GPL (Crynwr Packet Driver Collection) |
+| `/dosppp/PPP9600.BAT` | подключение: Zimodem на 1200 бит/с → `ATW` (Wi-Fi) → проверка адреса `ATI2` → `ATB9600` → `ATE0` → `AT+PPP` → `EPPPDD` на COM1 (0x3F8, IRQ 4, вектор 0x60), журнал — `1.log` | этот репозиторий; проверено на murm386 с PSRAM | [`LICENSE`](LICENSE). **Перед снятием мастер-образа** вписать имя и пароль сети Wi-Fi в строки `set WIFI_SSID=` и `set WIFI_PASSWORD=` (в репозитории — заглушки) |
+| `/dosppp/IP-UP.BAT` | переменные `myip`, `remip`, `netmask`, `peermru`; файл заново записывает драйвер после каждого соединения — в репозитории пример с проверочного рабочего места | создаётся драйвером | — |
+| `/MTCP/*.EXE`, `SERVICES.BAT`, `*.TXT`, `SAMPLES/*`, `MANUAL/MANUAL.PDF` | mTCP 2024-10-20 (Michael Brutman) — программы TCP/IP для DOS: `DHCP`, `PING`, `HTGET`, `TELNET`, `IRCJR`, `FTP`, `FTPSRV`, `NC`, `SNTP`, `SPDTEST`, `PKTTOOL`, `DNSTEST`; руководство (PDF, 2,9 МБ) — читать на компьютере преподавателя | [brutman.com/mTCP](http://www.brutman.com/mTCP/mTCP.html), исходники там же | GPLv3 (`COPYING.TXT`) |
+| `/MTCP/MTCP.CFG` | настройки mTCP: пакетный драйвер на векторе 0x60, MTU 1500, адрес `IPADDR`, маска, шлюз, DNS 1.1.1.1 | образец mTCP, адаптирован в этом репозитории | GPLv3. `IPADDR` на каждом месте заменяется на адрес своего модема (его показывает `ATI2` и строка `myip` в `\DOSPPP\IP-UP.BAT`): в режиме PPP Zimodem отдаёт компьютеру свой адрес в сети Wi-Fi. Записан пример для сети `192.168.0.x` |
+| `/MTCP/IP-UP.BAT` | настройка mTCP для работы через PPP: `MTCPCFG`, `MTCPSLIP=true` (на последовательной линии нет ARP), затем пробная загрузка `http://example.com/` | этот репозиторий | [`LICENSE`](LICENSE) |
+
+## 23. Проверка целостности
 
 Из корня репозитория:
 
@@ -472,6 +489,6 @@ shasum -a 256 -c SHA256SUMS      # macOS
 
 Файлы `*.md` в `SHA256SUMS` не включены: git может менять в них концы строк при checkout. Файлы под `sdcard/` git хранит байт в байт (`.gitattributes`), поэтому контрольные суммы совпадают в любой ОС.
 
-## 23. Лицензии
+## 24. Лицензии
 
-MOS2 и её приложения распространяются под GPLv3, исходники — murmulator-os2, тег `v.2.3.2`. Условия для FreeDOS, SeaBIOS, образа DR-DOS, игр и программ указаны в разделах 2–21. Собственные файлы репозитория (документы, `/test/*`) распространяются на условиях [`LICENSE`](LICENSE).
+MOS2 и её приложения распространяются под GPLv3, исходники — murmulator-os2, тег `v.2.3.2`. Условия для FreeDOS, SeaBIOS, образа DR-DOS, игр и программ указаны в разделах 2–22. Собственные файлы репозитория (документы, `/test/*`) распространяются на условиях [`LICENSE`](LICENSE).

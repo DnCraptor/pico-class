@@ -1,0 +1,508 @@
+PPPD for DOS 0.6 beta
+
+NAME
+       pppd - Point to Point Protocol packet driver
+
+SYNOPSIS
+       pppd [ COMn ] [ speed ] [ options ]
+
+DESCRIPTION
+       The Point-to-Point  Protocol (PPP)  provides a  method for 
+       transmitting datagrams  over serial  point-to-point links. 
+       PPP is composed of three parts: a method for encapsulating 
+       datagrams over  serial links,  an extensible  Link Control 
+       Protocol (LCP), and a family of Network Control  Protocols 
+       (NCP) for establishing and configuring different  network- 
+       layer protocols.
+
+       DOS  pppd  provides the  encapsulation scheme,  basic LCP, 
+       authentication support,  and an  NCP for  establishing and 
+       configuring  the  Internet  Protocol  (IP) (called  the IP 
+       Control Protocol, IPCP).
+
+FREQUENTLY USED OPTIONS
+       <COMn>
+              Specifies  the  COM port  to use  for communicating 
+              with the peer.  Port COM1 through COM4 can be used; 
+              the  standard  base  address  and  IRQ  are assumed 
+              unless you change the  default with  other options.  
+              Basic testing (through BIOS) is done to ensure  COM 
+              availability. If pppd fails with message:
+
+                  Invalid COM device COM?
+
+              Then probably you  have  a  non  standard  COM port
+              setup. Omit the COM? keyword from configuration and
+              specify  COM  port  values with  the  following two
+              options, base and irq.
+
+       base <port address>
+              Specifies the base address for the COM port, in the 
+              event that it is  a non-standard  one.  The  number 
+              can be entered in hex, octal or decimal,  following 
+              the C language rules for parsing numbers (0xnnn  is 
+              hex for example). No attempt is made to verify that 
+              a valid COM port exists at the address, so use this 
+              option with care.
+
+       irq <IRQ number>
+              Specifies the IRQ number used by the COM  port. The 
+              same considerations as above apply.
+
+       pktvec <interrupt number>
+              Specifies the interrupt vector number to  be hooked 
+              by the packet driver interface.  The valid range is 
+              from 0x60-0x66,  0x68-0x6F and  0x78-0x7E. If  this 
+              option is  not used,  the driver  searches for  the 
+              first free vector in this range (usually 0x60).
+
+       namsrv <n>
+              Set  IP  addresses to  return in  the DNS  field of 
+              BOOTP  replies.  Supported  only  by  the  ethernet 
+              emulation versions EPPPD.EXE and EPPPDD.EXE.  Up to 
+              two nameservers  can be  specified. This  option is 
+              useful  for  configuring DOS  Internet applications 
+              through BOOTP.
+
+       <speed>
+              Specifies the speed for serial comunications. Up to 
+              115200  baud  can  be  programmed, but  beware that 
+              serial ports  that have  the old  8250 UART  cannot 
+              handle  speeds  higher  than  9600  reliably.   The 
+              number can be entered in hex, octal or  decimal, as 
+              in the above options.
+
+       asyncmap <map>
+              Set the  async character  map to  <map>.  This  map 
+              describes  which   control  characters   cannot  be 
+              successfully received over the  serial line.   pppd 
+              will ask the peer to send these characters as a  2- 
+              byte escape sequence.  The argument is a 32 bit hex 
+              number with  each bit  representing a  character to 
+              escape.  Bit 0 (00000001) represents the  character 
+              0x00; bit  31 (80000000)  represents the  character 
+              0x1f  or  ^  .   If multiple  asyncmap options  are 
+              given,  the  values  are  ORed  together.    If  no 
+              asyncmap option  is given,  no async  character map 
+              will be negotiated for  the receive  direction; the 
+              peer should then escape all control characters.
+
+       connect <p>
+              Use  the  command specified  by <p>  to set  up the 
+              serial line. The CHAT.EXE program must be used with 
+              this option, as the COM port  is controled  by pppd 
+              and a  private interface  is used  between the  two 
+              programs for granting COM access to CHAT. pppd will 
+              look in the current  directory first,  then in  the 
+              same directory where pppd resides.
+
+       crtscts
+              Use hardware flow control (i.e. RTS/CTS) to control 
+              the flow of data  on the  serial port.   If neither 
+              the crtscts nor the -crtscts option  is given,  the 
+              hardware flow control setting  for the  serial port 
+              is left unchanged.
+
+       escape xx,yy,...
+              Specifies that certain characters should be escaped 
+              on  transmission  (regardless of  whether the  peer 
+              requests them to be escaped with its async  control 
+              character map).  The characters  to be  escaped are 
+              specified as  a list  of hex  numbers separated  by 
+              commas.   Note  that  almost  any character  can be 
+              specified  for  the  escape   option,  unlike   the 
+              asyncmap   option   which   only   allows   control 
+              characters to be specified.   The characters  which 
+              may not be escaped are those with hex values 0x20 - 
+              0x3f or 0x5e.
+
+       file <f>
+              Read options from file <f> (the format is described 
+              below).
+
+       mru <n>
+              Set the MRU [Maximum Receive Unit] value to <n> for 
+              negotiation.   pppd  will  ask  the  peer  to  send 
+              packets of no more than <n> bytes.  The minimum MRU 
+              value is 128.  The  default MRU  value is  1500.  A 
+              value  of  296 is  recommended for  slow links  (40 
+              bytes for TCP/IP header + 256 bytes of data).
+
+       mtu <n>
+              Set the MTU [Maximum Transmit Unit]  value to  <n>. 
+              Unless the peer requests  a smaller  value via  MRU 
+              negotiation,  pppd  will  request  that the  kernel 
+              networking code send data packets of no more than n 
+              bytes through the PPP network interface.
+
+       netmask <n>
+              Set the interface netmask to <n>, a 32  bit netmask 
+              in "decimal dot" notation (e.g. 255.255.255.0).  If 
+              this option is given, the value  specified is  ORed 
+              with the default netmask.   The default  netmask is 
+              chosen based on the  negotiated remote  IP address; 
+              it is the appropriate network mask for the class of 
+              the  local  IP  address  and  that   satisfies  the 
+              following condition:
+
+              (<netmask> & <remoteIP>) = (<netmask> & <localIP>)
+
+              The  default  netmask is right shifted if necessary 
+              until the above condition is reached.
+
+OPTIONS
+       <local IP address>:<remote IP address>
+              Set the local and/or remote interface IP addresses. 
+              Either one may be omitted. The IP addresses must be 
+              given in decimal dot notation (e.g. 150.234.56.78). 
+              IP addresses will be obtained from the peer  if not 
+              specified in  any option.   Thus, in  simple cases, 
+              this option  is not  required.  If  a local  and/or 
+              remote IP  address is  specified with  this option, 
+              pppd will  not accept  a different  value from  the 
+              peer  in  the  IPCP  negotiation, unless  the ipcp- 
+              accept-local and/or ipcp-accept-remote options are 
+              given, respectively.
+
+       -ac    Disable  Address/Control   compression  negotiation 
+              (use   default,    i.e.    address/control    field 
+              compression disabled).
+
+       -all   Don't  request  or allow negotiation of any options 
+              for LCP and IPCP (use default values).
+
+       -am    Disable  asyncmap  negotiation  (use  the   default
+              asyncmap, i.e. escape all control characters).
+
+       -as <n>
+              Same as asyncmap <n>
+
+       -chap  Don't agree to authenticate using CHAP.
+
+       chap-restart <n>
+              Set the CHAP restart interval (retransmission time-
+              out for challenges) to <n> seconds (default 3).
+
+       -crtscts
+              Disable hardware flow control (i.e. RTS/CTS) on the 
+              serial  port.   If  neither  the  crtscts  nor  the 
+              -crtscts option is given, the hardware flow control 
+              setting for the serial port is left unchanged.
+
+       -d     Increase   debugging   level  (same  as  the  debug 
+              option).
+
+       debug  Increase  debugging  level (same  as -d).   If this 
+              option is given, pppd will log the contents  of all 
+              control  packets  sent  or  received in  a readable 
+              form.  The packets are logged through DOS  standard 
+              output, which can be  redirected to  a file.   Some 
+              debug  output is sent to DOS  standard error.  This
+              options is supported by PPPDD.EXE & EPPPDD.EXE.
+
+       -ip
+              Disable IP address negotiation.  If this  option is 
+              used, the remote IP address must be specified  with 
+              an  option  on the  command line  or in  an options 
+              file.
+
+       ipcp-accept-local
+              With this option, pppd will accept the peer's  idea 
+              of  our  local  IP  address, even  if the  local IP 
+              address was specified in an option.
+
+       ipcp-accept-remote
+              With this option, pppd will accept the peer's  idea 
+              of its (remote) IP address, even  if the  remote IP 
+              address was specified in an option.
+
+       ipcp-max-configure <n>
+              Set  the  maximum  number of IPCP configure-request 
+              transmissions to <n> (default 10).
+
+       ipcp-max-failure <n>
+              Set  the  maximum  number  of  IPCP  configure-NAKs 
+              returned before starting to  send configure-Rejects 
+              instead to <n> (default 10).
+
+       ipcp-max-terminate <n>
+              Set the maximum number  of  IPCP  terminate-request 
+              transmissions to <n> (default 3).
+
+       ipcp-restart <n>
+              Set  the  IPCP  restart   interval  (retransmission 
+              timeout) to <n> seconds (default 3).
+
+       kdebug n
+              Enable debugging code in the low-level  PPP driver.  
+              The argument n is a number which is the sum  of the 
+              following  values:  1  to   enable  general   debug 
+              messages,  2  to  request  that  the   contents  of 
+              received packets be printed, and 4 to request  that 
+              the  contents  of transmitted packets  be  printed.
+              This option is supported by PPPDD.EXE & EPPPDD.EXE.
+
+       lcp-echo-failure <n>
+              If this option is given, pppd will presume the peer 
+              to be dead if n LCP echo-requests are  sent without 
+              receiving a valid LCP echo-reply.  If this happens, 
+              pppd will  terminate the  connection.  Use  of this 
+              option requires a non-zero value for  the lcp-echo- 
+              interval  parameter.   This option  can be  used to 
+              enable  pppd  to  terminate   after  the   physical 
+              connection  has  been broken  (e.g., the  modem has 
+              hung  up)  in  situations  where no  hardware modem 
+              control lines are available.
+
+       lcp-echo-interval <n>
+              If  this  option is  given, pppd  will send  an LCP 
+              echo-request  frame  to the  peer every  n seconds. 
+              Under  Linux,  the  echo-request  is  sent  when no 
+              packets  have  been received  from the  peer for  n 
+              seconds. Normally  the peer  should respond  to the 
+              echo-request by sending an echo-reply.  This option 
+              can  be  used with  the lcp-echo-failure  option to 
+              detect that the peer is no longer connected.
+
+       lcp-max-configure <n>
+              Set the maximum  number  of  LCP  configure-request 
+              transmissions to <n> (default 10).
+
+       lcp-max-failure <n>
+              Set  the  maximum  number  of  LCP   configure-NAKs 
+              returned before starting to  send configure-Rejects 
+              instead to <n> (default 10).
+
+       lcp-max-terminate <n>
+              Set  the  maximum  number  of LCP terminate-request 
+              transmissions to <n> (default 3).
+
+       lcp-restart <n>
+              Set  the   LCP  restart   interval  (retransmission 
+              timeout) to <n> seconds (default 3).
+
+       local  Don't  use  the  modem  control  lines.   With this 
+              option,  pppd  will  ignore  the  state  of the  CD 
+              (Carrier Detect) signal from the modem and will not 
+              change the state of the DTR  (Data Terminal  Ready) 
+              signal.
+
+       modem  Use the modem control  lines.  This  option is  the 
+              default.  With this option, pppd will wait for  the 
+              CD (Carrier  Detect) signal  from the  modem to  be 
+              asserted when opening the  serial device  (unless a 
+              connect script is specified), and it will drop  the 
+              DTR (Data Terminal Ready)  signal briefly  when the 
+              connection is terminated and  before executing  the 
+              connect script.
+
+       -mn    Disable   magic   number  negotiation.   With  this 
+              option, pppd cannot detect a looped-back line.
+
+       -mru   Disable  MRU  [Maximum  Receive  Unit] negotiation. 
+              With this  option, pppd  will use  the default  MRU 
+              value of 1500 bytes.
+
+       -pap   Don't agree to authenticate using PAP.
+
+       pap-max-authreq <n>
+              Set the maximum number of  PAP authenticate-request 
+              transmissions to <n> (default 10).
+
+       pap-restart <n>
+              Set  the   PAP  restart   interval  (retransmission 
+              timeout) to <n> seconds (default 3).
+
+       passwd <p>
+              Set  the  user password to use  for  authenticating
+              this machine with the peer using PAP/CHAP to <p>.
+
+       -pc    Disable protocol field compression negotiation (use 
+              default, i.e. protocol field compression disabled).
+
+       +ua <p>
+              Agree to  authenticate using PAP/CHAP  if requested
+              by the  peer,  and  use  the data  in file  <p> for
+              the user and password to send to the peer. The file
+              contains  the  remote  user  name,  followed  by  a
+              newline, followed by the remote password,  followed
+              by a newline.  
+
+       user <u>
+              Set  the  user  name to use for authenticating this 
+              machine with the peer using PAP/CHAP to <u>.
+
+       -vj    Disable negotiation of Van  Jacobson  style  TCP/IP
+              header  compression  (use default, i.e. no compres-
+              sion).
+
+       -vjccomp
+              Disable the connection-ID compression option in Van
+              Jacobson  style  TCP/IP  header  compression.  With
+              this option, pppd will not omit  the  connection-ID
+              byte  from  Van Jacobson compressed TCP/IP headers,
+              nor ask the peer to do so.
+
+       vj-max-slots n
+              Sets the number of connection slots to be  used  by
+              the  Van  Jacobson  TCP/IP  header  compression and
+              decompression code to n, which must  be  between  2
+              and 16 (inclusive).
+
+       xonxoff
+              Use software  flow   control  (i.e.   XON/XOFF)  to 
+              control the flow of data on the serial port.
+
+OPTIONS FILES
+       Options can be taken  from files  as well  as the  command 
+       line. pppd reads options from the  files .\pppd.cfg  (also 
+       in the directory where  the pppd  program is  located) and 
+       .\pppdrc.cfg  before  looking at the command  line.  After 
+       parsing command line options, a file  named .\pppdcom?.cfg 
+       is tried, the ?   will be  replaced with  the current  COM 
+       number.
+
+       An options file is parsed into a series of words delimited 
+       by whitespace.  Whitespace can  be included  in a  word by 
+       enclosing the word in quotes (").  A backslash  (\) quotes 
+       the following  character.  A  hash (#)  starts a  comment, 
+       which continues until the end of the line.
+
+       If you need to put DOS path separators  in  options files, 
+       you must use the escape sequence \\, for example:
+
+           +ua c:\\secrets\\paplogin
+
+       This is needed because the \  character is  interpreted as 
+       the beginning of an escape control code.
+
+AUTHENTICATION
+       PAP/CHAP authentication with the peer is supported by this 
+       release.  It  doesn't support  authenticating the  peer to
+       ourselves,  so it is not well suited for  acting as  a PPP
+       server.
+
+       You are required to supply two items for authentication, a 
+       user  name  and  a  password.  Options  are available  for 
+       setting these two items. An authentication  file can  also 
+       be used with the +ua filename option.
+
+EXAMPLES
+       In  the simplest case, you can connect the serial ports of 
+       two machines and issue a command like
+
+              pppd com1 9600 passive
+
+       If  the  other machine  is running  UNIX and  has a  getty 
+       process attached to the serial port  we want  to use,  the 
+       process of logging in  to the  other machine  and starting 
+       pppd can be automated by using the connect  option to  run 
+       chat, for example:
+
+              pppd com1 38400 connect "chat '' '' 'login:'
+              'username' 'Password:' 'password' '% '
+              'exec pppd passive'"
+
+       (Note however that running chat like this will  leave  the 
+       password  visible in the parameter list of pppd and chat.)
+
+       If your serial connection is any  more complicated  than a 
+       piece of wire, you may need  to arrange  for some  control 
+       characters  to  be escaped.   In particular,  it is  often 
+       useful to escape XON  (^Q) and  XOFF (^S),  using asyncmap 
+       a0000.  If the path includes a telnet, you probably should 
+       escape  ^]  as  well  (asyncmap  200a0000).   If the  path 
+       includes an rlogin, you  will need  to use  the escape  ff 
+       option  on  the end  which is  running the  rlogin client, 
+       since  many  rlogin implementations  are not  transparent; 
+       they will  remove the  sequence [0xff,  0xff, 0x73,  0x73, 
+       followed by any 8 bytes] from the stream.
+
+DIAGNOSTICS
+       The debug  versions PPPDD.EXE  and EPPPDD.EXE  incorporate 
+       additional code for diagnostic purposes. The  log  will be 
+       sent to DOS standard output and error/informative messages 
+       will go to DOS standard error.
+
+       Logging will cease after the driver goes resident,  so its 
+       usefulness is limited to debugging the link  establishment 
+       phase.
+
+       The  debug  option  causes  the  contents  of all  control 
+       packets sent or received to be logged, that  is, all  LCP, 
+       PAP, CHAP or IPCP packets.  This can be useful if  the PPP 
+       negotiation does not succeed.  If debugging is enabled  at 
+       compile time, the debug option also causes other debugging 
+       messages to be logged.
+
+FILES
+
+       .\ip-up.bat
+              A DOS batch file  generated by  pppd that  will set 
+              environment  variables  with the  current PPP  link 
+              parameters, such local IP, remote IP, etc. The file
+              contains the following statements:
+
+                  SET MYIP=xxx.xxx.xxx.xxx
+                  SET REMIP=yyy.yyy.yyy.yyy
+                  SET NETMASK=zzz.zzz.zzz.zzz
+                  SET PEERMRU=nnnn
+
+              This file can be called from  inside another  batch 
+              file and then use the environment variables for DOS 
+              Internet applications configuration.
+
+       full_path_to_pppd\pppd.cfg
+       .\pppd.cfg
+              System default options for pppd, read  before  user 
+              default options or command-line options.
+
+       .\pppdrc.cfg
+              User  default  options,  read  before  command-line 
+              options.
+
+       .\pppdcom?.cfg
+              System default options for the  serial  port  being 
+              used, read after command-line options.
+
+SEE ALSO
+       RFC1144
+              Jacobson,  V.   Compressing TCP/IP headers for low- 
+              speed serial links.  1990 February.
+
+       RFC1321
+              Rivest, R.  The MD5 Message-Digest Algorithm.  1992 
+              April.
+
+       RFC1332
+              McGregor,   G.    PPP  Internet   Protocol  Control 
+              Protocol (IPCP).  1992 May.
+
+       RFC1334
+              Lloyd,  B.;   Simpson,  W.A.    PPP  authentication 
+              protocols.  1992 October.
+
+       RFC1548
+              Simpson,  W.A.   The Point-to-Point Protocol (PPP). 
+              1993 December.
+
+       RFC1549
+              Simpson, W.A.  PPP in HDLC Framing.  1993 December.
+
+NOTES
+       You can use CTRL+BREAK to abort the driver before it  goes 
+       resident.  You must  use CTRL+BREAK,  CTRL+C doesn't  work
+       To  close  the PPP link and deinstall the driver you  must
+       use   a   standard  packet  driver  terminator,   such  as
+       TERMIN.COM from Russell Nelson (CRYNWR). Call it with:
+
+           TERMIN 0xnn
+
+       Where nn is the hex number of the interrupt vector used by
+       the installed driver, i.e. TERMIN 0x60.
+
+AUTHORS
+       DOS port by Antonio Lopez Molero, <tonilop@redestb.es>.
+       Drew  Perkins, Brad Clements, Karl Fox, Greg Christy, Brad 
+       Parker, Paul Mackerras (paulus@cs.anu.edu.au).
+
