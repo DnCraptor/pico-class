@@ -29,6 +29,10 @@ d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p
 0c201c7ae3d2e1870f75edc1df88706fa1d8cac42d602c2e0fd25dfe7f3659d6  sdcard/emu/m2p2-korvet-400-VGA-0.7.1.uf2
 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c  sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2
 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e  sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2
+8e87aaefec84e65a0e69d6e18c4434dff2391d933203cb9d36f7ec7aa9eed65d  sdcard/emu/m2p2-pce-HDMI-I2S-1.1.1.uf2
+8b9bc6a13c0b54d7ea5471a95b7151161e6403f57e33b6596fc83359a5d3d702  sdcard/emu/m2p2-pce-HDMI-PWM-1.1.1.uf2
+26d1f5134ceee1b1da925f8b24fd846225309c2c8f327e7dfb7ddaa39bfe8336  sdcard/emu/m2p2-pce-VGA-I2S-1.1.1.uf2
+b407f5d18fdfc60900e2566bc22a360cda3c344439a9ff4022b796af5333dd9d  sdcard/emu/m2p2-pce-VGA-PWM-1.1.1.uf2
 0531deacc0daebc398c6330e7a95c83ca58191674e0845db176d40714ae719ab  sdcard/emu/m2p2-speccy-VGA-HDMI-1.0.9.uf2
 6ee8575c22cd2e258a0dbc73b40ac7d26b3974d89c986d5c570352faff7cf111  sdcard/emu/m2p2-speccy-VGA-HDMI-HSTX-1.0.9.uf2
 7f39511e502ad767fee6edb479beaba8fef73dda0ee6a9c5772d6e51f493a217  sdcard/emu/m2p2-v06c-400-HDMI-DVI-0.7.6.uf2
