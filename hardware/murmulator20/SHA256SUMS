@@ -33,6 +33,8 @@ d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p
 8b9bc6a13c0b54d7ea5471a95b7151161e6403f57e33b6596fc83359a5d3d702  sdcard/emu/m2p2-pce-HDMI-PWM-1.1.1.uf2
 26d1f5134ceee1b1da925f8b24fd846225309c2c8f327e7dfb7ddaa39bfe8336  sdcard/emu/m2p2-pce-VGA-I2S-1.1.1.uf2
 b407f5d18fdfc60900e2566bc22a360cda3c344439a9ff4022b796af5333dd9d  sdcard/emu/m2p2-pce-VGA-PWM-1.1.1.uf2
+4f922561242351e1d84690b9c1d6688ba8b1e47fb57a8931a6d1a6f50b506cf3  sdcard/emu/m2p2-picogenesisPlus-I2S-HDMI.uf2
+7eed2a73e109b31419740c898dce0a3aa26f53596d7c947ed20268e9f28a7ac1  sdcard/emu/m2p2-picogenesisPlus-PWM-HDMI.uf2
 0531deacc0daebc398c6330e7a95c83ca58191674e0845db176d40714ae719ab  sdcard/emu/m2p2-speccy-VGA-HDMI-1.0.9.uf2
 6ee8575c22cd2e258a0dbc73b40ac7d26b3974d89c986d5c570352faff7cf111  sdcard/emu/m2p2-speccy-VGA-HDMI-HSTX-1.0.9.uf2
 7f39511e502ad767fee6edb479beaba8fef73dda0ee6a9c5772d6e51f493a217  sdcard/emu/m2p2-v06c-400-HDMI-DVI-0.7.6.uf2
