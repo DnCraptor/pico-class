@@ -8,6 +8,10 @@ bbbae9427b9207204b9fe6fb6be8af8f69dbe70911856a647beddf2479b40fbb  murmulator-os2
 16020ead36c2e568ea496e1e55868ca4217ba4427bc101cb6b2fc7f378322af1  pico-launcher/m2p2-uf2-launcher-VGA-HID.uf2
 d531672152a4f477e1bb5fa79b5b2a5cf9ab4b73a14b0ff8163f62d57b207c0c  pico-launcher/m2p2-uf2-launcher-VGA.uf2
 c2c33a4b706d4e44406330ad96c3228a287db692078015cfc168cdb15dbf878a  sdcard/emu/m2p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+bed167076403a7c0e35749cca483c75fb511ab1d5d8cc3c7cc6a751c5410fcbc  sdcard/emu/m2p2-atari800-HDMI-I2S-504-3.3.1.uf2
+2309b8e802bb4355e9b10f3f48a5122c8cedffdb99af1feec011660fb4eb14f1  sdcard/emu/m2p2-atari800-HDMI-PWM-504-3.3.1.uf2
+3c8c68d0081fa45222d03bed38d8e6fd81246932dc926c555b9d9695ca7b2ff4  sdcard/emu/m2p2-atari800-VGA-I2S-504-3.3.1.uf2
+c1ffff6a4eb89e9b40e7d58e1b0ea06a7faf59372af65beaba5adc4b51e31e48  sdcard/emu/m2p2-atari800-VGA-PWM-504-3.3.1.uf2
 dea74f660555c4a72d11890b3f7054aa9d2089baf576f8983655e588aaee51e9  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-I2S-1.5.3.uf2
 f47515098522243f7a7d383e0885b45d483406b11ae4dcb7c2bb48eac0b0d702  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-PWM-1.5.3-1.uf2
 8ba78971c5007e027273e3ce6aa0c545bd6404621a4f9565e359619767bb9de5  sdcard/emu/m2p2-frank_apple-HDMI-378MHz-I2S-1.05.uf2
