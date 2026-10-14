@@ -1,8 +1,8 @@
 # Манифест комплекта: Murmulator 2.0 + Raspberry Pi Pico 2 (m2p2)
 
-Состояние на 2026-10-14: есть pico-launcher, MOS2, murm386, PICO-BK, NES и murmapple (Apple IIe), а также схема и гербер-файлы платы. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-14: есть pico-launcher, MOS2, murm386, PICO-BK, NES, murmapple (Apple IIe) и pico-z26 (Atari 2600), а также схема и гербер-файлы платы. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
-Прошивки каталога собраны 2026-10-14 с профилем платы Murmulator 2; pico-launcher, MOS2, murm386 и PICO-BK — с тех же коммитов, что и для PCp2; NES — из `main` pico-nes (`3bfd622`), murmapple — из `main` = `d3b263d`, того же коммита, что для z0p2 (раздел 1, «Эмуляторы»); образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
+Прошивки каталога собраны 2026-10-14 с профилем платы Murmulator 2; pico-launcher, MOS2, murm386 и PICO-BK — с тех же коммитов, что и для PCp2; NES — из `main` pico-nes (`3bfd622`), murmapple и pico-z26 — из `main` (`d3b263d` и `68b7a25`), тех же коммитов, что для z0p2 (раздел 1, «Эмуляторы»); образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -36,6 +36,10 @@
 | `sdcard/emu/psram/m2p2-frank_apple-HDMI-378MHz-P84-PWM-1.05.uf2` | там же | 1.05, `main` = `d3b263d` (2026-10-08), `BOARD_VARIANT=M2`; HDMI, звук — PWM; сборка с PSRAM 84 МГц на модуле Pico 2: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `b26f56f12ef92b02eefc69c5fd782d0248f88284102f2b1141a328d4a53d49dd` |
 | `sdcard/emu/psram/m2p2-frank_apple-VGA-378MHz-P84-I2S-1.05.uf2` | там же | 1.05, `main` = `d3b263d` (2026-10-08), `BOARD_VARIANT=M2`; VGA, звук — ЦАП I2S платы (TDA1387); сборка с PSRAM 84 МГц на модуле Pico 2: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `be861f26f4b1fb23f38669d79a77f4905ef7fd65f8592f0a66898f1af28cce87` |
 | `sdcard/emu/psram/m2p2-frank_apple-VGA-378MHz-P84-PWM-1.05.uf2` | там же | 1.05, `main` = `d3b263d` (2026-10-08), `BOARD_VARIANT=M2`; VGA, звук — PWM; сборка с PSRAM 84 МГц на модуле Pico 2: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `65cc2c7d87cb3d2c5074ed5bdc01544be3b5880148b85457e40f87a9cf820171` |
+| `sdcard/emu/m2p2-z26-HDMI-I2S-4.0.8.uf2` | [DnCraptor/pico-z26](https://github.com/DnCraptor/pico-z26) | 4.0.8, `main` = `68b7a25` (2026-10-08), `PICO_BOARD=murmulator2`; HDMI, звук — ЦАП I2S платы (TDA1387) | 378 МГц / 1.6 В | `a2e8f80a59c0863335ffadb2d6b09d6fd4224e494e2dbb1fab4111287a3e98a3` |
+| `sdcard/emu/m2p2-z26-HDMI-PWM-4.0.8.uf2` | там же | 4.0.8, `main` = `68b7a25` (2026-10-08), `PICO_BOARD=murmulator2`; HDMI, звук — PWM | 378 МГц / 1.6 В | `0ed4c0b32d1670787c8efc0ac2d955bd923ac52e13d574ac8ef00281f1b636ef` |
+| `sdcard/emu/m2p2-z26-VGA-I2S-4.0.8.uf2` | там же | 4.0.8, `main` = `68b7a25` (2026-10-08), `PICO_BOARD=murmulator2`; VGA, звук — ЦАП I2S платы (TDA1387) | 378 МГц / 1.6 В | `3e59ccedc405b5d861a7df071816ff7cf9cdc86cbf13dd41c6d623ef0d842f4b` |
+| `sdcard/emu/m2p2-z26-VGA-PWM-4.0.8.uf2` | там же | 4.0.8, `main` = `68b7a25` (2026-10-08), `PICO_BOARD=murmulator2`; VGA, звук — PWM | 378 МГц / 1.6 В | `03f9f7d1df321ec644889671aa8315d1eee1a46c98097ad8dd04ec4db0e6803c` |
 
 Сборка PICO-BK выбирается по положению перемычки PWM_Enable на плате (README, раздел 3.1): I2S — для ЦАП TDA1387, PWM — для звука PWM. murm386 выбирает выход в меню **Win+F11** (Audio output) и хранит настройки для m2p2 в `/.config/386/M2/`, отдельно от других плат. В подкаталоге `emu/psram` — сборки, которым нужна PSRAM **на модуле Pico 2** (например, Pimoroni Pico Plus 2); микросхема PSRAM на самой плате Murmulator 2.0 для них не используется.
 
