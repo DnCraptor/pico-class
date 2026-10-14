@@ -1,0 +1,14 @@
+e4871d577c53881f86673aafb95ebb4583c2e173468a760d3f3bc976671924ae  assets/MURMULATOR2_HW20.pdf
+a25ac5ed62e8b6dfac053801bbdd37232e4af43696606dad4486fd0bcf27a9b9  assets/gerber_38EJU24.zip
+c9b9a527d6e9c04a31dc2345e24ebb768af2ca3125efe86af74e3583037569e5  assets/gerber_38NJU24_V1.0.zip
+bbbae9427b9207204b9fe6fb6be8af8f69dbe70911856a647beddf2479b40fbb  murmulator-os2/m2p2-murmulator-os-VGA-HDMI-2.3.3-252MHz-1.uf2
+28364a4bbf98a3d66cda083813bbbcc088cce7c4baf0cbc2591daf3556d10337  murmulator-os2/m2p2-murmulator-os-VGA-HDMI-HID-2.3.3-252MHz-1.uf2
+2763def2932f58edfad395558e7149bf7bc9e37bfe5e4974a9c6e93d7c065d37  pico-launcher/m2p2-uf2-launcher-HDMI-HID.uf2
+44ef7f43a1114fa387c175a60fb918bd67d94e1e677c71fa2bdff6d6c9e2f02f  pico-launcher/m2p2-uf2-launcher-HDMI.uf2
+16020ead36c2e568ea496e1e55868ca4217ba4427bc101cb6b2fc7f378322af1  pico-launcher/m2p2-uf2-launcher-VGA-HID.uf2
+d531672152a4f477e1bb5fa79b5b2a5cf9ab4b73a14b0ff8163f62d57b207c0c  pico-launcher/m2p2-uf2-launcher-VGA.uf2
+c2c33a4b706d4e44406330ad96c3228a287db692078015cfc168cdb15dbf878a  sdcard/emu/m2p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+dea74f660555c4a72d11890b3f7054aa9d2089baf576f8983655e588aaee51e9  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-I2S-1.5.3.uf2
+f47515098522243f7a7d383e0885b45d483406b11ae4dcb7c2bb48eac0b0d702  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-PWM-1.5.3-1.uf2
+0538235fce3d0acbb6ed3efd5e0faabeaf15863323dd3995daa4e74aab6bacfc  sdcard/emu/psram/m2p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2
+5c95b7b5e6580d0fcad94a6d67531cb8a9b1a0f28a49df061514423be71b742d  sdcard/emu/psram/m2p2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2
