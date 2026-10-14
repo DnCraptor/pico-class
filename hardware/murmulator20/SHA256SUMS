@@ -25,10 +25,14 @@ a2ee6f9c5920cba3f30c3243eda6dab81f1201fa55e3aca8bdb752e11a990270  sdcard/emu/m2p
 d28cf6a442712dcfaf99a816ee52ee20ed983f084eea12daa078e0ea95f4e7c6  sdcard/emu/m2p2-frank_apple-VGA-378MHz-I2S-1.05.uf2
 d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p2-frank_apple-VGA-378MHz-PWM-1.05.uf2
 821412fa849fc7a6b3f6788d393120616852fbb47f1a2e319712db42f9a6ddaa  sdcard/emu/m2p2-gnw-VGA-HDMI-TFT-0.1.18.uf2
+9ab8609e0dc32bfb9a3488f1169488c029c7a61dd40b1eaebe058289d4cc9b87  sdcard/emu/m2p2-korvet-400-HDMI-DVI-0.7.1.uf2
+0c201c7ae3d2e1870f75edc1df88706fa1d8cac42d602c2e0fd25dfe7f3659d6  sdcard/emu/m2p2-korvet-400-VGA-0.7.1.uf2
 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c  sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2
 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e  sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2
 0531deacc0daebc398c6330e7a95c83ca58191674e0845db176d40714ae719ab  sdcard/emu/m2p2-speccy-VGA-HDMI-1.0.9.uf2
 6ee8575c22cd2e258a0dbc73b40ac7d26b3974d89c986d5c570352faff7cf111  sdcard/emu/m2p2-speccy-VGA-HDMI-HSTX-1.0.9.uf2
+7f39511e502ad767fee6edb479beaba8fef73dda0ee6a9c5772d6e51f493a217  sdcard/emu/m2p2-v06c-400-HDMI-DVI-0.7.6.uf2
+2597bd44a47c20818a247deec692477f1721aa7f04d1ac76d6c5415ab315620a  sdcard/emu/m2p2-v06c-400-VGA-0.7.6.uf2
 a2e8f80a59c0863335ffadb2d6b09d6fd4224e494e2dbb1fab4111287a3e98a3  sdcard/emu/m2p2-z26-HDMI-I2S-4.0.8.uf2
 0ed4c0b32d1670787c8efc0ac2d955bd923ac52e13d574ac8ef00281f1b636ef  sdcard/emu/m2p2-z26-HDMI-PWM-4.0.8.uf2
 3e59ccedc405b5d861a7df071816ff7cf9cdc86cbf13dd41c6d623ef0d842f4b  sdcard/emu/m2p2-z26-VGA-I2S-4.0.8.uf2
