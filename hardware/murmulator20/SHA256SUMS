@@ -24,6 +24,10 @@ a2ee6f9c5920cba3f30c3243eda6dab81f1201fa55e3aca8bdb752e11a990270  sdcard/emu/m2p
 496fed103dd256e77deaa235f071c92560734f4d9ce1180bd7524ec9542dbd98  sdcard/emu/m2p2-frank_apple-HDMI-378MHz-PWM-1.05.uf2
 d28cf6a442712dcfaf99a816ee52ee20ed983f084eea12daa078e0ea95f4e7c6  sdcard/emu/m2p2-frank_apple-VGA-378MHz-I2S-1.05.uf2
 d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p2-frank_apple-VGA-378MHz-PWM-1.05.uf2
+725b1f30e343409b3d49ef028ff86207eb7206de582dadf77049ad4e89dad74f  sdcard/emu/m2p2-gameboy-color-HDMI-I2S-TDA1387.uf2
+d0a5493e57d900e3a175a36c1416d4018a046a46255eac95b00cda8b5c910335  sdcard/emu/m2p2-gameboy-color-HDMI-PWM.uf2
+60030cd491d48dffe4473c0aac6d619d8eb8fea62f372f100b45f4697e1fa786  sdcard/emu/m2p2-gameboy-color-VGA-I2S-TDA1387.uf2
+fae5a03f830a5c5620a5b42688460569879b4b68e758e98358c63fc2fcd95578  sdcard/emu/m2p2-gameboy-color-VGA-PWM.uf2
 821412fa849fc7a6b3f6788d393120616852fbb47f1a2e319712db42f9a6ddaa  sdcard/emu/m2p2-gnw-VGA-HDMI-TFT-0.1.18.uf2
 9ab8609e0dc32bfb9a3488f1169488c029c7a61dd40b1eaebe058289d4cc9b87  sdcard/emu/m2p2-korvet-400-HDMI-DVI-0.7.1.uf2
 0c201c7ae3d2e1870f75edc1df88706fa1d8cac42d602c2e0fd25dfe7f3659d6  sdcard/emu/m2p2-korvet-400-VGA-0.7.1.uf2
