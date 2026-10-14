@@ -21,10 +21,13 @@ aa96e7449ece8bb1a2190c66403314b3d041bd07b380d13fffbbd39c474761b0  sdcard/emu/z0p
 e46da560641abbadfdd83fe9160cafd04ca493ff9f6bd5b3e14d5d6801885705  sdcard/emu/z0p2-korvet-400-I2S-HDMI-DVI-0.7.1.uf2
 2ac2fe22deee085be88d8584d7a34a5255e30471bdc8f1a42a46abdd8a9bf6b4  sdcard/emu/z0p2-lynx-HDMI-I2S-TDA1387.uf2
 b443c72c3a907867cfad1b3e74e96e2c2eafdd5b063cd6d492306e3acb2f962c  sdcard/emu/z0p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2
+0de775831287abc35efc53c30b3e4d6f21319b2620572fdac1011903a33c1eae  sdcard/emu/z0p2-ngpc-HDMI-I2S-TDA1387.uf2
 1aa30a05ca5b1da027228546e18ab21ac85964b2be0d9f37a82c738b6d434ffe  sdcard/emu/z0p2-pce-HDMI-I2S-1.1.1.uf2
 826bbca6cd9166b885cd86282f2eede08aeaf047212391a5e84b9283470d72ff  sdcard/emu/z0p2-pico-mac-400-I2S-HDMI-DVI-0.1.1.uf2
 f5631b5c74e07b4a691806908b82e3431138cf1ebc301ea37f829e9f856c115d  sdcard/emu/z0p2-speccy-VGA-HDMI-1.0.9.uf2
 b94859db4d3a044fcc187e5c4a8887fa6504cc812c75ca472a93ac0c5a8c3c0b  sdcard/emu/z0p2-speccy-VGA-HDMI-PIOUSB-1.0.9.uf2
 fbe2dfef826e73b9c7a53b33e97c552417783d3cbf1f17a9e5aa01686c9aea7b  sdcard/emu/z0p2-v06c-400-I2S-HDMI-DVI-0.7.6.uf2
+184390572b990e05cd83df34341361cd7fd022e2bc552ea105190d8b27973f61  sdcard/emu/z0p2-watara-HDMI-I2S-2.2.1.uf2
+805d94a8f7121a6e6d6f21e3af0874b345ebcd002061e559434aee1ea8f22a03  sdcard/emu/z0p2-wonderswan-HDMI-I2S-1.0.6.uf2
 a78ae5843342d41107d2b13e9b10004d13acdfa88e660a66c0af74ea8ec1038a  sdcard/emu/z0p2-z26-252-HDMI-I2S-4.0.8.uf2
 fa7cef68a3a953bf42e25362779df05d94d0b10595f7ca24df31e138af945046  sdcard/settings_MD.dat
