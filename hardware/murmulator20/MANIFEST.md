@@ -2,7 +2,7 @@
 
 Состояние на 2026-10-14: есть pico-launcher, MOS2, murm386, PICO-BK и NES, а также схема и гербер-файлы платы. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
-Все прошивки каталога, кроме NES, собраны 2026-10-14 с тех же коммитов, что и для PCp2, с профилем платы Murmulator 2; NES (раздел 1, «Эмуляторы») — сборка pico-nes 305 с его коммитом, который уточняется; образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
+Прошивки каталога собраны 2026-10-14 с профилем платы Murmulator 2; pico-launcher, MOS2, murm386 и PICO-BK — с тех же коммитов, что и для PCp2; NES — из `main` pico-nes (`3bfd622`, раздел 1, «Эмуляторы»); образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -26,8 +26,8 @@
 | `sdcard/emu/psram/m2p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `fc80323`, профиль M2; сборка с PSRAM: ядро 8086/186/286 (`CPU_TARGET=286`), остальное как у сборки 386 | 504 МГц / 1.6 В | `0538235fce3d0acbb6ed3efd5e0faabeaf15863323dd3995daa4e74aab6bacfc` |
 | `sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-I2S-1.5.3.uf2` | [DnCraptor/PICO-BK](https://github.com/DnCraptor/PICO-BK) | 1.5.3, `master` = `2704872` (2026-10-12) — тот же коммит, что для PCp2; звук через ЦАП I2S платы (TDA1387) и по HDMI | как у PCp2: по умолчанию 270 МГц / 1.3 В (HDMI 720×576); в меню Home — 400 МГц / 1.5 В (800×600) и 512 МГц / 1.6 В (1024×768) | `dea74f660555c4a72d11890b3f7054aa9d2089baf576f8983655e588aaee51e9` |
 | `sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-PWM-1.5.3-1.uf2` | там же | 1.5.3, `2704872`; то же, звук PWM | как у сборки I2S | `f47515098522243f7a7d383e0885b45d483406b11ae4dcb7c2bb48eac0b0d702` |
-| `sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2` | pico-nes (NES / Dendy) | 305, коммит уточняется | уточняется | 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c |
-| `sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2` | pico-nes (NES / Dendy) | 305, коммит уточняется | уточняется | 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e |
+| `sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2` | pico-nes (NES / Dendy) | 305, `main` = `3bfd622` (2026-10-08) | 378 МГц / 1.6 В | 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c |
+| `sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2` | pico-nes (NES / Dendy) | 305, `main` = `3bfd622` (2026-10-08) | 378 МГц / 1.6 В | 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e |
 
 Сборка PICO-BK выбирается по положению перемычки PWM_Enable на плате (README, раздел 3.1): I2S — для ЦАП TDA1387, PWM — для звука PWM. murm386 выбирает выход в меню **Win+F11** (Audio output) и хранит настройки для m2p2 в `/.config/386/M2/`, отдельно от других плат. В подкаталоге `emu/psram` — сборки, которым нужна PSRAM **на модуле Pico 2** (например, Pimoroni Pico Plus 2); микросхема PSRAM на самой плате Murmulator 2.0 для них не используется.
 
