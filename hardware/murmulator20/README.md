@@ -179,7 +179,7 @@ Murmulator 2.0 (плата **38NJU24**, HW 2.0, схема — ноябрь 2024
 | [`img/`](img/) | схема подключения: выводы, разъёмы и перемычки (раздел 3.1) |
 | [`pico-launcher/`](pico-launcher/) | сборки pico-launcher для `m2p2`: HDMI или VGA, USB-клавиатура (`HID`) или PS/2 |
 | [`murmulator-os2/`](murmulator-os2/) | сборки MOS2 для `m2p2`: USB-клавиатура (`HID`) или PS/2 |
-| [`sdcard/emu/`](sdcard/emu/) | эмуляторы, собранные для `m2p2`: murm386 (три сборки, две из них — в `psram/`), PICO-BK (две сборки: I2S и PWM), NES (две сборки: I2S и PWM), murmapple (восемь сборок: HDMI или VGA, I2S или PWM; четыре с PSRAM — в `psram/`), pico-z26 и atari800 (по четыре сборки: HDMI или VGA, I2S или PWM), pico-speccy (две сборки: видео через PIO и HDMI через HSTX) |
+| [`sdcard/emu/`](sdcard/emu/) | эмуляторы, собранные для `m2p2`: murm386 (три сборки, две из них — в `psram/`), PICO-BK (две сборки: I2S и PWM), NES (две сборки: I2S и PWM), murmapple (восемь сборок: HDMI или VGA, I2S или PWM; четыре с PSRAM — в `psram/`), pico-z26 и atari800 (по четыре сборки: HDMI или VGA, I2S или PWM), pico-speccy (две сборки: видео через PIO и HDMI через HSTX), Game & Watch (одна сборка) |
 
 ## Источники
 
