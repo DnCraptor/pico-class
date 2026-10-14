@@ -10,7 +10,15 @@ d531672152a4f477e1bb5fa79b5b2a5cf9ab4b73a14b0ff8163f62d57b207c0c  pico-launcher/
 c2c33a4b706d4e44406330ad96c3228a287db692078015cfc168cdb15dbf878a  sdcard/emu/m2p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
 dea74f660555c4a72d11890b3f7054aa9d2089baf576f8983655e588aaee51e9  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-I2S-1.5.3.uf2
 f47515098522243f7a7d383e0885b45d483406b11ae4dcb7c2bb48eac0b0d702  sdcard/emu/m2p2-bk-VGA-HDMI-400MHz-PWM-1.5.3-1.uf2
+8ba78971c5007e027273e3ce6aa0c545bd6404621a4f9565e359619767bb9de5  sdcard/emu/m2p2-frank_apple-HDMI-378MHz-I2S-1.05.uf2
+496fed103dd256e77deaa235f071c92560734f4d9ce1180bd7524ec9542dbd98  sdcard/emu/m2p2-frank_apple-HDMI-378MHz-PWM-1.05.uf2
+d28cf6a442712dcfaf99a816ee52ee20ed983f084eea12daa078e0ea95f4e7c6  sdcard/emu/m2p2-frank_apple-VGA-378MHz-I2S-1.05.uf2
+d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p2-frank_apple-VGA-378MHz-PWM-1.05.uf2
 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c  sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2
 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e  sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2
 0538235fce3d0acbb6ed3efd5e0faabeaf15863323dd3995daa4e74aab6bacfc  sdcard/emu/psram/m2p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2
 5c95b7b5e6580d0fcad94a6d67531cb8a9b1a0f28a49df061514423be71b742d  sdcard/emu/psram/m2p2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2
+fa829120de1bd8332960abede7f75564d71b56c44922f68cc986b2691663be9c  sdcard/emu/psram/m2p2-frank_apple-HDMI-378MHz-P84-I2S-1.05.uf2
+b26f56f12ef92b02eefc69c5fd782d0248f88284102f2b1141a328d4a53d49dd  sdcard/emu/psram/m2p2-frank_apple-HDMI-378MHz-P84-PWM-1.05.uf2
+be861f26f4b1fb23f38669d79a77f4905ef7fd65f8592f0a66898f1af28cce87  sdcard/emu/psram/m2p2-frank_apple-VGA-378MHz-P84-I2S-1.05.uf2
+65cc2c7d87cb3d2c5074ed5bdc01544be3b5880148b85457e40f87a9cf820171  sdcard/emu/psram/m2p2-frank_apple-VGA-378MHz-P84-PWM-1.05.uf2
