@@ -41,6 +41,10 @@ c412431fbe95fbfbba350fd73da62363baefb5945eee9655842c2eb8fc3aa8cc  sdcard/emu/m2p
 8b9bc6a13c0b54d7ea5471a95b7151161e6403f57e33b6596fc83359a5d3d702  sdcard/emu/m2p2-pce-HDMI-PWM-1.1.1.uf2
 26d1f5134ceee1b1da925f8b24fd846225309c2c8f327e7dfb7ddaa39bfe8336  sdcard/emu/m2p2-pce-VGA-I2S-1.1.1.uf2
 b407f5d18fdfc60900e2566bc22a360cda3c344439a9ff4022b796af5333dd9d  sdcard/emu/m2p2-pce-VGA-PWM-1.1.1.uf2
+4ac6ba8570f538ce533fbe0ebe6c0d69bd0d9a10b39f3fe128ed81e9504cf7cd  sdcard/emu/m2p2-pico-mac-378-I2S-VGA-0.1.1.uf2
+cf520b08e42165b8ef66cb9363ba8dbf47382ff1eda5c751c0a30dc5e91dc048  sdcard/emu/m2p2-pico-mac-378-PWM-VGA-0.1.1.uf2
+07e15c9de280b6c9d2161e542a6e0a1aaa8e63805904b8f42aa48a41d25e1806  sdcard/emu/m2p2-pico-mac-400-I2S-HDMI-DVI-0.1.1.uf2
+56e5225be5018eb5055be066f973619d7849968d9ee6905b0ed7722951980aee  sdcard/emu/m2p2-pico-mac-400-PWM-HDMI-DVI-0.1.1.uf2
 4f922561242351e1d84690b9c1d6688ba8b1e47fb57a8931a6d1a6f50b506cf3  sdcard/emu/m2p2-picogenesisPlus-I2S-HDMI.uf2
 7eed2a73e109b31419740c898dce0a3aa26f53596d7c947ed20268e9f28a7ac1  sdcard/emu/m2p2-picogenesisPlus-PWM-HDMI.uf2
 0531deacc0daebc398c6330e7a95c83ca58191674e0845db176d40714ae719ab  sdcard/emu/m2p2-speccy-VGA-HDMI-1.0.9.uf2
