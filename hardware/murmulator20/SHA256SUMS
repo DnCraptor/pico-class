@@ -41,6 +41,10 @@ c412431fbe95fbfbba350fd73da62363baefb5945eee9655842c2eb8fc3aa8cc  sdcard/emu/m2p
 7c1eb808af67827d7d169d714c6fc0db4a83c6cf96d313d52f731f84ccbc5466  sdcard/emu/m2p2-lynx-VGA-PWM.uf2
 99993d04eb8e1da5ccd15fea2047ac330fc17f637f21a06a9cfb649d5415307c  sdcard/emu/m2p2-nes-VGA-HDMI-I2S-TDA1387-305.uf2
 538729df6c21c5b7e30e38c70bdbc1586ac1151e86386f94b657eba07dd3536e  sdcard/emu/m2p2-nes-VGA-HDMI-PWM-305.uf2
+511ffc030a1ffa54d95a4b0476d5ee134ffc1bed3bfe6df87820788771532ea1  sdcard/emu/m2p2-ngpc-HDMI-I2S-TDA1387.uf2
+90aaf38cf37ca2ca0031dcd15a53270631f93d7584b41b40123b1db081781b8f  sdcard/emu/m2p2-ngpc-HDMI-PWM.uf2
+77a51f653fbb91c11dba1ed85061cf19e0508bb6486cf367aca583a5d4d7d317  sdcard/emu/m2p2-ngpc-VGA-I2S-TDA1387.uf2
+ef4634f142137b380f16b8670d37de86541c8d8328366df1a1baad0b492717db  sdcard/emu/m2p2-ngpc-VGA-PWM.uf2
 8e87aaefec84e65a0e69d6e18c4434dff2391d933203cb9d36f7ec7aa9eed65d  sdcard/emu/m2p2-pce-HDMI-I2S-1.1.1.uf2
 8b9bc6a13c0b54d7ea5471a95b7151161e6403f57e33b6596fc83359a5d3d702  sdcard/emu/m2p2-pce-HDMI-PWM-1.1.1.uf2
 26d1f5134ceee1b1da925f8b24fd846225309c2c8f327e7dfb7ddaa39bfe8336  sdcard/emu/m2p2-pce-VGA-I2S-1.1.1.uf2
