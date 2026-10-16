@@ -1,7 +1,7 @@
 MOS2 НА OLIMEX RP2040-PICO-PC + PICO 2 (СБОРКА PCp2) - ПАМЯТКА
 ==============================================================
 
-Murmulator OS 2.3.3, сборка <BOARD>-murmulator-os-VGA-HDMI-HID-2.3.3-252MHz-1.
+Murmulator OS 2.3.3, сборка PCp2-murmulator-os-VGA-HDMI-HID-2.3.3-252MHz-1.
 Файл в кодировке CP866: его можно читать прямо в MOS2 командами
   type /mos2/README.md | less
   mcview /mos2/README.md
