@@ -5,6 +5,10 @@ b65cb77125782d47b9979b5a4f8eaf7150b0c971d88256e0392d5e9370d0ea76  pico-launcher/
 8b1ed987eab0d72348bfea4f26c653f16a092b4c5fc9b2fbdf66d93b48b4e38b  pico-launcher/m1p2-uf2-launcher-VGA-HID.uf2
 8e91316e638d79e1601edaf4862a4b6a47e48efaae8e0c12143401d7fa5f931d  pico-launcher/m1p2-uf2-launcher-VGA.uf2
 6cf6a60f9c3b0550bbf616d0c82851f6cb3962eb2c7439fe5fc8e56ac0a98ade  sdcard/emu/m1p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+29b2c0cc64074974f43120cb12eafcb8c5411cdf1e15aab7af0b375043bdd40d  sdcard/emu/m1p2-atari800-HDMI-I2S-504-3.3.1.uf2
+2b178f8362d1aa7127ddacf2c54fe261034ec4a69a309fd5462eeb546b9d9ba8  sdcard/emu/m1p2-atari800-HDMI-PWM-504-3.3.1.uf2
+d398fdf835ff0b91c4ed91d678de834a0aed0c74383a725900f47f2489dcae75  sdcard/emu/m1p2-atari800-VGA-I2S-504-3.3.1.uf2
+07212f0a3669c2b032564d6c9a852286b0344ec410a706c1f3aa670ab1376a16  sdcard/emu/m1p2-atari800-VGA-PWM-504-3.3.1.uf2
 4e6210bd3009318eb3bd20da2f6d39a7caecde5a9f07dd41fdd527a9cfe6b998  sdcard/emu/m1p2-bk-TV-319.2MHz-HWAY-1.5.3.uf2
 4b9cba07baacb1ff8ad430c6c35cc0be6811aa61c83e79f81fa7bca9a38d7da4  sdcard/emu/m1p2-bk-TV-319.2MHz-I2S-1.5.3.uf2
 faff0ce1d4e6d7f0cf345c007736bc2ddc01bae6180f9604d4d2a43042230318  sdcard/emu/m1p2-bk-TV-319.2MHz-PWM-1.5.3.uf2

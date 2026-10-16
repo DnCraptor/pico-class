@@ -1,8 +1,8 @@
 # Манифест комплекта: Murmulator 1.x с RP2350 (m1p2)
 
-Состояние на 2026-10-16: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, murmapple (Apple IIe) и pico-z26 (Atari 2600). Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-16: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, murmapple (Apple IIe), pico-z26 (Atari 2600) и atari800. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
-Прошивки каталога собраны 2026-10-16 с профилем платы Murmulator 1.x, с тех же коммитов, что и для m2p2 (и PCp2): pico-launcher — `5d871d7`, MOS2 — `a77484c`, murm386 — `fc80323`, PICO-BK — `2704872`, pico-nes — `3bfd622`, murmapple — `d3b263d`, pico-z26 — `68b7a25`. Образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
+Прошивки каталога собраны 2026-10-16 с профилем платы Murmulator 1.x, с тех же коммитов, что и для m2p2 (и PCp2): pico-launcher — `5d871d7`, MOS2 — `a77484c`, murm386 — `fc80323`, PICO-BK — `2704872`, pico-nes — `3bfd622`, murmapple — `d3b263d`, pico-z26 — `68b7a25`, atari800 — `d72f2c4`. Образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
 
 Выводы Murmulator 1.x, общие для этих прошивок (по профилю `BOARD_M1` в `src/board_config.h` murm386 и профилю M1 в `CMakeLists.txt` MOS2): HDMI и VGA — GP6–GP13, SD-карта — SCK 2, MOSI 3, MISO 4, CS 5, клавиатура PS/2 — GP0 (CLK) / GP1 (DATA), геймпад NES — CLK 14, LAT 15, DATA 16, звук PWM — GP26 / GP27 (бипер GP28), I2S у murm386 — DATA 26, BCK 27, LRCK 28.
 
@@ -46,6 +46,10 @@
 | `sdcard/emu/m1p2-z26-HDMI-PWM-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; HDMI, звук — PWM (GP26/GP27) | 378 МГц / 1.6 В | `8cb785c3954f36a5c5f7641b9a70943c7a2152d6a719ff7fc5718e017ca22749` |
 | `sdcard/emu/m1p2-z26-VGA-I2S-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; VGA, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28) | 378 МГц / 1.6 В | `8047bdcda76fa27a2f6e2f9cbe66713eec5460a41a6e6b64ece3591661bae4c2` |
 | `sdcard/emu/m1p2-z26-VGA-PWM-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; VGA, звук — PWM (GP26/GP27) | 378 МГц / 1.6 В | `03ca26a10c90436dc0fb9569023f38642fa3ec075243f9cdfeed87122d751d46` |
+| `sdcard/emu/m1p2-atari800-HDMI-I2S-504-3.3.1.uf2` | [DnCraptor/atari800](https://github.com/DnCraptor/atari800) | 3.3.1, `master` = `d72f2c4` (2026-10-14) — тот же коммит, что для m2p2; профиль M1 (без `M2`, `Z0`, `PICO_PC`); HDMI, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28), подача в FIFO PIO по прерыванию, USB HID | 504 МГц / 1.6 В | `29b2c0cc64074974f43120cb12eafcb8c5411cdf1e15aab7af0b375043bdd40d` |
+| `sdcard/emu/m1p2-atari800-HDMI-PWM-504-3.3.1.uf2` | там же | 3.3.1, `d72f2c4`, профиль M1; HDMI, звук — PWM (GP26/GP27, бипер GP28), USB HID | 504 МГц / 1.6 В | `2b178f8362d1aa7127ddacf2c54fe261034ec4a69a309fd5462eeb546b9d9ba8` |
+| `sdcard/emu/m1p2-atari800-VGA-I2S-504-3.3.1.uf2` | там же | 3.3.1, `d72f2c4`, профиль M1; VGA, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28), подача в FIFO PIO по прерыванию, USB HID | 504 МГц / 1.6 В | `d398fdf835ff0b91c4ed91d678de834a0aed0c74383a725900f47f2489dcae75` |
+| `sdcard/emu/m1p2-atari800-VGA-PWM-504-3.3.1.uf2` | там же | 3.3.1, `d72f2c4`, профиль M1; VGA, звук — PWM (GP26/GP27, бипер GP28), USB HID | 504 МГц / 1.6 В | `07212f0a3669c2b032564d6c9a852286b0344ec410a706c1f3aa670ab1376a16` |
 
 В подкаталоге `emu/psram` — сборки, которым нужна PSRAM на шине QSPI модуля RP2350 (выбор микросхемы — GP47 на RP2350B, GP19 на RP2350A, определяется при старте).
 
