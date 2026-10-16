@@ -4,7 +4,7 @@
 
 > This is a translation of the Russian [`README.md`](README.md). The Russian text is the reference: if the two differ, the Russian one is newer. [`MANIFEST.md`](MANIFEST.md) and [`../COMPATIBILITY.md`](../COMPATIBILITY.md) are in Russian only.
 
-Status: working instructions, revision 0.1 (2026-10-16). The reference station has been assembled and tested with pico-launcher, MOS2, murm386 and PICO-BK. The board code in firmware names and in the compatibility matrix is `m1p2` (Murmulator 1.x + an RP2350 module, [`../COMPATIBILITY.md`](../COMPATIBILITY.md)).
+Status: working instructions, revision 0.1 (2026-10-16). The reference station has been assembled and tested with pico-launcher, MOS2, murm386, PICO-BK and pico-nes. The board code in firmware names and in the compatibility matrix is `m1p2` (Murmulator 1.x + an RP2350 module, [`../COMPATIBILITY.md`](../COMPATIBILITY.md)).
 
 > **This is not the main board of the class.** The main one is the Olimex RP2040-PICO-PC + Pico 2 (class README, §1.7.1). The Murmulator 1.x is an open community project (class README, §1.7.2): the board is ordered from the Gerber files and assembled yourself, or bought from independent assemblers. There is no factory final inspection, and the quality of soldering and parts varies from unit to unit, so every board is checked before it goes to a station (section 3, item 1). There are many build variants (section 1), and it is better to keep **identical** boards in a class: then the same firmwares and the same jumper positions fit every station.
 
@@ -196,7 +196,7 @@ Be prepared for children to mess up the data on the SD card: it is best to have 
 | [`SHA256SUMS`](SHA256SUMS) | checksums of the board's files (how to check — [`MANIFEST.md`](MANIFEST.md), section 3) |
 | [`pico-launcher/`](pico-launcher/) | pico-launcher builds for the `m1p2`: HDMI or VGA, USB keyboard (`HID`) or PS/2 |
 | [`murmulator-os2/`](murmulator-os2/) | MOS2 builds for the `m1p2`: USB keyboard (`HID`) or PS/2 |
-| [`sdcard/emu/`](sdcard/emu/) | emulators built for the `m1p2`: murm386 (three builds, two of them in `psram/`), PICO-BK (six builds: VGA/HDMI or TV, sound I2S, PWM or sound chips — `HWAY`; the TV builds are for the demonstration station only, section 3.2) |
+| [`sdcard/emu/`](sdcard/emu/) | emulators built for the `m1p2`: murm386 (three builds, two of them in `psram/`), PICO-BK (six builds: VGA/HDMI or TV, sound I2S, PWM or sound chips — `HWAY`; the TV builds are for the demonstration station only, section 3.2), pico-nes (NES / Dendy: two builds — I2S or PWM sound) |
 | [`sdcard/mos2/`](sdcard/mos2/) | MOS2 quick guide for this board (in Russian, CP866) |
 
 ## Sources
