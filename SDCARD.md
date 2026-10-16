@@ -24,7 +24,6 @@
 | `/mos2/bin/tcc`, `/mos2/include/*`, `/mos2/src/*`, `/mos2/.tcc-install.json` | компилятор Си TCC для MOS2 с заголовками, библиотекой и исходниками — результат `tools/install_sdk.py --with-tcc` из murmulator-os2 (`a77484c`); `.tcc-install.json` — список установленных файлов с их SHA256 для следующего обновления | текстовые файлы — с концами строк CRLF, в остальном совпадают; TCC — LGPL 2.1 (`/mos2/src/tcc/COPYING`) |
 | `/mos2/config.sys` | там же | пути приведены к единому регистру (`/mos2`), концы строк CRLF |
 | `/mos2/UPSTREAM-README.md` | там же, `apps/compiled/UPSTREAM-README.md` (`README.md` корня murmulator-os2) | побайтово совпадает |
-| `/mos2/README.md` | написана для этого репозитория, с версии 2.3.3 лежит и в murmulator-os2 (`apps/compiled/README.md`), побайтово совпадает | памятка по MOS2 на PCp2; кодировка CP866, чтобы файл читался в MOS2 (`type`, `mcview`) |
 | `/test/kbdtest.bas` | этот репозиторий | утилита проверки клавиатуры для MOS2 (Stefan's BASIC) |
 | `/test/edit.txt` | этот репозиторий | файл для проверки просмотра, редактора и записи на SD |
 | `/test/snd_mono.wav` | этот репозиторий | 8000 Гц, моно, 16 бит: три сигнала 440/660/880 Гц, уровень −12 dBFS |
@@ -60,7 +59,7 @@
 | `/freedos/GAMES/*`, `/freedos/EDU/*` | свободные программы для murm386, см. раздел 4 | см. раздел 4 |
 | `/dosppp/*`, `/MTCP/*`, `/386/Zimodem-4.0.3.2-WROVER-USB-UART0.bin` | связь для murm386: драйвер PPP, программы TCP/IP и прошивка Wi-Fi-модема ESP32, см. раздел 22 | см. раздел 22 |
 
-Памятка `/mos2/README.md` написана для сборки MOS2 под Olimex PICO-PC (PCp2): видеорежимы, выводы звука и геймпада в ней указаны для этой платы.
+Памятка по MOS2 `/mos2/README.md` у каждой платы своя: она лежит в `sdcard/mos2/` каталога платы (например, [`hardware/olimex-pico-pc/sdcard/mos2/README.md`](hardware/olimex-pico-pc/sdcard/mos2/README.md)) и попадает на карту вторым шагом раздела 1. Видеорежимы, клавиатура, выводы звука и геймпада в ней — для своей платы; кодировка CP866 и концы строк LF, чтобы файл читался прямо в MOS2 (`type`, `mcview`).
 
 ### Компилятор TCC (`/mos2`)
 

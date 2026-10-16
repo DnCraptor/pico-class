@@ -26,7 +26,6 @@ State as of 2026-10-13. The `sdcard/` folder at the root of the repository is th
 | `/mos2/bin/tcc`, `/mos2/include/*`, `/mos2/src/*`, `/mos2/.tcc-install.json` | the TCC C compiler for MOS2 with headers, library and sources — output of `tools/install_sdk.py --with-tcc` from murmulator-os2 (`a77484c`); `.tcc-install.json` lists the installed files with their SHA256 for the next update | text files have CRLF line endings, otherwise identical; TCC is LGPL 2.1 (`/mos2/src/tcc/COPYING`) |
 | `/mos2/config.sys` | same | paths brought to one letter case (`/mos2`), CRLF line endings |
 | `/mos2/UPSTREAM-README.md` | same, `apps/compiled/UPSTREAM-README.md` (the root `README.md` of murmulator-os2) | byte-for-byte identical |
-| `/mos2/README.md` | written for this repository; since version 2.3.3 it is also in murmulator-os2 (`apps/compiled/README.md`), byte-for-byte identical | MOS2 quick guide for the PCp2 (in Russian); CP866 encoding so that the file can be read in MOS2 (`type`, `mcview`) |
 | `/test/kbdtest.bas` | this repository | keyboard test utility for MOS2 (Stefan's BASIC) |
 | `/test/edit.txt` | this repository | file for testing the viewer, the editor and writing to the SD card |
 | `/test/snd_mono.wav` | this repository | 8000 Hz, mono, 16 bit: three tones of 440/660/880 Hz at −12 dBFS |
@@ -62,7 +61,7 @@ State as of 2026-10-13. The `sdcard/` folder at the root of the repository is th
 | `/freedos/GAMES/*`, `/freedos/EDU/*` | free programs for murm386, see section 4 | see section 4 |
 | `/dosppp/*`, `/MTCP/*`, `/386/Zimodem-4.0.3.2-WROVER-USB-UART0.bin` | networking for murm386: PPP driver, TCP/IP programs and the ESP32 Wi-Fi modem firmware, see section 22 | see section 22 |
 
-The `/mos2/README.md` guide was written for the MOS2 build for the Olimex PICO-PC (PCp2): the video modes and the sound and gamepad pins in it are those of that board.
+Each board has its own MOS2 quick guide `/mos2/README.md` (in Russian): it is in the `sdcard/mos2/` folder of the board (for example, [`hardware/olimex-pico-pc/sdcard/mos2/README.md`](hardware/olimex-pico-pc/sdcard/mos2/README.md)) and gets onto the card in the second copying step of section 1. Its video modes, keyboard, sound and gamepad pins are those of that board; it is in CP866 with LF line endings so that it can be read right in MOS2 (`type`, `mcview`).
 
 ### TCC compiler (`/mos2`)
 
