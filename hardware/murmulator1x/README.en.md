@@ -142,6 +142,7 @@ If there is no sound, first rule out the headphones: listen to them on another s
 | 7 | Delete with cancel | On `/test/edit.txt` — **F8**, then Esc | A confirmation prompt appears; after Esc the file is still there |
 | 8 | Starting a firmware | Enter on `/emu/m1p2-386-RUNTIME-…`; then **Ctrl+Alt+Del** while holding **F11** | murm386 starts and reboots on Ctrl+Alt+Del; with F11 — the browser again |
 | 9 | Sound | Start murm386 (`/emu/m1p2-386-RUNTIME-…`), in **Win+F11** choose the sound output matching the board's jumpers (I2S or PWM) | Sound in the headphones. The launcher itself outputs no sound |
+| 10 | PICO-BK sound through the DAC (only on a board with the TDA1387 DAC, section 3.1) | Start `/emu/m1p2-bk-VGA-HDMI-400MHz-I2S-…` and a game with sound; in the **Home** menu check the sound volume item and, if it is 0 or lower, raise it to 1 or higher (in the menu or with **Ctrl+"+"**) | Sound in the headphones at volume 1 and higher. Known bug in this version: at volume 0 and below there is no sound through the DAC (PWM is audible at 0 too). The volume is saved in the PICO-BK settings on the card — leave it at 1 or higher on the reference card |
 
 The launcher does not use F5–F7, F9 and F12. F5–F7 are checked in `mc` during MOS2 acceptance (6.2), the others in the firmwares that use them.
 
