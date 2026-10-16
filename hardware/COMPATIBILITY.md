@@ -9,7 +9,7 @@
 | Код | Плата |
 |---|---|
 | `PCp2` | Olimex RP2040-PICO-PC + Raspberry Pi Pico 2 — **основная** |
-| `m1p2` | Murmulator 1.x с RP2350; файлы платы — [`murmulator1x/`](murmulator1x/), состав и контрольные суммы — [`murmulator1x/MANIFEST.md`](murmulator1x/MANIFEST.md) |
+| `m1p2` | Murmulator 1.x + модуль на RP2350; звук — PWM или ЦАП TDA1387 (I2S) на GP26–GP28, в зависимости от варианта сборки; инструкция — [`murmulator1x/README.md`](murmulator1x/README.md) |
 | `m2p2` | Murmulator 2.0 + Raspberry Pi Pico 2 (RP2350A); звук — свой (ЦАП TDA1387 или PWM на гнезде платы); инструкция — [`murmulator20/README.md`](murmulator20/README.md) |
 | `z0p2` | Waveshare RP2350-PiZero — требует дополнительного звукового модуля; инструкция — [`waveshare-rp2350-pizero/README.md`](waveshare-rp2350-pizero/README.md) |
 
