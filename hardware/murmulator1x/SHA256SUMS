@@ -5,5 +5,11 @@ b65cb77125782d47b9979b5a4f8eaf7150b0c971d88256e0392d5e9370d0ea76  pico-launcher/
 8b1ed987eab0d72348bfea4f26c653f16a092b4c5fc9b2fbdf66d93b48b4e38b  pico-launcher/m1p2-uf2-launcher-VGA-HID.uf2
 8e91316e638d79e1601edaf4862a4b6a47e48efaae8e0c12143401d7fa5f931d  pico-launcher/m1p2-uf2-launcher-VGA.uf2
 6cf6a60f9c3b0550bbf616d0c82851f6cb3962eb2c7439fe5fc8e56ac0a98ade  sdcard/emu/m1p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+4e6210bd3009318eb3bd20da2f6d39a7caecde5a9f07dd41fdd527a9cfe6b998  sdcard/emu/m1p2-bk-TV-319.2MHz-HWAY-1.5.3.uf2
+4b9cba07baacb1ff8ad430c6c35cc0be6811aa61c83e79f81fa7bca9a38d7da4  sdcard/emu/m1p2-bk-TV-319.2MHz-I2S-1.5.3.uf2
+faff0ce1d4e6d7f0cf345c007736bc2ddc01bae6180f9604d4d2a43042230318  sdcard/emu/m1p2-bk-TV-319.2MHz-PWM-1.5.3.uf2
+7d414ac719bccd60b65bbae30662b32916827a5b7c6ceaedfde23c26db24bfe3  sdcard/emu/m1p2-bk-VGA-HDMI-400MHz-HWAY-1.5.3.uf2
+c1129dec63a25d84bbf06278b64b81945f2db5fd4ab78b13f140b113db373bd4  sdcard/emu/m1p2-bk-VGA-HDMI-400MHz-I2S-1.5.3.uf2
+d02b3d0ef6830b8ad1af609c1b33c91021a8eac7261f944f256e65c96e583d23  sdcard/emu/m1p2-bk-VGA-HDMI-400MHz-PWM-1.5.3.uf2
 5b847875905e92bccc1329d931923b072846698c0367dbb2a393a9510bdadee0  sdcard/emu/psram/m1p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2
 2449ca9b811f619e41c22647b626cbffcdc3eed9bd5709c45129dd8d4fdef965  sdcard/emu/psram/m1p2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2
