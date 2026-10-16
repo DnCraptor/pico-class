@@ -1,8 +1,8 @@
 # Манифест комплекта: Murmulator 1.x с RP2350 (m1p2)
 
-Состояние на 2026-10-16: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes и murmapple (Apple IIe). Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-16: есть pico-launcher, MOS2, murm386, PICO-BK, pico-nes, murmapple (Apple IIe) и pico-z26 (Atari 2600). Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность — по образцу [`../olimex-pico-pc/MANIFEST.md`](../olimex-pico-pc/MANIFEST.md). При добавлении или замене любого файла обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
-Прошивки каталога собраны 2026-10-16 с профилем платы Murmulator 1.x, с тех же коммитов, что и для m2p2 (и PCp2): pico-launcher — `5d871d7`, MOS2 — `a77484c`, murm386 — `fc80323`, PICO-BK — `2704872`, pico-nes — `3bfd622`, murmapple — `d3b263d`. Образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
+Прошивки каталога собраны 2026-10-16 с профилем платы Murmulator 1.x, с тех же коммитов, что и для m2p2 (и PCp2): pico-launcher — `5d871d7`, MOS2 — `a77484c`, murm386 — `fc80323`, PICO-BK — `2704872`, pico-nes — `3bfd622`, murmapple — `d3b263d`, pico-z26 — `68b7a25`. Образы — для RP2350 в режиме ARM Secure (UF2 family `0xe48bff59`). Параметры сборки восстановлены по именам файлов.
 
 Выводы Murmulator 1.x, общие для этих прошивок (по профилю `BOARD_M1` в `src/board_config.h` murm386 и профилю M1 в `CMakeLists.txt` MOS2): HDMI и VGA — GP6–GP13, SD-карта — SCK 2, MOSI 3, MISO 4, CS 5, клавиатура PS/2 — GP0 (CLK) / GP1 (DATA), геймпад NES — CLK 14, LAT 15, DATA 16, звук PWM — GP26 / GP27 (бипер GP28), I2S у murm386 — DATA 26, BCK 27, LRCK 28.
 
@@ -42,6 +42,10 @@
 | `sdcard/emu/psram/m1p2-frank_apple-HDMI-378MHz-P84-PWM-1.05.uf2` | там же | 1.05, `d3b263d`, `BOARD_VARIANT=M1`; HDMI, звук — PWM (GP26/GP27, бипер GP28); сборка с PSRAM 84 МГц на шине QSPI модуля: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `492278de693f9f22ecb35506ace8b30c546e45b33741bacf48a86478c3821ccb` |
 | `sdcard/emu/psram/m1p2-frank_apple-VGA-378MHz-P84-I2S-1.05.uf2` | там же | 1.05, `d3b263d`, `BOARD_VARIANT=M1`; VGA, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28); сборка с PSRAM 84 МГц на шине QSPI модуля: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `33b3b72e93e10b07f02e2b6e5582466ddd6728b09502605bfcae4596eb26bd84` |
 | `sdcard/emu/psram/m1p2-frank_apple-VGA-378MHz-P84-PWM-1.05.uf2` | там же | 1.05, `d3b263d`, `BOARD_VARIANT=M1`; VGA, звук — PWM (GP26/GP27, бипер GP28); сборка с PSRAM 84 МГц на шине QSPI модуля: образы дисков держатся в PSRAM | 378 МГц / 1.6 В | `42a65b56ada8b10e7db3fcb925ec27709cf2c2b67d2643b61d90b075f55ea1b0` |
+| `sdcard/emu/m1p2-z26-HDMI-I2S-4.0.8.uf2` | [DnCraptor/pico-z26](https://github.com/DnCraptor/pico-z26) | 4.0.8, `main` = `68b7a25` (2026-10-08) — тот же коммит, что для m2p2 и z0p2; `PICO_BOARD=murmulator`; HDMI, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28) | 378 МГц / 1.6 В | `bfc483765cca8654a644ebb211f13e42384cff2a121311169504b6155e218a1f` |
+| `sdcard/emu/m1p2-z26-HDMI-PWM-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; HDMI, звук — PWM (GP26/GP27) | 378 МГц / 1.6 В | `8cb785c3954f36a5c5f7641b9a70943c7a2152d6a719ff7fc5718e017ca22749` |
+| `sdcard/emu/m1p2-z26-VGA-I2S-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; VGA, звук — ЦАП TDA1387 по I2S (DATA 26, BCK 27, LRCK 28) | 378 МГц / 1.6 В | `8047bdcda76fa27a2f6e2f9cbe66713eec5460a41a6e6b64ece3591661bae4c2` |
+| `sdcard/emu/m1p2-z26-VGA-PWM-4.0.8.uf2` | там же | 4.0.8, `68b7a25`, `PICO_BOARD=murmulator`; VGA, звук — PWM (GP26/GP27) | 378 МГц / 1.6 В | `03ca26a10c90436dc0fb9569023f38642fa3ec075243f9cdfeed87122d751d46` |
 
 В подкаталоге `emu/psram` — сборки, которым нужна PSRAM на шине QSPI модуля RP2350 (выбор микросхемы — GP47 на RP2350B, GP19 на RP2350A, определяется при старте).
 
