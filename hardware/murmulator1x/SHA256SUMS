@@ -1,0 +1,9 @@
+319d212b4fcd784a18b12bdbd1cbe8664133b7ff9265b3071470614c78c4242f  murmulator-os2/m1p2-murmulator-os-VGA-HDMI-2.3.3-252MHz-1.uf2
+f3fe3ec9cf5b587264e093c7f169bb4b8d6f65eb32ac2db10ced5394a21d8a6a  murmulator-os2/m1p2-murmulator-os-VGA-HDMI-HID-2.3.3-252MHz-1.uf2
+b65cb77125782d47b9979b5a4f8eaf7150b0c971d88256e0392d5e9370d0ea76  pico-launcher/m1p2-uf2-launcher-HDMI-HID.uf2
+3d926ce1bb3d6fd308caa7cfd761fe37688b53ac3b35aba33d42468ce93b5db7  pico-launcher/m1p2-uf2-launcher-HDMI.uf2
+8b1ed987eab0d72348bfea4f26c653f16a092b4c5fc9b2fbdf66d93b48b4e38b  pico-launcher/m1p2-uf2-launcher-VGA-HID.uf2
+8e91316e638d79e1601edaf4862a4b6a47e48efaae8e0c12143401d7fa5f931d  pico-launcher/m1p2-uf2-launcher-VGA.uf2
+6cf6a60f9c3b0550bbf616d0c82851f6cb3962eb2c7439fe5fc8e56ac0a98ade  sdcard/emu/m1p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
+5b847875905e92bccc1329d931923b072846698c0367dbb2a393a9510bdadee0  sdcard/emu/psram/m1p2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2
+2449ca9b811f619e41c22647b626cbffcdc3eed9bd5709c45129dd8d4fdef965  sdcard/emu/psram/m1p2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2
