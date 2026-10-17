@@ -76,7 +76,9 @@ The firmware must output sound the same way:
 
 PICO-BK has `m1p2-bk-TV-…` builds, pico-speccy has `m1p2-speccy-TV-SOFT-…`, the Vector-06C has `m1p2-v06c-400-TV-SOFT-PAL-…` and the Korvet has `m1p2-korvet-400-TV-SOFT-PAL-…`: the picture goes to a CRT TV through the composite output — a board modification, a DAC on the same pins GP6–GP13 as VGA and HDMI ([murmulator.ru/mm-composite](https://murmulator.ru/mm-composite), in Russian). **These builds are meant for a separate demonstration station with a CRT TV (class README, §1.7.6) and are not installed on the pupils' stations:** a VGA or HDMI monitor shows nothing with them. It is best not to copy the TV builds to the pupils' cards at all, so that nobody starts one by mistake; if that happens, reboot the board holding F11 and choose another firmware.
 
-**Sound chips (`HWAY`).** PICO-BK builds with `HWAY` in their name output sound to hardware sound chips (AY-3-8910, SAA1099) on an expansion board through a 74HC595 shift register on GP26–GP28. Without such a board they have no sound — use the `I2S` or `PWM` build matching the jumpers of section 3.1.
+**What goes on the demonstration station.** Only machines that really worked with a TV in their day: the BK-0010, ZX Spectrum, Vector-06C and Korvet. The CRT TV is part of the lesson about how such machines looked and worked. Handheld consoles with a built-in LCD (Gamate, Watara Supervision and the like) never worked with a TV, so their TV builds are not part of the kit, even when the releases include them.
+
+**Sound chips (`HWAY`).** PICO-BK builds with `HWAY` in their name and pico-gamate builds with `AY-3-8910` in their name output sound to hardware sound chips (AY-3-8910 and SAA1099 for PICO-BK, AY-3-8910 for pico-gamate) on an expansion board through a 74HC595 shift register on GP26–GP28. Without such a board they have no sound — use the `I2S` or `PWM` build matching the jumpers of section 3.1.
 
 ## 4. Preparing the SD card
 
