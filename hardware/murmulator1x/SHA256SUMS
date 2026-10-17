@@ -43,6 +43,10 @@ d914d2e66a392b17e936bf3f2dc5e00effd4abe2c0ecf467894a22a0a612da03  sdcard/emu/m1p
 aa0a88b8624c315ccf1ac171b81ffeaeb263cb2923c9bd50244639a6ede8d658  sdcard/emu/m1p2-pce-HDMI-PWM-1.1.1.uf2
 cb7db177f04e3acef887b6010a6e5cc14a97dc5aea9be7cd40e2bd6c4a0c01a7  sdcard/emu/m1p2-pce-VGA-I2S-1.1.1.uf2
 4ee1201b0e79a84deb006cbbf94be02f3faff5b9095ce4271b8d971ab2a5feba  sdcard/emu/m1p2-pce-VGA-PWM-1.1.1.uf2
+3ef92f6625f362f83c6a827d96a544d9bc025b3a4e698022899e8155d523a6c2  sdcard/emu/m1p2-pico-mac-378-VGA-I2S-0.1.1.uf2
+fec680bb312945037bb139e87ce4e902ce8c0e9802448a0a2ffa63a9c8aa3a26  sdcard/emu/m1p2-pico-mac-378-VGA-PWM-0.1.1.uf2
+ed268dafc4c95dcfac141145a02d6c14eae0e1541ae370754ec97f51da312db3  sdcard/emu/m1p2-pico-mac-400-HDMI-I2S-0.1.1.uf2
+9007dcb44ef7b882d8e154431dc5e4ad25af9594c2b1ab4d03c780e47a726bf2  sdcard/emu/m1p2-pico-mac-400-HDMI-PWM-0.1.1.uf2
 2122fbe12082d5d0e38e1358766e128d88d79a3a288ce9a950acaaa9add9b91f  sdcard/emu/m1p2-picogenesisPlus-HDMI-I2S.uf2
 f388a629e2b7700eabac66c71af2b088437ee1117ac69a2874e4b24894fdba87  sdcard/emu/m1p2-picogenesisPlus-HDMI-PWM.uf2
 ffeee4efd6dc25139918c7fd5a2571f90ad08874052c4f763df6b64b14205618  sdcard/emu/m1p2-speccy-TV-SOFT-1.0.10.uf2
