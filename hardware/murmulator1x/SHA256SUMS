@@ -25,6 +25,12 @@ e7e1d9f22293ded9e7e10238192cfcc4e61c0b01ce5ddc56e133958b0673be8f  sdcard/emu/m1p
 5e6fbd513516ba00cb9fe8e2c088df5df448dcb522c50187ae07a63ec328d5ae  sdcard/emu/m1p2-frank_apple-HDMI-378MHz-PWM-1.05.uf2
 6c934f3481164f1c096182769b0c25408ada72bba0be5f59b9ac4f8b35744489  sdcard/emu/m1p2-frank_apple-VGA-378MHz-I2S-1.05.uf2
 c33b0f68cdc0179c0c7ac38ecbee999f9f10112172eb96828c843caf85f9f17f  sdcard/emu/m1p2-frank_apple-VGA-378MHz-PWM-1.05.uf2
+c7289873a8b0d0e6b5e8a7f7eb97d51a0f4ca8e277fc835e3324c456aafa8973  sdcard/emu/m1p2-gamate-HDMI-AY-3-8910-3.1.2.uf2
+ed7dbe2180154b228595601e0ab18f43f34428849e28e6aad619ed8282cce0ed  sdcard/emu/m1p2-gamate-HDMI-I2S-3.1.2.uf2
+4167f428e08a6ce2d154412c7e9441e356906267183f634105cea5c8545834ce  sdcard/emu/m1p2-gamate-HDMI-PWM-3.1.2.uf2
+3c9550bd857e933c5a421b9cf3c45f4cdb6b74642a09a63b2171f07ca8ee8717  sdcard/emu/m1p2-gamate-VGA-AY-3-8910-3.1.2.uf2
+5a6c6b8d6a4fe800859c44c7526bf6ffb82c44f6ebe2285894f911d30378f6c4  sdcard/emu/m1p2-gamate-VGA-I2S-3.1.2.uf2
+4ffc46ee4bcb54a88accfa8b192188c6f7f01e65f4e5c8073531861c2cc49839  sdcard/emu/m1p2-gamate-VGA-PWM-3.1.2.uf2
 331372988ed6608e9ea0f0b0f0063f40778daac67150e3118e8b9c443c564557  sdcard/emu/m1p2-gameboy-color-HDMI-I2S-TDA1387.uf2
 ab73125c699b18de78839ba36ed4d5f1f1e222fbc64c33d48e123222a8cfdbbf  sdcard/emu/m1p2-gameboy-color-HDMI-PWM.uf2
 f8afbfeac2f0b32569908b71874456b87d6e9a9663d7b2df91b76a7ce578daf4  sdcard/emu/m1p2-gameboy-color-VGA-I2S-TDA1387.uf2
@@ -54,6 +60,10 @@ cf70df19241b277aeca8e550d24b536957a51baf169f5e8e1a6a4179badbe943  sdcard/emu/m1p
 df05a47de880f6f22f9e0be7db1668b9107e242eae69711e09d8386fe53bb28d  sdcard/emu/m1p2-v06c-400-HDMI-DVI-0.7.6.uf2
 d19351e5885c82993e63dc3f4ecc836708516f6927ea352dd9832bbe317f20b5  sdcard/emu/m1p2-v06c-400-TV-SOFT-PAL-0.7.6.uf2
 1ea5431811e3663fbe0a332f67a3d816b78b36d5affb642184f13e217944e44c  sdcard/emu/m1p2-v06c-400-VGA-0.7.6.uf2
+426eccd8df9d195c7a128cb18c66bc5c0f0435aca18252ddbd79532ee399b41a  sdcard/emu/m1p2-watara-HDMI-I2S-2.2.1.uf2
+1953df85fdb4be1aa2ff2b2d74cd6352f7789091c1ed2180da8af81570453545  sdcard/emu/m1p2-watara-HDMI-PWM-2.2.1.uf2
+e4ade62f899244812f6d40d465aeec8bb362b9b50c39cdb23f50f4563b6037ed  sdcard/emu/m1p2-watara-VGA-I2S-2.2.1.uf2
+d26f90db919b889f1aa41d515a2b264a6ae4e23ffc3e4f1496bf00fb14b2210b  sdcard/emu/m1p2-watara-VGA-PWM-2.2.1.uf2
 bfc483765cca8654a644ebb211f13e42384cff2a121311169504b6155e218a1f  sdcard/emu/m1p2-z26-HDMI-I2S-4.0.8.uf2
 8cb785c3954f36a5c5f7641b9a70943c7a2152d6a719ff7fc5718e017ca22749  sdcard/emu/m1p2-z26-HDMI-PWM-4.0.8.uf2
 8047bdcda76fa27a2f6e2f9cbe66713eec5460a41a6e6b64ece3591661bae4c2  sdcard/emu/m1p2-z26-VGA-I2S-4.0.8.uf2
