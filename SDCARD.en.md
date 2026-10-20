@@ -323,7 +323,7 @@ Games by the RetroSouls team (Denis Grachev, music by Oleg Nikitin), made for th
 
 ## 14. Programs for pico-pce (`/PCE`)
 
-pico-pce (a PC Engine emulator, pce-go core) lists cartridges from the `/PCE` folder and keeps its settings (`pico-pce.cfg`) and saves there too. A selected cartridge is written to the board's flash, so starting a new cartridge takes a little longer than usual.
+pico-pce (a PC Engine emulator, pce-go core) lists cartridges from the `/PCE` folder and keeps its settings (`pico-pce.cfg`) and saves there too. A selected cartridge is loaded into QSPI PSRAM if the RP2350 module has it, otherwise it is written to the board's flash, and then starting a new cartridge takes a little longer. In the cartridge list **PageUp**/**PageDown** move by half a page, **Home**/**End** go to the beginning and the end, **Esc** starts the previous cartridge again; on returning to the list the cursor is on the last cartridge.
 
 Controls: arrows (or WASD) — D-pad, **Z** — button I, **X** — button II, **Enter** — RUN, **Esc** or **Backspace** — SELECT; **Enter+Esc** — emulator menu (saves, clock, back to cartridge selection); **Ctrl+F1–F8** — save the game to a slot, **Alt+F1–F8** — load; **Ctrl+Alt+Del** — reboot the board. NES gamepad: A — I, B — II, Start — RUN, Select — SELECT, Start+Select — menu.
 

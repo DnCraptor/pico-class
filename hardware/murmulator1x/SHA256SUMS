@@ -51,10 +51,12 @@ b557c2ae1d625a6b57d9a63b527e1736aa7887962aea1f3468fe12f7dc1290f1  sdcard/emu/m1p
 b3b57033bc235b87a90372c5c45057b947f299bc41b34baf83037468c41df096  sdcard/emu/m1p2-ngpc-HDMI-PWM.uf2
 0cf4e1776376f074d2d05d1d849f1508832c4cf2407f6a4b8a422d0f120fc9fe  sdcard/emu/m1p2-ngpc-VGA-I2S-TDA1387.uf2
 2bf1ae9e9b0e73d1c5f6d71d93d518a80f67f4bbfca99e5e94111cbfae1313c1  sdcard/emu/m1p2-ngpc-VGA-PWM.uf2
-525935170c2a036f05a4d60aa62aee9c6964edca107116c0f9c7271d003d5588  sdcard/emu/m1p2-pce-HDMI-I2S-1.1.1.uf2
-aa0a88b8624c315ccf1ac171b81ffeaeb263cb2923c9bd50244639a6ede8d658  sdcard/emu/m1p2-pce-HDMI-PWM-1.1.1.uf2
-cb7db177f04e3acef887b6010a6e5cc14a97dc5aea9be7cd40e2bd6c4a0c01a7  sdcard/emu/m1p2-pce-VGA-I2S-1.1.1.uf2
-4ee1201b0e79a84deb006cbbf94be02f3faff5b9095ce4271b8d971ab2a5feba  sdcard/emu/m1p2-pce-VGA-PWM-1.1.1.uf2
+8282ef2ac5ef3ca3b52573a9b967706369a8aa8d747a5fb6912a89484af42e27  sdcard/emu/m1p2-pce-HDMI-I2S-1.1.2.uf2
+4e023296f5c337e70e13921497f1f625d3df3ae8d3c57069b04caa45b992d761  sdcard/emu/m1p2-pce-HDMI-PWM-1.1.2.uf2
+4576fd6deda6409e42fe6889e5a2b6ed2ba95195e2e8756da3b62648f837da9e  sdcard/emu/m1p2-pce-TV-SOFT-I2S-1.1.2.uf2
+a4170a388522dbc99c3f7e7f7b728d814b6e5dff9fea0ea51835dd81fd55eec3  sdcard/emu/m1p2-pce-TV-SOFT-PWM-1.1.2.uf2
+b7983b5be7834deb8f4bed02a2ffa2d70337609bb9e6bc03829ccf3c8833fe2b  sdcard/emu/m1p2-pce-VGA-I2S-1.1.2.uf2
+36a3472e560ad955a14cdd04025aac2427c354c718822549ca45d57bcbe776d9  sdcard/emu/m1p2-pce-VGA-PWM-1.1.2.uf2
 3ef92f6625f362f83c6a827d96a544d9bc025b3a4e698022899e8155d523a6c2  sdcard/emu/m1p2-pico-mac-378-VGA-I2S-0.1.1.uf2
 fec680bb312945037bb139e87ce4e902ce8c0e9802448a0a2ffa63a9c8aa3a26  sdcard/emu/m1p2-pico-mac-378-VGA-PWM-0.1.1.uf2
 ed268dafc4c95dcfac141145a02d6c14eae0e1541ae370754ec97f51da312db3  sdcard/emu/m1p2-pico-mac-400-HDMI-I2S-0.1.1.uf2
