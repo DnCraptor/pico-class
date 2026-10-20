@@ -1,6 +1,6 @@
 # Манифест комплекта: Olimex RP2040-PICO-PC + Raspberry Pi Pico 2 (PCp2)
 
-Состояние на 2026-10-08. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность. При замене любого файла комплекта обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
+Состояние на 2026-10-20. Файл фиксирует, **что именно** лежит в каталоге платы, из каких исходников оно собрано и как проверить целостность. При замене любого файла комплекта обновляются эта таблица, `SHA256SUMS` и статус в [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 
 ## 1. Менеджеры прошивок (UF2)
 
@@ -18,7 +18,7 @@
 | Файл | Исходники | Версия / коммит | Частота / напряжение | SHA-256 |
 |---|---|---|---|---|
 | `sdcard/emu/PCp2-bk-VGA-HDMI-400MHz-PWM-1.5.3.uf2` | [DnCraptor/PICO-BK](https://github.com/DnCraptor/PICO-BK) | 1.5.3, `master` = `2704872` (2026-10-12) | по умолчанию 270 МГц / 1.3 В (HDMI 720×576); в меню — 400 МГц / 1.5 В (800×600) и 512 МГц / 1.6 В (1024×768) | `6950ff02db55b89f65c6a97c89fb526489c86567655c753c12b4bdda1e25efe4` |
-| `sdcard/emu/PCp2-nes-VGA-HDMI-PWM-305.uf2` | [DnCraptor/pico-nes](https://github.com/DnCraptor/pico-nes) | 305, `main` = `fa24bc7` (2026-10-01) | 378 МГц / 1.6 В | `3557d29136b2d88de534c984149bd7978379f588d75189faced817f1dd398d74` |
+| `sdcard/emu/PCp2-nes-VGA-HDMI-PWM-306.uf2` | [DnCraptor/pico-nes](https://github.com/DnCraptor/pico-nes) | 306, `main` = `2eb90d9` (2026-10-20) | 378 МГц / 1.6 В | `5e881ce1a8664deda0ac552c1066b1b13a0f5cc5f1b3b8c51bdc44acfbf31029` |
 | `sdcard/emu/PCp2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2` | [DnCraptor/murm386](https://github.com/DnCraptor/murm386) | v1.19, `main` = `fc80323` (2026-10-06), сборка без PSRAM (`VIDEO_MODE=RUNTIME`, подкачка гостевой памяти) | 504 МГц / 1.6 В | `aedcd7eb8702b36f0fc68d7ee91be403a47ed021c053154257578967c0f5887f` |
 | `sdcard/emu/psram/PCp2-386-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `fc80323` (2026-10-06), сборка с PSRAM: ядро 386, VGA256, гостевая память прямо в PSRAM 66 МГц (`NO_PAGING`) | 504 МГц / 1.6 В | `62a56aa6ad05fb940164a22799d3e8d5c314a346a4dfe6b45f27629f04324aae` |
 | `sdcard/emu/psram/PCp2-286-VGA256-504MHz-1.6V-P66-v1.19.uf2` | там же | v1.19, `fc80323` (2026-10-06), сборка с PSRAM: ядро 8086/186/286 (`CPU_TARGET=286`), остальное как у сборки 386 | 504 МГц / 1.6 В | `6225dea98fe5a3c2736c4fc02d5802f6cda3e1c2a4262c9fc76f1e063d36fe23` |
