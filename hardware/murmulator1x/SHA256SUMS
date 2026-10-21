@@ -31,10 +31,10 @@ ed7dbe2180154b228595601e0ab18f43f34428849e28e6aad619ed8282cce0ed  sdcard/emu/m1p
 3c9550bd857e933c5a421b9cf3c45f4cdb6b74642a09a63b2171f07ca8ee8717  sdcard/emu/m1p2-gamate-VGA-AY-3-8910-3.1.2.uf2
 5a6c6b8d6a4fe800859c44c7526bf6ffb82c44f6ebe2285894f911d30378f6c4  sdcard/emu/m1p2-gamate-VGA-I2S-3.1.2.uf2
 4ffc46ee4bcb54a88accfa8b192188c6f7f01e65f4e5c8073531861c2cc49839  sdcard/emu/m1p2-gamate-VGA-PWM-3.1.2.uf2
-331372988ed6608e9ea0f0b0f0063f40778daac67150e3118e8b9c443c564557  sdcard/emu/m1p2-gameboy-color-HDMI-I2S-TDA1387.uf2
-ab73125c699b18de78839ba36ed4d5f1f1e222fbc64c33d48e123222a8cfdbbf  sdcard/emu/m1p2-gameboy-color-HDMI-PWM.uf2
-f8afbfeac2f0b32569908b71874456b87d6e9a9663d7b2df91b76a7ce578daf4  sdcard/emu/m1p2-gameboy-color-VGA-I2S-TDA1387.uf2
-34f9005e5d44623b2d12e28c2a1891c62d98247f0863883844039ab33347375e  sdcard/emu/m1p2-gameboy-color-VGA-PWM.uf2
+634451113d16ceaaab9c62f1743658186462ca4c8229eaf09f0ab77ffca06135  sdcard/emu/m1p2-gameboy-color-HDMI-I2S-3.0.8.uf2
+065d86d772038f3b350dfd0fa787e1fdd1f31c7f1f58faf56a06c40cc34d0d46  sdcard/emu/m1p2-gameboy-color-HDMI-PWM-3.0.8.uf2
+087682447fed5e14bb0f933f1fc4fdfa28c12a63b4067a8ce323730e51335c76  sdcard/emu/m1p2-gameboy-color-VGA-I2S-3.0.8.uf2
+b6fe646e172c645628c9c3e3259c18c268cf3afe4515a1b3fadaf4caf0a8bafe  sdcard/emu/m1p2-gameboy-color-VGA-PWM-3.0.8.uf2
 956cd21f2009cd94bd43e600adede4457661b90f73a74c40187c10861108e26d  sdcard/emu/m1p2-gnw-VGA-HDMI-TFT-0.1.18.uf2
 e82d4ec4f1e663691dfc149d7913947ec592fbc473fa4b2d4649db4d531c1f87  sdcard/emu/m1p2-korvet-400-HDMI-DVI-0.7.1.uf2
 7cb723961eec2fe0dc87d350cf15b771fcbbd254b285fb9c04876c0e0e48414c  sdcard/emu/m1p2-korvet-400-TV-SOFT-PAL-0.7.1.uf2

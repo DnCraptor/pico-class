@@ -90,7 +90,7 @@ Component values in the audio path that the board designer recommends for better
 5. Put learning programs, data and games into separate folders. The content of the kit and the test status of the firmwares are in [`../COMPATIBILITY.md`](../COMPATIBILITY.md).
 6. Before making copies, the integrity of the reference set is checked against two files: [`SHA256SUMS`](../../SHA256SUMS) in the root of the repository — the common part (see `SDCARD.en.md`, section 23), and [`SHA256SUMS`](SHA256SUMS) in the board folder — the UF2 files and the board materials (see `MANIFEST.md`, section 4).
 
-The same card can serve boards of different types if it holds emulators for each: the files differ by prefix, and murm386 keeps its settings for each board separately (for this one, in `/.config/386/M2/`).
+The same card can serve boards of different types if it holds emulators for each: the files differ by prefix, and murm386 keeps its settings for each board separately (for this one, in `/.config/386/M2/`, for the 286 build in `/.config/286/M2/`; section 6.4).
 
 ## 5. Installing the firmware manager
 
@@ -157,6 +157,27 @@ Overclocking and voltages above nominal are outside the modes guaranteed by the 
 
 The acceptance result is recorded in [`../COMPATIBILITY.md`](../COMPATIBILITY.md): date, board and module unit, items passed, remarks, the module's class.
 
+### 6.4. murm386: clocks, voltage and troubleshooting (`config.ini`)
+
+murm386 keeps its settings in `/.config/<core>/M2/config.ini`: `<core>` is `386` for the `m2p2-386-…` builds and `286` for the `psram/m2p2-286-…` build. The emulator creates and updates the file itself when the settings are changed in the **Win+F11** (Settings) or **Win+F12** (Disk Manager) menu; it can also be edited on a computer in any text editor. The kit has an example for the 286 build — [`sdcard/.config/286/M2/config.ini`](sdcard/.config/286/M2/config.ini): core at 504 MHz, PSRAM and flash at 66 MHz each, 1.65 V.
+
+Clocks and voltage are set in the `[murm-286]` section (the section has the same name in the 286 and 386 builds):
+
+| Key | What it sets | Values (as in the Win+F11 menu) |
+|---|---|---|
+| `cpu_freq` | RP2350 core clock, MHz | 252, 378, 504, 524, 564. With HDMI output the emulator raises the clock to 504 MHz at start by itself, and a lower value is not applied; with VGA any value is applied |
+| `psram_freq` | PSRAM clock, MHz (builds from `emu/psram`) | 66, 84, 100, 133, 166 |
+| `flash_freq` | flash clock, MHz | 66, 84, 100, 133, 166 |
+| `voltage` | core voltage | `-1` — automatic by the clock (below 378 MHz — 1.50 V, 378–504 MHz — 1.60 V, above 504 — 1.65 V); `15` — 1.30 V, `16` — 1.35 V, `17` — 1.40 V, `18` — 1.50 V, `19` — 1.60 V, `20` — 1.65 V, `21` — 1.70 V, `22` — 1.80 V |
+
+New values take effect after the board is rebooted.
+
+Troubleshooting:
+
+1. **The interface does not work** (the picture glitches or disappears, the keyboard does not respond, the emulator hangs while booting or in the menu) — raise the core voltage: `voltage=20` (1.65 V, as in the example), if that is not enough — `voltage=21` (1.70 V). 1.80 V (`22`) is only for a short check of the module.
+2. **That did not help** — lower the clocks: first `psram_freq` and `flash_freq` to 66, then, with VGA, `cpu_freq` to 378 (with HDMI the core clock stays at 504 MHz).
+3. **The emulator does not start after an edit** — delete `config.ini` (on a computer): the emulator starts with the build parameters (they are in the firmware file name, e.g. `504MHz-1.6V-P66`) and creates the file again.
+
 ## 7. Rolling out to the whole class
 
 After the reference station has passed acceptance, record the board build variant (HDMI or VGA, jumpers), the versions of the manager and the firmwares, the content of the SD card, the settings and the test results. Make copies of the reference SD card for the other stations; check booting and sound on each unit. Do not take a check of one sample as proof that the whole batch works: the boards are assembled by hand, and a soldering fault on one unit says nothing about another.
@@ -183,6 +204,7 @@ The **FRANK** boards (by Mikhail Matveev, rh1tech) started as an offshoot of the
 | [`img/`](img/) | connection diagram: pins, connectors and jumpers (section 3.1) |
 | [`pico-launcher/`](pico-launcher/) | pico-launcher builds for the `m2p2`: HDMI or VGA, USB keyboard (`HID`) or PS/2 |
 | [`murmulator-os2/`](murmulator-os2/) | MOS2 builds for the `m2p2`: USB keyboard (`HID`) or PS/2 |
+| [`sdcard/.config/286/M2/config.ini`](sdcard/.config/286/M2/config.ini) | example murm386 settings (286 build) for the `m2p2`, section 6.4 |
 | [`sdcard/emu/`](sdcard/emu/) | emulators built for the `m2p2`: murm386 (three builds, two of them in `psram/`), PICO-BK (two builds: I2S and PWM), NES (two builds: I2S and PWM), murmapple (eight builds: HDMI or VGA, I2S or PWM; four with PSRAM in `psram/`), pico-z26 and atari800 (four builds each: HDMI or VGA, I2S or PWM), pico-speccy (two builds: video through PIO and HDMI through HSTX), Game & Watch (one build), murmc64 (four builds: HDMI or VGA, I2S or PWM), frank-micro and frank-msx (one build each), emu80v4 Korvet and Vector-06C (two builds each: HDMI and VGA), pico-pce (four builds: HDMI or VGA, I2S or PWM), pico-genesisPlus (two builds: HDMI with I2S or PWM; VGA and PS/2 are not supported), pico-gameboy, pico-lynx, pico-mac, pico-gamate, pico-watara, pico-wonderswan and pico-neogeo-pocket (four builds each: HDMI or VGA, I2S or PWM) |
 
 ## Sources

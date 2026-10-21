@@ -7,6 +7,7 @@ bbbae9427b9207204b9fe6fb6be8af8f69dbe70911856a647beddf2479b40fbb  murmulator-os2
 44ef7f43a1114fa387c175a60fb918bd67d94e1e677c71fa2bdff6d6c9e2f02f  pico-launcher/m2p2-uf2-launcher-HDMI.uf2
 16020ead36c2e568ea496e1e55868ca4217ba4427bc101cb6b2fc7f378322af1  pico-launcher/m2p2-uf2-launcher-VGA-HID.uf2
 d531672152a4f477e1bb5fa79b5b2a5cf9ab4b73a14b0ff8163f62d57b207c0c  pico-launcher/m2p2-uf2-launcher-VGA.uf2
+ffabfe147d450b55ad267f0d0657915f70d3bc0aa71ac84038b0eb88710244db  sdcard/.config/286/M2/config.ini
 c2c33a4b706d4e44406330ad96c3228a287db692078015cfc168cdb15dbf878a  sdcard/emu/m2p2-386-RUNTIME-504MHz-1.6V-P66-v1.19.uf2
 bed167076403a7c0e35749cca483c75fb511ab1d5d8cc3c7cc6a751c5410fcbc  sdcard/emu/m2p2-atari800-HDMI-I2S-504-3.3.1.uf2
 2309b8e802bb4355e9b10f3f48a5122c8cedffdb99af1feec011660fb4eb14f1  sdcard/emu/m2p2-atari800-HDMI-PWM-504-3.3.1.uf2
@@ -28,10 +29,10 @@ d8092758653478af0f6c9e64b6ffdc4d1aa5d86bee6ac761a1be0f856be29650  sdcard/emu/m2p
 9606ca4a7641ecbeaed41522ef0cd7c24fd293c0b805c646a0ef29365868d7e1  sdcard/emu/m2p2-gamate-HDMI-PWM-3.1.2.uf2
 da1edbd9eb68bbde50d21ff034b686a756cdfac743957266dd66cde9879062f3  sdcard/emu/m2p2-gamate-VGA-I2S-3.1.2.uf2
 acd3a8e9272f644301ec211beff86e798c5921dd94155d01e060676d1df491a1  sdcard/emu/m2p2-gamate-VGA-PWM-3.1.2.uf2
-725b1f30e343409b3d49ef028ff86207eb7206de582dadf77049ad4e89dad74f  sdcard/emu/m2p2-gameboy-color-HDMI-I2S-TDA1387.uf2
-d0a5493e57d900e3a175a36c1416d4018a046a46255eac95b00cda8b5c910335  sdcard/emu/m2p2-gameboy-color-HDMI-PWM.uf2
-60030cd491d48dffe4473c0aac6d619d8eb8fea62f372f100b45f4697e1fa786  sdcard/emu/m2p2-gameboy-color-VGA-I2S-TDA1387.uf2
-fae5a03f830a5c5620a5b42688460569879b4b68e758e98358c63fc2fcd95578  sdcard/emu/m2p2-gameboy-color-VGA-PWM.uf2
+8796a8f6dbdadad25d818b75258e1a393ecc0a9d0ba2643caf96a42f62443aff  sdcard/emu/m2p2-gameboy-color-HDMI-I2S-3.0.8.uf2
+9dfcb187dd6b051c2d33ed2aa6fb0a79fcec5ca7b21d496a844f167cdc52aa8f  sdcard/emu/m2p2-gameboy-color-HDMI-PWM-3.0.8.uf2
+64769e249252404707e7d09b60637e17de473cbdebfc440a382da5ee8fe0f424  sdcard/emu/m2p2-gameboy-color-VGA-I2S-3.0.8.uf2
+8486a572962f7881495c9f02cf073556f7c3a6843cb0f0f24fbdb0b4d5cea6a4  sdcard/emu/m2p2-gameboy-color-VGA-PWM-3.0.8.uf2
 821412fa849fc7a6b3f6788d393120616852fbb47f1a2e319712db42f9a6ddaa  sdcard/emu/m2p2-gnw-VGA-HDMI-TFT-0.1.18.uf2
 9ab8609e0dc32bfb9a3488f1169488c029c7a61dd40b1eaebe058289d4cc9b87  sdcard/emu/m2p2-korvet-400-HDMI-DVI-0.7.1.uf2
 0c201c7ae3d2e1870f75edc1df88706fa1d8cac42d602c2e0fd25dfe7f3659d6  sdcard/emu/m2p2-korvet-400-VGA-0.7.1.uf2

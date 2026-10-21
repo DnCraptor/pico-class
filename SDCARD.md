@@ -38,6 +38,7 @@
 | `/386/bios.bin`, `/386/vgabios.bin` | SeaBIOS и SeaVGABIOS, сборка `rel-1.17.0-7-g106549a4-dirty` (2026-03-27); LGPL v3 | гостевой BIOS для сборок murm386 с ядром 386 (каталог данных `/386`; у сборки 286 — `/286`). По умолчанию murm386 работает со встроенным BIOS и грузит FreeDOS с SD-карты; SeaBIOS выбирается в Disk Manager (Win+F12), строка BIOS, нужна перезагрузка |
 | `/386/fdd0free.img` | образ дискеты 1,44 МБ с FreeDOS 7.1 (та же выборка, что в `/freedos`: ядро, `COMMAND.COM`, `bin`, `nls`, `configs`; `FDCONFIG.SYS` и `FDAUTO.BAT` как на SD-карте), а также Volkov Commander, CuteMouse, LTEMM, CheckIt 1; для [учебного модуля 24](program/modules/24-bios-dos.md) добавлены `\FREEDOS\BIN\DEBUG.COM` (с `DEBUG.LIC`) и каталог `\BIOS` — собранные `PAMYAT.EXE`, `PORTY.EXE` (Turbo Pascal), `TRI.EXE` (Turbo C) и их исходники из `/freedos/EDU/BIOS` | гостевая ОС для murm386 с ядром 386; дискета подключается в Disk Manager (Win+F12), строка FDD-0. FreeDOS — GPL; CheckIt — коммерческая программа |
 | `/386/fdd0dr81.img` | образ дискеты 1,44 МБ с DR-DOS 8.1 (DrDOS, Inc., 2005): `COMMAND.COM`, `SYS.COM`, `MEM.EXE` и др., FDXXMS, UMBPCI, CuteMouse, LTEMM, Volkov Commander, Norton SI, CheckIt 1 и 3 | то же, другая гостевая ОС. DR-DOS 8.1 — проприетарная («All rights reserved»), CheckIt и Norton SI — коммерческие программы; образ будет удалён из репозитория при претензии правообладателя |
+| `/286/fdd0free.img` | та же дискета, что `/386/fdd0free.img` (побайтово совпадает) | для сборки murm386 с ядром 286 (`emu/psram/<BOARD>-286-…`): её каталог данных — `/286`; подключается так же, в Disk Manager (Win+F12), строка FDD-0 |
 | `/NES/*.nes` | свободные homebrew-игры для pico-nes, см. раздел 3 | см. раздел 3 |
 | `/ZX/*` | свободные программы и игры для pico-speccy, см. раздел 5 | см. раздел 5 |
 | `/apple/*.DSK` | образы дисков для murmapple (Apple IIe), см. раздел 6 | см. раздел 6 |
@@ -50,7 +51,7 @@
 | `/vector06c/*` | свободные игры для «Вектора-06Ц» (эмулятор emu80v4, сборка `v06c`), см. раздел 13 | см. раздел 13 |
 | `/PCE/*.pce` | программы для pico-pce (PC Engine), см. раздел 14 | см. раздел 14 |
 | `/MD/*.bin` | программы для pico-genesisPlus (Sega Mega Drive / Genesis), см. раздел 15 | см. раздел 15 |
-| `/GB/*.gb` | программы для pico-gameboy (Nintendo Game Boy), см. раздел 16 | см. раздел 16 |
+| `/GB/*.gb`, `/GB/*.gbbp` | программы и подложки для pico-gameboy (Nintendo Game Boy), см. раздел 16 | см. раздел 16 |
 | `/LYNX/*.lnx` | программы для pico-lynx (Atari Lynx), см. раздел 17 | см. раздел 17 |
 | `/GAMATE/*.bin` | программы для pico-gamate (Gamate), см. раздел 19 | см. раздел 19 |
 | `/WATARA/*.sv` | программы для pico-watara (Watara Supervision), см. раздел 20 | см. раздел 20 |
@@ -374,9 +375,19 @@ pico-genesisPlus (эмулятор Sega Mega Drive / Genesis, ядро gwenesis)
 
 ## 16. Программы для pico-gameboy (`/GB`)
 
-pico-gameboy (эмулятор Nintendo Game Boy, ядро Peanut-GB) показывает картриджи `.gb` и `.gbc` из каталога `/GB`, там же хранит сохранения. Выбранный картридж записывается во флеш-память платы. Игры для Game Boy Color, более поздней модели, в этой сборке почти не работают; игры для обычного Game Boy pico-gameboy может «раскрасить» — в меню выбирается палитра.
+pico-gameboy (эмулятор Nintendo Game Boy, ядро Peanut-GB) показывает картриджи `.gb` и `.gbc` из каталога `/GB`. Выбранный картридж загружается в PSRAM, если она есть на модуле RP2350, иначе записывается во флеш-память платы. Настройки, палитры игр и снимки игры эмулятор хранит в `/.config/gbc`. Игры для Game Boy Color, более поздней модели, в этой сборке почти не работают; игры для обычного Game Boy pico-gameboy может «раскрасить»: в меню строка **Palette** задаёт палитру всей игре, вариант **CUSTOM** — отдельно фону (**BG**) и двум палитрам спрайтов (**OBJ0**, **OBJ1**), **Palette editor** — редактор цветов.
 
-Управление: стрелки (или WASD) — крестовина, **Z** — кнопка A, **X** — кнопка B, **Enter** — START, **Esc** или **Backspace** — SELECT; **Enter+Esc** — меню эмулятора (палитра, снимки игры, частота, **Reset to ROM select** — к выбору картриджа, **Return to game** — назад в игру); **Ctrl+F1–F8** — сохранить игру в ячейку, **Alt+F1–F8** — загрузить; **Ctrl+Alt+Del** — перезагрузка платы. Геймпад NES: A — A, B — B, Start — START, Select — SELECT, Start+Select — меню.
+Управление: стрелки (или WASD) — крестовина, **Z** — кнопка A, **X** — кнопка B, **Enter** — START, **Esc** или **Backspace** — SELECT; **Enter+Esc** — меню эмулятора (палитра, снимки игры, частота, **Reset to ROM select** — к выбору картриджа, **Return to game** — назад в игру); **Ctrl+F1–F8** — сохранить игру в ячейку, **Alt+F1–F8** — загрузить; **Ctrl+Alt+Del** — перезагрузка платы. Палитра в игре: **F1**, **F2**, **F3** — следующая палитра фона, OBJ0, OBJ1 (с **Shift** — предыдущая), **F6** — случайные цвета, **F7** — случайные цвета с сохранением, **F8** — сохранить цвета для этой игры, **F9** — всё AUTO, **F12** — редактор палитры. Геймпад NES: A — A, B — B, Start — START, Select — SELECT, Start+Select — меню.
+
+В меню **Screen** — размер картинки: **2x**, **3x** или **Full** (во весь экран); **Backplane** — подложка: рисунок корпуса Game Boy Color вокруг игры в режимах 2x и 3x (в Full не показывается). Кроме встроенной подложки можно поставить другую: выбрать файл `.gbbp` в списке файлов эмулятора — появится «Backplan is installed» («This backplan version is unsupported» — файл другой версии), файл копируется в `/.config/gbc/backplane.gbbp` и дальше показывается вместо встроенной; чтобы вернуть встроенную, этот файл удаляют. Подложку из своей картинки делает утилита `tools/make_gbbp.py` из [DnCraptor/pico-gameboy](https://github.com/DnCraptor/pico-gameboy) (описание — `tools/README.ru.md` там же).
+
+| Файл | Подложка |
+|---|---|
+| `gbc-green.gbbp` | зелёный Game Boy Color, поля вокруг корпуса чёрные |
+| `gbc-green-white.gbbp` | тот же, поля белые |
+| `gbc-purple.gbbp` | фиолетовый Game Boy Color |
+
+Подложки — из репозитория pico-gameboy (`sd-card/GB`, `c190ca1`), побайтово совпадают.
 
 Картриджи написаны на C для этого репозитория (исходники и сборка — [`tools/gb`](tools/gb/README.md), условия — [`LICENSE`](LICENSE)); это те же программы, что для PC Engine и Mega Drive в разделах 14 и 15. Тексты на экране — латиницей.
 

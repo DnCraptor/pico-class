@@ -40,6 +40,7 @@ State as of 2026-10-13. The `sdcard/` folder at the root of the repository is th
 | `/386/bios.bin`, `/386/vgabios.bin` | SeaBIOS and SeaVGABIOS, build `rel-1.17.0-7-g106549a4-dirty` (2026-03-27); LGPL v3 | guest BIOS for murm386 builds with the 386 core (data folder `/386`; the 286 build uses `/286`). By default murm386 uses its built-in BIOS and boots FreeDOS from the SD card; SeaBIOS is selected in the Disk Manager (Win+F12), BIOS line, a reboot is needed |
 | `/386/fdd0free.img` | 1.44 MB floppy image with FreeDOS 7.1 (the same selection as in `/freedos`: kernel, `COMMAND.COM`, `bin`, `nls`, `configs`; `FDCONFIG.SYS` and `FDAUTO.BAT` as on the SD card), plus Volkov Commander, CuteMouse, LTEMM, CheckIt 1; for [teaching module 24](program/modules/24-bios-dos.md) `\FREEDOS\BIN\DEBUG.COM` (with `DEBUG.LIC`) and a `\BIOS` folder were added — the built `PAMYAT.EXE`, `PORTY.EXE` (Turbo Pascal), `TRI.EXE` (Turbo C) and their sources from `/freedos/EDU/BIOS` | guest OS for murm386 with the 386 core; the floppy is attached in the Disk Manager (Win+F12), FDD-0 line. FreeDOS is GPL; CheckIt is a commercial program |
 | `/386/fdd0dr81.img` | 1.44 MB floppy image with DR-DOS 8.1 (DrDOS, Inc., 2005): `COMMAND.COM`, `SYS.COM`, `MEM.EXE` and others, FDXXMS, UMBPCI, CuteMouse, LTEMM, Volkov Commander, Norton SI, CheckIt 1 and 3 | same, a different guest OS. DR-DOS 8.1 is proprietary ("All rights reserved"), CheckIt and Norton SI are commercial programs; the image will be removed from the repository if the rights holder objects |
+| `/286/fdd0free.img` | the same floppy as `/386/fdd0free.img` (byte-identical) | for the murm386 build with the 286 core (`emu/psram/<BOARD>-286-…`): its data folder is `/286`; mounted the same way, in the Disk Manager (Win+F12), FDD-0 line |
 | `/NES/*.nes` | free homebrew games for pico-nes, see section 3 | see section 3 |
 | `/ZX/*` | free programs and games for pico-speccy, see section 5 | see section 5 |
 | `/apple/*.DSK` | disk images for murmapple (Apple IIe), see section 6 | see section 6 |
@@ -52,7 +53,7 @@ State as of 2026-10-13. The `sdcard/` folder at the root of the repository is th
 | `/vector06c/*` | free games for the Vector-06C (emu80v4 emulator, `v06c` build), see section 13 | see section 13 |
 | `/PCE/*.pce` | programs for pico-pce (PC Engine), see section 14 | see section 14 |
 | `/MD/*.bin` | programs for pico-genesisPlus (Sega Mega Drive / Genesis), see section 15 | see section 15 |
-| `/GB/*.gb` | programs for pico-gameboy (Nintendo Game Boy), see section 16 | see section 16 |
+| `/GB/*.gb`, `/GB/*.gbbp` | programs and backplanes for pico-gameboy (Nintendo Game Boy), see section 16 | see section 16 |
 | `/LYNX/*.lnx` | programs for pico-lynx (Atari Lynx), see section 17 | see section 17 |
 | `/GAMATE/*.bin` | programs for pico-gamate (Gamate), see section 19 | see section 19 |
 | `/WATARA/*.sv` | programs for pico-watara (Watara Supervision), see section 20 | see section 20 |
@@ -376,9 +377,19 @@ The cartridges were written in C for this repository (sources and build in [`too
 
 ## 16. Programs for pico-gameboy (`/GB`)
 
-pico-gameboy (a Nintendo Game Boy emulator, Peanut-GB core) lists `.gb` and `.gbc` cartridges from the `/GB` folder and keeps saves there too. A selected cartridge is written to the board's flash. Games for the Game Boy Color, the later model, hardly work in this build; games for the original Game Boy can be "coloured" by pico-gameboy — the palette is chosen in the menu.
+pico-gameboy (a Nintendo Game Boy emulator, Peanut-GB core) lists `.gb` and `.gbc` cartridges from the `/GB` folder. A selected cartridge is loaded into PSRAM if the RP2350 module has it, otherwise written to the board's flash. The emulator keeps its settings, game palettes and game snapshots in `/.config/gbc`. Games for the Game Boy Color, the later model, hardly work in this build; games for the original Game Boy can be "coloured" by pico-gameboy: in the menu the **Palette** line sets the palette of the whole game, the **CUSTOM** choice sets it separately for the background (**BG**) and the two sprite palettes (**OBJ0**, **OBJ1**), **Palette editor** edits the colours.
 
-Controls: arrows (or WASD) — D-pad, **Z** — button A, **X** — button B, **Enter** — START, **Esc** or **Backspace** — SELECT; **Enter+Esc** — emulator menu (palette, game snapshots, clock, **Reset to ROM select** — back to cartridge selection, **Return to game** — back to the game); **Ctrl+F1–F8** — save the game to a slot, **Alt+F1–F8** — load; **Ctrl+Alt+Del** — reboot the board. NES gamepad: A — A, B — B, Start — START, Select — SELECT, Start+Select — menu.
+Controls: arrows (or WASD) — D-pad, **Z** — button A, **X** — button B, **Enter** — START, **Esc** or **Backspace** — SELECT; **Enter+Esc** — emulator menu (palette, game snapshots, clock, **Reset to ROM select** — back to cartridge selection, **Return to game** — back to the game); **Ctrl+F1–F8** — save the game to a slot, **Alt+F1–F8** — load; **Ctrl+Alt+Del** — reboot the board. Palette in the game: **F1**, **F2**, **F3** — the next background, OBJ0, OBJ1 palette (with **Shift** — the previous one), **F6** — random colours, **F7** — random colours and save them, **F8** — save the colours for this game, **F9** — all AUTO, **F12** — the palette editor. NES gamepad: A — A, B — B, Start — START, Select — SELECT, Start+Select — menu.
+
+The **Screen** menu line sets the picture size: **2x**, **3x** or **Full** (the whole screen); **Backplane** — a picture of the Game Boy Color case around the game in the 2x and 3x modes (not shown in Full). Besides the built-in backplane another one can be installed: select a `.gbbp` file in the emulator's file list — "Backplan is installed" appears ("This backplan version is unsupported" — a file of another version), the file is copied to `/.config/gbc/backplane.gbbp` and shown from then on instead of the built-in one; delete that file to get the built-in one back. A backplane from your own picture is made by the `tools/make_gbbp.py` tool from [DnCraptor/pico-gameboy](https://github.com/DnCraptor/pico-gameboy) (described in `tools/README.md` there).
+
+| File | Backplane |
+|---|---|
+| `gbc-green.gbbp` | green Game Boy Color, black margins around the case |
+| `gbc-green-white.gbbp` | the same, white margins |
+| `gbc-purple.gbbp` | purple Game Boy Color |
+
+The backplanes come from the pico-gameboy repository (`sd-card/GB`, `c190ca1`), byte-identical.
 
 The cartridges were written in C for this repository (sources and build in [`tools/gb`](tools/gb/README.md), terms in [`LICENSE`](LICENSE)); they are the same programs as for the PC Engine and Mega Drive in sections 14 and 15. On-screen text is in Latin letters.
 
